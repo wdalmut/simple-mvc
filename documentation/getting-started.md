@@ -48,7 +48,6 @@ $app->run();
 The controller `IndexController.php` file should be like this
 
 ```php
-<?php
 <?php 
 class IndexController extends Controller
 {
