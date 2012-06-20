@@ -61,4 +61,13 @@ $app->bootstrap("layout", function(){
 
 The system use the `layout.phtml` name as default (change using setter).
 
+```php
+<html>
+    <head><title><?php echo $this->title?></title></head>
+    <body><?php echo $this->content?></body>
+</html>
+```
+
+The system use the controller view as `content` property.
+
 The end.
