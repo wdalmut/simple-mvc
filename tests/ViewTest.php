@@ -117,6 +117,14 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $exec = $this->object->render("view-test.phtml", 'hello');
     }
     
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testMissingTemplate()
+    {
+        $exec = $this->object->render("missing-view-test.phtml");
+    }
+    
     public function testEmptyGet()
     {
         $false = $this->object->missingKey;
