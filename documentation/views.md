@@ -32,3 +32,30 @@ site
 
 In this way the system load correctly the controller path and the view
 script.
+
+## Layout support
+
+The layout is handled as a simple view that wrap the controller view.
+
+You need to bootstrap it. The normal layout name is "layout.phtml"
+
+```php
+<?php
+
+$app->bootstrap('layout', function(){
+    $l = new Layout();
+    $l->setViewPath(__DIR__ . '/../layouts');
+    
+    return $;
+});
+
+```
+
+You can change the layout script name using the setter.
+
+```php
+<?php
+$l->setScriptName("base.phtml");
+```
+
+The end.

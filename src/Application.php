@@ -98,7 +98,7 @@ class Application
             if (($layout = $this->getBootstrap("layout")) != false) {
                 $layout->content = $content;
                 
-                echo $layout->render("layout.phtml");
+                echo $layout->render($layout->getScriptName());
             }
         }
     }
