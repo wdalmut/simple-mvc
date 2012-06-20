@@ -10,10 +10,8 @@ set_include_path(
     )        
 );
 
-require_once 'View.php';
-require_once 'Route.php';
-require_once 'Application.php';
-require_once 'Controller.php';
+require_once 'Loader.php';
+Loader::register();
 
 $app = new Application();
 
@@ -22,6 +20,13 @@ $app->bootstrap("view", function(){
     $view->setViewPath(__DIR__ . '/../views');
     
     return $view;
+});
+
+$app->bootstrap("layout", function(){
+    $layout = new Layout();
+    $layout->setViewPath(__DIR__ . '/../layouts');
+    
+    return $layout;
 });
 
 $app->run();
