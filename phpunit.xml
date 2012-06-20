@@ -27,6 +27,8 @@
             lowUpperBound="35" highLowerBound="70"/>
     </logging>
     <filter>
-        <blacklist/>
+        <blacklist>
+            <directory suffix="*">tests</directory>
+        </blacklist>
     </filter>
 </phpunit>
