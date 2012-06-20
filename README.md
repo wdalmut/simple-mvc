@@ -27,7 +27,7 @@ class IndexController extends Controller
 }
 ```
 
-The view
+# The view
 
 ```php
 <p><?php echo $this->line?></p>
@@ -47,5 +47,18 @@ $app->bootstrap("view", function(){
 
 $app->run();
 ```
+
+# The layout (Two step view)
+
+```php
+<?php
+$app->bootstrap("layout", function(){
+    $layout = new Layout();
+    $layout->setViewPath(__DIR__ . '/layouts');
+    return $layout;
+});
+```
+
+The system use the `layout.phtml` name as default (change using setter).
 
 The end.
