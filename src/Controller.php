@@ -11,7 +11,7 @@ class Controller
     
     public $view;
     
-    public function __construct($bootstrap)
+    public function __construct(Application $bootstrap)
     {
         $this->setApplication($bootstrap);
         
@@ -34,6 +34,11 @@ class Controller
     public function setApplication(Application $application)
     {
         $this->_application = $application;
+    }
+    
+    public function getApplication()
+    {
+        return $this->_application;
     }
     
     public function getResource($name)

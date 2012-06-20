@@ -5,6 +5,6 @@ PHP MVC framework like ZF1.
 
 ## Why?
 
-I want to try the test-driven development.
+I want to try out the test-driven development.
 
 Just for my pleasure.
