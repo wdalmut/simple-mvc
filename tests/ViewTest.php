@@ -77,6 +77,14 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $this->object->setViewPath(dirname(__FILE__) . '/ViewTest.php');
     }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testSetMissingViewPath()
+    {
+        $this->object->setViewPath(dirname(__FILE__) . '/hidden-views');
+    }
 
     /**
      * @covers View::render
