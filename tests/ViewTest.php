@@ -106,6 +106,16 @@ class ViewTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("<p>hello</p><p>hello</p>", $exec);
     }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testMixNonArrayData()
+    {
+        $this->object->setViewPath(dirname(__FILE__) . '/views');
+        $this->object->value = "hello";
+        $exec = $this->object->render("view-test.phtml", 'hello');
+    }
     
     public function testEmptyGet()
     {

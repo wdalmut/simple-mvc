@@ -38,7 +38,7 @@ class View
         //Check if data exists
         if($data) {
             if (!is_array($data)) {
-                $data = array($data);
+                throw new RuntimeException("You must pass an array to data view.");
             }
             $this->_data = array_merge($this->_data, $data);
         }
