@@ -32,6 +32,8 @@ class IndexController extends Controller
     public function indexAction()
     {
         $element = $this->getResource('example');
+        
+        echo $element["example"];
     }
 }
 ```
