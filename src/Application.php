@@ -56,20 +56,17 @@ class Application
         $routeObj = $router->explode($uri);
         
         $route = $routeObj->getRoute();
+        
+        $this->getEventManager()->publish("pre.dispatch", array('route' => $route));
+        
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
-        
         $action = $route["action"] . "Action";
-        
         require_once $this->_controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
         $controller = new $controllerClassName($this);
-        
         $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
-        
-        //Base on prototype
         $controller->setView($this->getBootstrap("view")->cloneThis());
         
-        $this->getEventManager()->publish("pre.dispatch", array('controller' => $controller));
         $controller->$action();
         $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
         

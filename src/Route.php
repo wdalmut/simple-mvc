@@ -21,6 +21,14 @@ class Route
         return $this->_delimiter;
     }
     
+    /**
+     * 
+     * Enter description here ...
+     * @param unknown_type $uri
+     * @return Route
+     * 
+     * @todo Handle dashed words (dash to camel case)
+     */
     public function explode($uri)
     {
         $this->_route = array();
