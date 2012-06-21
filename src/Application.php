@@ -33,7 +33,11 @@ class Application
     {
         $b = $this->_bootstrap[$name];
         
-        return call_user_func($b);
+        if (is_callable($b)) {
+            $this->_bootstrap[$name] = call_user_func($b);
+        } 
+        
+        return $this->_bootstrap[$name];
     }
     
     public function dispatch($uri) 

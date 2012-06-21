@@ -40,6 +40,22 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($boot, "ciao");
     }
     
+    /**
+     * Resources must bootstrap onetime
+     * 
+     * @covers Application::getBootstrap 
+     */
+    public function testGetMultipleTimes()
+    {
+        $this->object->bootstrap("hello", function(){
+            return new View();
+        });
+        $boot = $this->object->getBootstrap("hello");
+        $boot2 = $this->object->getBootstrap("hello");
+        
+        $this->assertSame($boot, $boot2);
+    }
+    
     public function testSetGetEventManager()
     {
         $mng = new EventManager();
