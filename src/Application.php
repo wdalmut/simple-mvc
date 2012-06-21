@@ -66,7 +66,8 @@ class Application
         $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
         
-        $controller->setView($this->getBootstrap("view"));
+        //Base on prototype
+        $controller->setView($this->getBootstrap("view")->cloneThis());
         
         $this->getEventManager()->publish("pre.dispatch", array('controller' => $controller));
         $controller->$action();

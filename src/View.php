@@ -62,4 +62,9 @@ class View
     
         return $rendered;
     }
+    
+    public function cloneThis()
+    {
+        return clone($this);
+    }
 }
