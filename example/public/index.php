@@ -1,7 +1,5 @@
 <?php 
-set_include_path(realpath(__DIR__ . '/../../src'));
-
-require_once 'Loader.php';
+require_once realpath(__DIR__ . '/../../src/Loader.php');
 Loader::register();
 
 $app = new Application();
