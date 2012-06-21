@@ -31,15 +31,7 @@ The `index.php` is the main app entry point
 
 ```php
 <?php 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath('/path/to/controllers'),
-            realpath('/path/to/src')
-        )
-    )        
-);
+set_include_path(realpath('/path/to/src'));
 
 $app = new Application();
 $app->run();
