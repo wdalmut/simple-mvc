@@ -55,4 +55,9 @@ class Controller
     {
         return $this->_params;
     }
+    
+    public function then($uri)
+    {
+        return $this->_application->dispatch($uri);
+    }
 }

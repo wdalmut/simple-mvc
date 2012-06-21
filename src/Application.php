@@ -5,6 +5,8 @@ class Application
 
     private $_eventManager;
     
+    private $_views = array();
+    
     public function setEventManager(EventManager $manager)
     {
         $this->_eventManager = $manager;
@@ -34,18 +36,8 @@ class Application
         return call_user_func($b);
     }
     
-    /**
-     * 
-     * @todo Refactor this method. I can't test it!
-     * 
-     * @param string $uri the URL
-     */
-    public function run($uri = false)
+    public function dispatch($uri) 
     {
-        if (!$uri) {
-            $uri = $_SERVER["REQUEST_URI"];
-        }
-        
         // run the right controller
         $router = new Route();
         $routeObj = $router->explode($uri);
@@ -62,24 +54,38 @@ class Application
         $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
         
-        if (($view = $this->getBootstrap("view")) !== false) {
-            $controller->setView($view);
-        }
+        $controller->setView($this->getBootstrap("view"));
         
         $this->getEventManager()->publish("pre.dispatch", array('controller' => $controller));
         $controller->$action();
         $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
         
         if ($controller->getView()) {
-            $content = $controller->getView()->render(
+            array_unshift($this->_views, $controller->getView()->render(
                 $route["controller"] . DIRECTORY_SEPARATOR . $route["action"] . ".phtml"
-            );
+            ));
+        }
+    }
+    
+    /**
+     * 
+     * @todo Refactor this method. I can't test it!
+     * 
+     * @param string $uri the URL
+     */
+    public function run($uri = false)
+    {
+        if (!$uri) {
+            $uri = $_SERVER["REQUEST_URI"];
+        }
+        
+        $this->dispatch($uri);
+        
             
-            if (($layout = $this->getBootstrap("layout")) != false) {
-                $layout->content = $content;
-                
-                echo $layout->render($layout->getScriptName());
-            }
+        if (($layout = $this->getBootstrap("layout")) != false) {
+            $layout->content = implode("", $this->_views);
+            
+            echo $layout->render($layout->getScriptName());
         }
     }
 }
