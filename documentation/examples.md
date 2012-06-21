@@ -37,3 +37,25 @@ class IndexController extends Controller
     }
 }
 ```
+
+## Controller Forward
+
+You can pass to another controller using `then()`
+
+```php
+<?php
+<?php 
+class IndexController extends Controller
+{
+    public function indexAction()
+    {
+        // Add forward action
+        $this->then("/index/forward");
+    }
+    
+    public function forwardAction()
+    {
+        // appended to index or use it directly
+    }
+}
+```

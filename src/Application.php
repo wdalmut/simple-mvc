@@ -80,12 +80,13 @@ class Application
         }
         
         $this->dispatch($uri);
-        
             
         if (($layout = $this->getBootstrap("layout")) != false) {
             $layout->content = implode("", $this->_views);
             
             echo $layout->render($layout->getScriptName());
+        } else {
+            echo implode("", $this->_views);
         }
     }
 }

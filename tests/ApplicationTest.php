@@ -55,6 +55,11 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
         $this->object->bootstrap("up", "not-callable");
     }
+    
+    public function testMissingLayout()
+    {
+        
+    }
 
     /**
      * @covers Application::run
