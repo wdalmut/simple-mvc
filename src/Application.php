@@ -61,13 +61,25 @@ class Application
         
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
         $action = $route["action"] . "Action";
-        require_once $this->_controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
+        $classPath = $this->_controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
+        
+        if (!file_exists($classPath)) {
+            throw new RuntimeException("Page not found {$route["controller"]}/{$route["action"]}", 404);
+        } else {
+            require_once $classPath;
+        }
+        
         $controller = new $controllerClassName($this);
         $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
         $controller->setView($this->getBootstrap("view")->cloneThis());
         
-        $controller->$action();
+        if (method_exists($controller, $action)) {
+            $controller->$action();
+        } else {
+            throw new RuntimeException("Page not found {$route["controller"]}/{$route["action"]}", 404);
+        }
+        
         $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
         
         if ($controller->getView()) {
@@ -79,19 +91,23 @@ class Application
     
     public function run($uri = false)
     {
-        $this->getEventManager()->publish("loop.startup");
-        
-        $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri; 
-        $this->dispatch($uri);
-        
+        try {
+            $this->getEventManager()->publish("loop.startup");
+            
+            $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri; 
+            $this->dispatch($uri);
+            
+            $this->getEventManager()->publish("loop.shutdown");
+        } catch (RuntimeException $e) {
+            $this->dispatch("/error/error");
+        }
+         
         if (($layout = $this->getBootstrap("layout")) != false) {
             $layout->content = implode("", $this->_views);
-            
+        
             echo $layout->render($layout->getScriptName());
         } else {
             echo implode("", $this->_views);
         }
-        
-        $this->getEventManager()->publish("loop.shutdown");
     }
 }
