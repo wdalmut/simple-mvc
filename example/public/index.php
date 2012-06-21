@@ -5,6 +5,9 @@ Loader::register();
 $app = new Application();
 $app->setEventManager(new EventManager());
 
+// By default but more clear
+$app->setControllerPath(__DIR__ . '/../controllers');
+
 $app->bootstrap("view", function(){
     $view = new View();
     $view->setViewPath(__DIR__ . '/../views');

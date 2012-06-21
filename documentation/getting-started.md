@@ -37,6 +37,7 @@ require_once 'Loader.php';
 Loader::register();
 
 $app = new Application();
+$app->setControllerPath(__DIR__ . '/../controllers');
 $app->run();
 ```
 
