@@ -1,14 +1,5 @@
 <?php 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(__DIR__ . '/../controllers'),
-            realpath(__DIR__ . '/../../src'),
-            get_include_path()
-        )
-    )        
-);
+set_include_path(realpath(__DIR__ . '/../../src'));
 
 require_once 'Loader.php';
 Loader::register();

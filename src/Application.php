@@ -1,16 +1,28 @@
 <?php 
 class Application
 {
+    private $_controllerPath = '../controllers';
+    
     private $_bootstrap = array();
 
     private $_eventManager;
     
     private $_views = array();
     
+    public function setControllerPath($path)
+    {
+        $this->_controllerPath = $path;
+    }
+    
+    public function getControllerPath()
+    {
+        return $this->_controllerPath;
+    }
+    
     public function setEventManager(EventManager $manager)
     {
         $this->_eventManager = $manager;
-    }    
+    }
     
     public function getEventManager()
     {
@@ -51,8 +63,7 @@ class Application
         
         $action = $route["action"] . "Action";
         
-        //TODO: use autoloader instead
-        require_once $controllerClassName . ".php";
+        require_once $this->_controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
         $controller = new $controllerClassName($this);
         
         $controller->setApplication($this);
@@ -71,12 +82,6 @@ class Application
         }
     }
     
-    /**
-     * 
-     * @todo Refactor this method. I can't test it!
-     * 
-     * @param string $uri the URL
-     */
     public function run($uri = false)
     {
         $this->getEventManager()->publish("loop.startup");
