@@ -2,11 +2,8 @@
 class Application
 {
     private $_controllerPath = '../controllers';
-    
     private $_bootstrap = array();
-
     private $_eventManager;
-    
     private $_views = array();
     
     public function setControllerPath($path)
@@ -86,10 +83,7 @@ class Application
     {
         $this->getEventManager()->publish("loop.startup");
         
-        if (!$uri) {
-            $uri = $_SERVER["REQUEST_URI"];
-        }
-        
+        $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri; 
         $this->dispatch($uri);
         
         if (($layout = $this->getBootstrap("layout")) != false) {
