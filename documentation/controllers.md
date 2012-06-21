@@ -25,3 +25,6 @@ class IndexController extends Controller
     }
 }
 ```
+
+The result is the first view (`index.phtml') concatenated to the
+second view (`next`).
