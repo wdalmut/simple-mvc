@@ -33,6 +33,9 @@ The `index.php` is the main app entry point
 <?php 
 set_include_path(realpath('/path/to/src'));
 
+require_once 'Loader.php';
+Loader::register();
+
 $app = new Application();
 $app->run();
 ```
