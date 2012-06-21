@@ -25,7 +25,9 @@ class EventManager
     
     protected function _listeners($event)
     {
-        if ($this->_listeners[$event]) {
+        if (
+            array_key_exists($event, $this->_listeners) && 
+            $this->_listeners[$event]) {
             return $this->_listeners[$event];
         } else {
             return array();

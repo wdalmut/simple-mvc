@@ -75,12 +75,14 @@ class Application
      */
     public function run($uri = false)
     {
+        $this->getEventManager()->publish("loop.startup");
+        
         if (!$uri) {
             $uri = $_SERVER["REQUEST_URI"];
         }
         
         $this->dispatch($uri);
-            
+        
         if (($layout = $this->getBootstrap("layout")) != false) {
             $layout->content = implode("", $this->_views);
             
@@ -88,5 +90,7 @@ class Application
         } else {
             echo implode("", $this->_views);
         }
+        
+        $this->getEventManager()->publish("loop.shutdown");
     }
 }
