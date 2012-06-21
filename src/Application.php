@@ -34,6 +34,12 @@ class Application
         return call_user_func($b);
     }
     
+    /**
+     * 
+     * @todo Refactor this method. I can't test it!
+     * 
+     * @param string $uri the URL
+     */
     public function run($uri = false)
     {
         if (!$uri) {
