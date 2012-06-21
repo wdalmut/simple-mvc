@@ -74,7 +74,19 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     
     public function testMissingLayout()
     {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+    
+    public function testErrorPages()
+    {
+        $this->object->setControllerPath(__DIR__ . '/controllers');
         
+        ob_start();
+        $this->object->run("/invalid/controller");
+        $errorPage = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("--> error action <--", $errorPage);
     }
 
     /**

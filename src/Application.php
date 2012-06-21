@@ -40,13 +40,17 @@ class Application
     
     public function getBootstrap($name)
     {
-        $b = $this->_bootstrap[$name];
-        
-        if (is_callable($b)) {
-            $this->_bootstrap[$name] = call_user_func($b);
-        } 
-        
-        return $this->_bootstrap[$name];
+        if (array_key_exists($name, $this->_bootstrap)) {
+            $b = $this->_bootstrap[$name];
+            
+            if (is_callable($b)) {
+                $this->_bootstrap[$name] = call_user_func($b);
+            } 
+            
+            return $this->_bootstrap[$name];
+        } else {
+            return false;
+        }
     }
     
     public function dispatch($uri) 
@@ -72,7 +76,10 @@ class Application
         $controller = new $controllerClassName($this);
         $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
-        $controller->setView($this->getBootstrap("view")->cloneThis());
+        
+        if ($this->getBootstrap("view")) {
+            $controller->setView($this->getBootstrap("view")->cloneThis());
+        }
         
         if (method_exists($controller, $action)) {
             $controller->$action();
