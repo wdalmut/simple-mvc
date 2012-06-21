@@ -14,6 +14,7 @@ require_once 'Loader.php';
 Loader::register();
 
 $app = new Application();
+$app->setEventManager(new EventManager());
 
 $app->bootstrap("view", function(){
     $view = new View();

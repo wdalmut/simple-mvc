@@ -15,7 +15,7 @@
         syntaxCheck="false"
         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
         strict="false"
-        verbose="true">
+        verbose="false">
     <testsuites>
         <testsuite name="UpCloo SDK Suite">
             <directory>./tests</directory>

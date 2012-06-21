@@ -39,6 +39,22 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($boot, "ciao");
     }
+    
+    public function testSetGetEventManager()
+    {
+        $mng = new EventManager();
+        $this->object->setEventManager($mng);
+        
+        $this->assertSame($mng, $this->object->getEventManager());
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testBootstrapNotCallable()
+    {
+        $this->object->bootstrap("up", "not-callable");
+    }
 
     /**
      * @covers Application::run
