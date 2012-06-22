@@ -90,6 +90,17 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("--> error action <--", $errorPage);
     }
+    
+    public function testInitAction()
+    {
+        $this->object->setControllerPath(__DIR__ . '/controllers');
+        ob_start();
+        $this->object->dispatch("init/index");
+        $initOutput = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("<-- init -->", $initOutput);
+    }
 
     /**
      * @covers Application::run
