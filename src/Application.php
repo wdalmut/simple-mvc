@@ -103,13 +103,11 @@ class Application
     public function run($uri = false)
     {
         $outputBuffer = '';
+        $this->getEventManager()->publish("loop.startup", array($this));
+        
         try {
-            $this->getEventManager()->publish("loop.startup");
-            
             $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri; 
             $this->dispatch($uri);
-            
-            $this->getEventManager()->publish("loop.shutdown");
         } catch (RuntimeException $e) {
             $this->clearHeaders();
             $this->addHeader("Content-Type", "text/html", 500);
@@ -123,6 +121,8 @@ class Application
         } else {
             $outputBuffer = implode("", $this->_views);
         }
+        
+        $this->getEventManager()->publish("loop.shutdown", array($this));
         
         $this->sendHeaders();
         echo $outputBuffer;
