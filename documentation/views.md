@@ -108,7 +108,8 @@ public function indexAction()
 
 ## Escapes
 
-You can escape variables using the `escape()` method
+Escape is a default view helper. You can escape variables using the 
+`escape()` view helper.
 
 ```php
 <?php
