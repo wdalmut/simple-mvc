@@ -56,7 +56,7 @@ class IndexController extends Controller
 {
     public function indexAction()
     {
-        // Send as moved temporarily
+        // Remove layout
         $this->disableLayout();
     } 
 }
@@ -71,7 +71,7 @@ class IndexController extends Controller
 {
     public function indexAction()
     {
-        // Send as moved temporarily
+        // No this view
         $this->setNoRender();
     } 
 }

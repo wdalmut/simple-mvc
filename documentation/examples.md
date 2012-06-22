@@ -44,7 +44,6 @@ You can pass to another controller using `then()`
 
 ```php
 <?php
-<?php 
 class IndexController extends Controller
 {
     public function indexAction()
@@ -55,7 +54,7 @@ class IndexController extends Controller
     
     public function forwardAction()
     {
-        // appended to index or use it directly
+        // append to index or use it directly
     }
 }
 ```
