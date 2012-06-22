@@ -25,6 +25,7 @@ Just for my pleasure.
   * Init Hook
   * Post Dispatch
   * Loop Shutdown
+ * View Helpers
  * Two step view (Layout support)
  * Controllers stack
  * Headers handler

@@ -4,6 +4,16 @@ class View
     private $_path;
     private $_charset = 'utf-8';
     private $_data = array();
+    
+    private $_helpers = array();
+    
+    public function __construct()
+    {
+        $cs = $this->_charset;
+        $this->addHelper("escape", function($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true) use ($cs) {
+            return htmlspecialchars($text, $flags, $charset ?: $cs, $doubleEncode);
+        });
+    }
      
     public function __set($key, $value)
     {
@@ -17,6 +27,15 @@ class View
         }
         else {
             return false;
+        }
+    }
+    
+    public function __call($method, $args) 
+    {
+        if (array_key_exists($method, $this->_helpers)) {
+            return call_user_func_array($this->_helpers[$method], $args);
+        } else {
+            throw new RuntimeException("Helper view {$method} doesn't exists. Add it using addHelper method.");
         }
     }
     
@@ -35,7 +54,6 @@ class View
     
     public function render($filename, $data = false)
     {
-        //Check if data exists
         if($data) {
             if (!is_array($data)) {
                 throw new RuntimeException("You must pass an array to data view.");
@@ -63,13 +81,13 @@ class View
         return $rendered;
     }
     
-    public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true)
-    {
-        return htmlspecialchars($text, $flags, $charset ?: $this->_charset, $doubleEncode);
-    }
-    
     public function cloneThis()
     {
         return clone($this);
+    }
+    
+    public function addHelper($name, $helper) 
+    {
+        $this->_helpers[$name] = $helper;
     }
 }

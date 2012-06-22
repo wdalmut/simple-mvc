@@ -156,4 +156,30 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("\"'", $this->object->escape("\"'", ENT_NOQUOTES));
     }
     
+    public function testViewHelpers()
+    {
+        $this->object->addHelper("example", function(){
+            return "walter";
+        });
+        
+        $this->assertEquals("walter", $this->object->example());
+    }
+    
+    public function testViewHelpersOneParam()
+    {
+        $this->object->addHelper("example", function($param){
+            return "walter-{$param}";
+        });
+        
+        $this->assertEquals("walter-stringa", $this->object->example("stringa"));
+    }
+    
+    public function testViewHelpersMultipleParams()
+    {
+        $this->object->addHelper("example", function($param, $app, $def){
+            return "walter-{$param}-{$def}-{$app}";
+        });
+        
+        $this->assertEquals("walter-vg-#!-_9", $this->object->example("vg", "_9", "#!"));
+    }
 }
