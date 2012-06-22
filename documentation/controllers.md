@@ -2,6 +2,34 @@
 
 The controller section
 
+## Init hook
+
+Before any action dispatch the framework executes the `init()` method.
+
+```php
+<?php
+class IndexController extends Controller
+{
+    public function init()
+    {
+        // The init hook
+    }
+}
+```
+
+Using the object inheritance could be a good choice for this hook.
+
+```php
+<?php
+abstract class BaseController extends Controller
+{
+    public function init()
+    {
+        // Reusable code
+    }
+}
+```
+
 ## Next action
 
 The `next` action goes forward to the next action appending
