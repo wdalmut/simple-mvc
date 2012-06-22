@@ -83,7 +83,10 @@ class Application
         }
         
         if (method_exists($controller, $action)) {
+            ob_start();
             $controller->$action();
+            array_unshift($this->_views, ob_get_contents());
+            ob_end_clean();
         } else {
             throw new RuntimeException("Page not found {$route["controller"]}/{$route["action"]}", 404);
         }
@@ -99,6 +102,7 @@ class Application
     
     public function run($uri = false)
     {
+        $outputBuffer = '';
         try {
             $this->getEventManager()->publish("loop.startup");
             
@@ -115,12 +119,13 @@ class Application
         if (($layout = $this->getBootstrap("layout")) != false) {
             $layout->content = implode("", $this->_views);
         
-            echo $layout->render($layout->getScriptName());
+            $outputBuffer = $layout->render($layout->getScriptName());
         } else {
-            echo implode("", $this->_views);
+            $outputBuffer = implode("", $this->_views);
         }
         
         $this->sendHeaders();
+        echo $outputBuffer;
     }
     
     public function sendHeaders()

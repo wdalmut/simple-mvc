@@ -17,7 +17,9 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Application;
+        //Suppress sendHeaders        
+        $this->object = $this->getMock("Application", array('sendHeaders'));
+        $this->object->expects($this->any())->method("sendHeaders")->will($this->returnValue(null));
     }
 
     /**
