@@ -60,4 +60,34 @@ class Controller
     {
         return $this->_application->dispatch($uri);
     }
+    
+    public function clearHeaders()
+    {
+        $this->_application->clearHeaders();
+    }
+    
+    public function addHeader($key, $value, $httpCode = 200, $replace  = true)
+    {
+        $this->_application->addHeader($key, $value, $httpCode, $replace);
+        return $this;
+    }
+    
+    public function redirect($url, $header=301)
+    {
+        $this->disableLayout();
+        $this->setNoRender();
+        
+        $this->_application->clearHeaders();
+        $this->_application->addHeader("Location", $url, $header);
+    }
+    
+    public function disableLayout()
+    {
+        $this->_application->bootstrap("layout", function(){return false;});
+    }
+    
+    public function setNoRender()
+    {
+        $this->view = false;
+    }
 }

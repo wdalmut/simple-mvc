@@ -5,6 +5,7 @@ class Application
     private $_bootstrap = array();
     private $_eventManager;
     private $_views = array();
+    private $_headers = array();
     
     public function setControllerPath($path)
     {
@@ -106,6 +107,8 @@ class Application
             
             $this->getEventManager()->publish("loop.shutdown");
         } catch (RuntimeException $e) {
+            $this->clearHeaders();
+            $this->addHeader("Content-Type", "text/html", 500);
             $this->dispatch("/error/error");
         }
          
@@ -116,5 +119,30 @@ class Application
         } else {
             echo implode("", $this->_views);
         }
+        
+        $this->sendHeaders();
+    }
+    
+    public function sendHeaders()
+    {
+        $headers = $this->getHeaders();
+        foreach ($headers as $header) {
+            header($header["string"], $header["replace"], $header["code"]);
+        }
+    }
+    
+    public function clearHeaders()
+    {
+        $this->_headers = array();
+    }
+    
+    public function addHeader($key, $value, $httpCode = 200, $replace  = true)
+    {
+        $this->_headers[] = array('string' => "{$key}:{$value}", "replace" => $replace, "code" => $httpCode);
+    }
+    
+    public function getHeaders()
+    {
+        return $this->_headers;
     }
 }
