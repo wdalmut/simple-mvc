@@ -34,7 +34,7 @@ Just for my pleasure.
   
 ## Examples and docs
 
- * [Documentation](tree/master/documentation)
- * [Real Example](tree/master/example)
+ * [Documentation](simple-mvc/tree/master/documentation)
+ * [Real Example](simple-mvc/tree/master/example)
  
 The end.
