@@ -58,4 +58,13 @@ You can change the layout script name using the setter.
 $l->setScriptName("base.phtml");
 ```
 
+## Escapes
+
+You can escape variables using the `escape()` method
+
+```php
+<?php
+$this->escape("Ciao -->"); // Ciao --&gt;
+```
+
 The end.
