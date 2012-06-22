@@ -2,7 +2,7 @@
 class View
 {
     private $_path;
-    
+    private $_charset = 'utf-8';
     private $_data = array();
      
     public function __set($key, $value)
@@ -61,6 +61,11 @@ class View
         ob_end_clean();
     
         return $rendered;
+    }
+    
+    public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true)
+    {
+        return htmlspecialchars($text, $flags, $charset ?: $this->_charset, $doubleEncode);
     }
     
     public function cloneThis()

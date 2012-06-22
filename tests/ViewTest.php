@@ -140,4 +140,20 @@ class ViewTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(dirname(__FILE__), $path);
     }
+    
+    public function testViewParamEscape()
+    {
+        $ret = $this->object->escape("<p>ciao</p>");
+        $this->assertEquals("&lt;p&gt;ciao&lt;/p&gt;", $ret);
+    }
+    
+    public function testViewChars()
+    {
+        $ret = $this->object->p = "èàòùìç@";
+        $this->assertEquals("èàòùìç@", $this->object->p);
+        $this->assertEquals("èàòùìç@", $this->object->escape("èàòùìç@"));
+        $this->assertEquals("&quot;", $this->object->escape("\"", ENT_QUOTES));
+        $this->assertEquals("\"'", $this->object->escape("\"'", ENT_NOQUOTES));
+    }
+    
 }
