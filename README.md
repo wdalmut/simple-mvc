@@ -12,7 +12,7 @@ Just for my pleasure.
 ## Goals
 
  * PHPUnit
- * All class must be less than 100 lines of code
+ * All classes must be less than 100 lines of code
  
 ## Example
 
