@@ -85,9 +85,12 @@ You can use it into you view as:
 
 You can create helpers with many variables
 
+```php
+<?php
 $view->addHelper("sayHello", function($name){
     return "Hello {$name}";
 });
+```
 
 View system is based using the prototype pattern all of your 
 helpers attached at bootstrap time existing into all of your
