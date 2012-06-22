@@ -13,61 +13,21 @@ Just for my pleasure.
 
  * PHPUnit
  * All classes must be less than 100 lines of code
+ * Very simple implementation (only 6 classes + autoloader)
+ * PHP 5.3+ implementation
  
-## Example
+## Features
 
-```php
-<?php
-class IndexController extends Controller
-{
-    public function indexAction()
-    {
-        $this->view->line = "A sentence";
-    }
-}
-```
-
-# The view
-
-```php
-<p><?php echo $this->line?></p>
-```
-
-All are orchestreated by `Application`
-
-```php
-<?php
-$app = new Application();
-
-$app->bootstrap("view", function(){
-    $view = new View();
-    $view->setViewPath(__DIR__ . '/views');
-    return $view;
-});
-
-$app->run();
-```
-
-# The layout (Two step view)
-
-```php
-<?php
-$app->bootstrap("layout", function(){
-    $layout = new Layout();
-    $layout->setViewPath(__DIR__ . '/layouts');
-    return $layout;
-});
-```
-
-The system use the `layout.phtml` name as default (change using setter).
-
-```php
-<html>
-    <head><title><?php echo $this->title?></title></head>
-    <body><?php echo $this->content?></body>
-</html>
-```
-
-The system use the controller view as `content` property.
-
-The end.
+ * 100% MVC implementation [66% no model support] ;)
+ * Useful hooks (Fixed events)
+  * Loop Startup
+  * Pre Dispatch
+  * Init Hook
+  * Post Dispatch
+  * Loop Shutdown
+ * Two step view (Layout support)
+ * Controllers stack
+ * Headers handler
+ * Event manager (Self designed hooks)
+ * Router
+  * Only controller/action names
