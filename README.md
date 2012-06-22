@@ -31,3 +31,10 @@ Just for my pleasure.
  * Event manager (Self designed hooks)
  * Router
   * Only controller/action names
+  
+## Examples and docs
+
+ * [Documentation](tree/master/documentation)
+ * [Real Example](tree/master/example)
+ 
+The end.
