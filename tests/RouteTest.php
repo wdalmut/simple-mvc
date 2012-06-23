@@ -136,4 +136,16 @@ class RouteTest extends PHPUnit_Framework_TestCase
     {
         $this->object->explode(array('controller' => 'ciao', 'action' => 'hello'));
     }
+    
+    public function testAddParam()
+    {
+        $this->object->explode("/index/index");
+        $this->object->addParams(array("hello" => "ciao"));
+        $this->object->addParams(array("bella" => 'zi'));
+        
+        $p = $this->object->getParams();
+        $this->assertEquals(2, count($p));
+        $this->assertEquals("ciao", $p["hello"]);
+        $this->assertEquals("zi", $p["bella"]);
+    }
 }
