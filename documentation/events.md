@@ -20,11 +20,10 @@ onto the stack (use the `then()` method).
 The `loop.startup` and the `loop.shutdown` have the `Application` object as 
 first parameter.
 
-The `pre.dispatch` and `post.dispatch` have the `Router` object as first 
-parameter.
+The `pre.dispatch` hook has the `Route` object as first parameter and the
+`Application` object as second.
 
-The `pre.dispatch` has the `application` object that is useful if you want
-to interact with the layout or other bootstrapped resources.
+The `post.dispatch` hook has the `Controller` object as first paramter.
 
  * The router object is useful for modify the application flow.
  
