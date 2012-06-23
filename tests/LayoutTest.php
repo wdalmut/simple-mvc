@@ -20,6 +20,8 @@ class LayoutTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new Layout;
+        $this->object->setViewPath(__DIR__ . '/layouts');
+        $this->object->setScriptName("layout.phtml");
     }
 
     /**
@@ -35,5 +37,28 @@ class LayoutTest extends PHPUnit_Framework_TestCase
         $this->object->content = 'ciao';
         
         $this->assertEquals("ciao", $this->object->content);
+    }
+    
+    public function testBaseLayout()
+    {
+        $this->object->content = 'hello-world';
+        $this->assertEquals(
+            "<body>hello-world</body>", 
+            $this->object->render(
+                $this->object->getScriptName()
+            )
+        );
+    }
+    
+    public function testAlternateName()
+    {
+        $this->object->content = 'hello-world';
+        $this->object->setScriptName("alternate.phtml");
+        $this->assertEquals(
+            "<h1>hello-world</h1>",
+            $this->object->render(
+                $this->object->getScriptName()
+            )
+        );
     }
 }
