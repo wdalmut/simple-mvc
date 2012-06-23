@@ -32,6 +32,7 @@ Just for my pleasure.
  * Event manager (Self designed hooks)
  * Router
   * Only controller/action names
+  * Dash URLs support (/a-dash/the-name-of-content)
   
 ## Examples and docs
 

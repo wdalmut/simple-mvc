@@ -57,3 +57,27 @@ class IndexController extends Controller
 See "view" doc for enable views supports.
 
 The end.
+
+## Urls with dashes
+
+If you use a dash into an URL the framework creates the camel case
+representation with different strategies if it is an action or a
+controller.
+
+```
+/the-controller-name/the-action-name
+```
+
+Will be
+
+```php
+<?php
+// the-controller-name => TheControllerName
+class TheControllerName extends Controller
+{
+    public function theActionNameAction()
+    {
+        //the-action-name => theActionName
+    }
+}
+```
