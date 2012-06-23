@@ -128,4 +128,12 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $params  = $routeObj->getParams();
         $this->assertEquals("ok-this", $params["param"]);
     }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testStrangeExplode()
+    {
+        $this->object->explode(array('controller' => 'ciao', 'action' => 'hello'));
+    }
 }

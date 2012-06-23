@@ -11,24 +11,16 @@ class Route
         $this->_delimiter = "/";
     }
     
-    /**
-     * 
-     * Enter description here ...
-     * @param unknown_type $uri
-     * @return Route
-     * 
-     * @todo Handle dashed words (dash to camel case)
-     */
     public function explode($uri)
     {
+        if (!is_string($uri)) {
+            throw new RuntimeException("URI must be a string");
+        }
+        
         $this->_route = array();
         $this->_params = array();
         
         $parts = explode($this->_delimiter, $uri);
-        
-        if (!is_array($parts)) {
-            $parts = array($parts);
-        }
         
         $parts = $this->_filter($parts);
         
