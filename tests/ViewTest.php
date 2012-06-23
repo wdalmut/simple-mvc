@@ -182,4 +182,15 @@ class ViewTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("walter-vg-#!-_9", $this->object->example("vg", "_9", "#!"));
     }
+    
+    public function testCloneView()
+    {
+        $v = new View();
+        $v->setViewPath(__DIR__ . "/views");
+        $v2 = $v->cloneThis();
+        
+        $this->assertNotSame($v, $v2);
+        $v2->value = "hello";
+        $this->assertEquals("<p>hello</p>", $v2->render("view-test.phtml"));
+    }
 }
