@@ -40,7 +40,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $route = $routeObj->getRoute();
         $params = $routeObj->getParams();
         
-        $this->assertEquals("index", $route["controller"]);
+        $this->assertEquals("Index", $route["controller"]);
         $this->assertEquals("index", $route["action"]);
         
         $this->assertInternalType("array", $params);
@@ -54,7 +54,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $route = $routeObj->getRoute();
         $params = $routeObj->getParams();
         
-        $this->assertEquals("index", $route["controller"]);
+        $this->assertEquals("Index", $route["controller"]);
         $this->assertEquals("home", $route["action"]);
         
         $this->assertInternalType("array", $params);
@@ -68,7 +68,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $route = $routeObj->getRoute();
         $params = $routeObj->getParams();
         
-        $this->assertEquals("admin", $route["controller"]);
+        $this->assertEquals("Admin", $route["controller"]);
         $this->assertEquals("home", $route["action"]);
         
         $this->assertInternalType("array", $params);
@@ -82,7 +82,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $route = $routeObj->getRoute();
         $params = $routeObj->getParams();
         
-        $this->assertEquals("walk", $route["controller"]);
+        $this->assertEquals("Walk", $route["controller"]);
         $this->assertEquals("on", $route["action"]);
         
         $this->assertInternalType("array", $params);
@@ -103,7 +103,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $route = $routeObj->getRoute();
         $params = $routeObj->getParams();
         
-        $this->assertEquals("walk", $route["controller"]);
+        $this->assertEquals("Walk", $route["controller"]);
         $this->assertEquals("on", $route["action"]);
         
         $this->assertInternalType("array", $params);
@@ -113,5 +113,19 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("area", $keys[0]);
         
         $this->assertEquals("bar", $params["area"]);
+    }
+    
+    public function testComplexControllerName()
+    {
+        $routeObj = $this->object->explode("/walk-on-files/hello-sunny-day/param/ok-this");
+        
+        $route = $routeObj->getRoute();
+        $params = $routeObj->getParams();
+        
+        $this->assertEquals("WalkOnFiles", $route["controller"]);
+        $this->assertEquals("helloSunnyDay", $route["action"]);
+        
+        $params  = $routeObj->getParams();
+        $this->assertEquals("ok-this", $params["param"]);
     }
 }
