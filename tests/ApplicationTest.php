@@ -77,7 +77,19 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     
     public function testMissingLayout()
     {
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->setViewPath(__DIR__ . '/views');
+        });
+        $this->object->setControllerPath(__DIR__ . '/controllers');
+        
+        ob_start();
+        $this->object->run("/error/error");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("--> error action <--", $content);
+        
     }
     
     public function testErrorPages()
@@ -100,16 +112,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("<-- init -->", $initOutput);
     }
 
-    /**
-     * @covers Application::run
-     * @todo   Implement testRun().
-     */
-    public function testRun()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-    
     public function testPreDispatchHook()
     {
         $app = '';
