@@ -54,7 +54,7 @@ class IndexController extends Controller
 }
 ```
 
-See "[view](documentation/views.md)" doc for enable views supports.
+See "[view](views.md)" doc for enable views supports.
 
 ## Urls with dashes
 
