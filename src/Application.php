@@ -84,8 +84,10 @@ class Application
         
         if (method_exists($controller, $action)) {
             ob_start();
+            $controller->init();
             $controller->$action();
-            array_unshift($this->_views, ob_get_contents());
+            $content = ob_get_contents();
+            array_unshift($this->_views, $content);
             ob_end_clean();
         } else {
             throw new RuntimeException("Page not found {$route["controller-clear"]}/{$route["action-clear"]}", 404);
@@ -114,7 +116,7 @@ class Application
             $this->dispatch("/error/error");
         }
          
-        if (($layout = $this->getBootstrap("layout")) != false) {
+        if (($layout = $this->getBootstrap("layout")) instanceof Layout) {
             $layout->content = implode("", $this->_views);
         
             $outputBuffer = $layout->render($layout->getScriptName());

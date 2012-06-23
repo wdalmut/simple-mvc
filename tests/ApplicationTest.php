@@ -105,7 +105,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     public function testInitAction()
     {
         ob_start();
-        $this->object->dispatch("init/index");
+        $this->object->run("init/index");
         $initOutput = ob_get_contents();
         ob_end_clean();
         
@@ -168,5 +168,22 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $app = new Application();
         $eventManager = $app->getEventManager();
         $this->assertInstanceOf("EventManager", $eventManager);
+    }
+    
+    public function testLayout()
+    {
+        $this->object->bootstrap("layout", function(){
+            $l = new Layout();
+            $l->setScriptName("layout.phtml");
+            $l->setViewPath(__DIR__ . '/layouts');
+            return $l;
+        });
+        
+        ob_start();
+        $this->object->run("/init/index");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("<body><-- init --></body>", $content);
     }
 }

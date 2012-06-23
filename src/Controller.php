@@ -14,9 +14,6 @@ class Controller
     public function __construct(Application $bootstrap)
     {
         $this->setApplication($bootstrap);
-        
-        // Run the init
-        $this->init();
     }
     
     public function setView($view)
