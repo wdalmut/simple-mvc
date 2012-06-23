@@ -91,4 +91,9 @@ class Route
     {
         return $this->_params;
     }
+    
+    public function addParams($params)
+    {
+        array_merge($this->_params, $params);
+    }
 }

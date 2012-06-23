@@ -59,6 +59,8 @@ class Application
         // run the right controller
         $router = new Route();
         $routeObj = $router->explode($uri);
+        $routeObj->addParams($_GET);
+        $routeObj->addParams($_POST);
         
         $this->getEventManager()->publish("pre.dispatch", array('route' => $routeObj, 'application' => $this));
         
@@ -77,9 +79,10 @@ class Application
         $controller = new $controllerClassName($this);
         $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
+        $controller->setRawBody(@file_get_contents('php://input'));
         
-        if ($this->getBootstrap("view")) {
-            $controller->setView($this->getBootstrap("view")->cloneThis());
+        if (($view = $this->getBootstrap("view")) instanceof View) {
+            $controller->setView($view->cloneThis());
         }
         
         if (method_exists($controller, $action)) {

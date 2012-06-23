@@ -1,13 +1,10 @@
 <?php 
 class Controller
 {
-    /**
-     * 
-     * @var Application
-     */
     private $_application;
     
     private $_params;
+    private $_rawBody;
     
     public $view;
     
@@ -51,6 +48,16 @@ class Controller
     public function getParams()
     {
         return $this->_params;
+    }
+    
+    public function setRawBody($body)
+    {
+        $this->_rawBody = $body;
+    }
+    
+    public function getRawBody()
+    {
+        return $this->_rawBody;
     }
     
     public function then($uri)
