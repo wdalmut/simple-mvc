@@ -11,16 +11,6 @@ class Route
         $this->_delimiter = "/";
     }
     
-    public function setDelimiter($delimiter)
-    {
-        $this->_delimiter = $delimiter;
-    }
-    
-    public function getDelimiter()
-    {
-        return $this->_delimiter;
-    }
-    
     /**
      * 
      * Enter description here ...

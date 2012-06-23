@@ -73,9 +73,36 @@ class EventManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testClear()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $calls = 0;
+        $this->object->subscribe("hook", function() use (&$calls) {
+            ++$calls;
+        });
+        
+        $this->object->clear();
+        
+        $this->object->publish("hook");
+        
+        $this->assertSame(0, $calls);
+    }
+    
+    public function testClearSingle()
+    {
+        $calls = 0;
+        $this->object->subscribe("hook", function() use (&$calls) {
+            ++$calls;
+        });
+        
+        $malls = 0;
+        $this->object->subscribe("pook", function() use (&$malls) {
+            ++$malls;
+        });
+        
+        $this->object->clear("pook");
+        
+        $this->object->publish("hook");
+        $this->object->publish("pook");
+        
+        $this->assertSame(1, $calls);
+        $this->assertSame(0, $malls);
     }
 }

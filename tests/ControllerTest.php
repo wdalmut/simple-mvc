@@ -46,18 +46,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Controller::init
-     * @todo   Implement testInit().
-     */
-    public function testInit()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers Controller::setApplication
      * @covers Controller::getResource
      */
@@ -80,5 +68,89 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->object->setParams($p);
         
         $this->assertSame($p, $this->object->getParams());
+    }
+    
+    public function testAddHeaders()
+    {
+        $this->object->addHeader("a", "b");
+        $this->object->addHeader("c", "d");
+        
+        $this->assertSame(2, count($this->object->getApplication()->getHeaders()));
+        
+        $headers = $this->object->getApplication()->getHeaders();
+        
+        $first = $headers[0];
+        $second = $headers[1];
+        $this->assertEquals("a:b", $first["string"]);
+        $this->assertEquals("c:d", $second["string"]);
+    }
+    
+    public function testAddHeaderCode()
+    {
+        $this->object->addHeader("a", "b", 500);
+        $headers = $this->object->getApplication()->getHeaders();
+        
+        $this->assertEquals(500, $headers[0]["code"]);
+    }
+    
+    public function testClearHeaders()
+    {
+        $this->object->addHeader("a", "b");
+        $this->object->addHeader("c", "d");
+        
+        $this->object->clearHeaders();
+        
+        $this->assertSame(0, count($this->object->getApplication()->getHeaders()));
+    }
+    
+    public function testSetNoRender()
+    {
+        $v = new View();
+        $v->setViewPath(__DIR__ . '/views');
+        $this->object->setView($v);
+        
+        $this->object->value = "hello";
+
+        $this->assertSame($v, $this->object->getView());
+        $this->object->setNoRender();
+        $this->assertSame(false, $this->object->getView());
+    }
+    
+    public function testBootstrappedResources()
+    {
+        $this->object->getApplication()->bootstrap("test", function(){
+            return "hello";
+        });
+        
+        $this->assertEquals("hello", $this->object->getResource("test"));
+    }
+    
+    public function testMissingBootstrapResource()
+    {
+        $this->assertSame(false, $this->object->getResource("missing"));
+    }
+    
+    public function testRedirectBase()
+    {
+        $this->object->addHeader("content-type", "text/html");
+        $this->object->redirect("/admin/login");
+        $headers = $this->object->getApplication()->getHeaders();
+
+        $this->assertSame(1, count($headers));
+        $redirectHeader = $headers[0];
+        
+        $this->assertSame(301, $redirectHeader["code"]);
+    }
+    
+    public function testRedirectBase302()
+    {
+        $this->object->addHeader("content-type", "text/html");
+        $this->object->redirect("/admin/login", 302);
+        $headers = $this->object->getApplication()->getHeaders();
+    
+        $this->assertSame(1, count($headers));
+        $redirectHeader = $headers[0];
+    
+        $this->assertSame(302, $redirectHeader["code"]);
     }
 }

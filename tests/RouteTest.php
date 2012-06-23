@@ -30,22 +30,11 @@ class RouteTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Route::setDelimiter
-     * @covers Route::getDelimiter
-     */
-    public function testSetGetDelimiter()
-    {
-        $this->object->setDelimiter("-");
-        $this->assertEquals("-", $this->object->getDelimiter());
-    }
-
-    /**
      * @covers Route::explode
      * @todo   Implement testExplode().
      */
     public function testSlashExplode()
     {
-        $this->object->setDelimiter("/");
         $routeObj = $this->object->explode("/");
         
         $route = $routeObj->getRoute();
@@ -60,7 +49,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
     
     public function testOnlyActionExplode()
     {
-        $this->object->setDelimiter("/");
         $routeObj = $this->object->explode("/home");
         
         $route = $routeObj->getRoute();
@@ -75,7 +63,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
     
     public function testControllerActionExplode()
     {
-        $this->object->setDelimiter("/");
         $routeObj = $this->object->explode("/admin/home");
         
         $route = $routeObj->getRoute();
@@ -90,7 +77,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
     
     public function testParamsControllerActionExplode()
     {
-        $this->object->setDelimiter("/");
         $routeObj = $this->object->explode("/walk/on/area/bar/status/inlove");
         
         $route = $routeObj->getRoute();
@@ -112,7 +98,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
     
     public function testUnbalancedParamsExplode()
     {
-        $this->object->setDelimiter("/");
         $routeObj = $this->object->explode("/walk/on/area/bar/status");
         
         $route = $routeObj->getRoute();
@@ -128,30 +113,5 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("area", $keys[0]);
         
         $this->assertEquals("bar", $params["area"]);
-    }
-    
-    public function testUsingDashSeperatorExplode()
-    {
-        $this->markTestSkipped("NEED FIX ON DELIMITER");
-        
-        $this->object->setDelimiter("-");
-        $routeObj = $this->object->explode("/walk-on-area-bar-status-inlove");
-    
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-    
-        $this->assertEquals("walk", $route["controller"]);
-        $this->assertEquals("on", $route["action"]);
-    
-        $this->assertInternalType("array", $params);
-        $this->assertSame(2, count($params));
-    
-        $keys = array_keys($params);
-        $this->assertEquals("area", $keys[0]);
-        $this->assertEquals("status", $keys[1]);
-    
-        $this->assertEquals("bar", $params["area"]);
-        $this->assertEquals("inlove", $params["status"]);
-        
     }
 }
