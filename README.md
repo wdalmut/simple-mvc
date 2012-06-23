@@ -36,15 +36,34 @@ Just for my pleasure.
 
 ## Install with Composer
 
+If you want you can use Composer for install simple-mvc.
+Create the `composer.json`
+
+```json
+{
+    "require": {
+        "wdalmut/simple-mvc": "*"
+    }
+}
 ```
+
+Now you can install the framework
+
+```shell
 $ curl -s http://getcomposer.org/installer | php
 $ php composer.phar install
 ```
 
+You can use the Composer autoloader
+
+```php
+<?php
+require_once 'vendor/autoloader.php';
+
+$app = new Application();
+//...
 ```
-curl -s http://getcomposer.org/installer | php -- --install-dir=path/to/inst
-```
-  
+
 ## Examples and docs
 
  * [Documentation](simple-mvc/tree/master/documentation)
