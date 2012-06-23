@@ -1,0 +1,32 @@
+{
+    "name": "wdalmut/simple-mvc",
+    "description": "A simple and full stack MVC framework.",
+    "version":"0.0.4",
+    "type":"library",
+    "keywords":["mvc","framework","microframework","micro"],
+    "time":"2012-06-23",
+    "license":"MIT",
+    "authors": [
+        {
+            "name":"Walter Dal Mut",
+            "email":"walter.dalmut@gmail.com",
+            "homepage":"http://walterdalmut.com",
+            "role":"Developer"
+        }
+    ],
+    "support": {
+        "email":"walter.dalmut@gmail.com"
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/wdalmut/simple-mvc"
+        }
+    ]
+}

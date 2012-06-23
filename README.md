@@ -33,6 +33,17 @@ Just for my pleasure.
  * Router
   * Only controller/action names
   * Dash URLs support (/a-dash/the-name-of-content)
+
+## Install with Composer
+
+```
+$ curl -s http://getcomposer.org/installer | php
+$ php composer.phar install
+```
+
+```
+curl -s http://getcomposer.org/installer | php -- --install-dir=path/to/inst
+```
   
 ## Examples and docs
 
