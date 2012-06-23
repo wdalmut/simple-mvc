@@ -54,9 +54,7 @@ class IndexController extends Controller
 }
 ```
 
-See "view" doc for enable views supports.
-
-The end.
+See "(view)[simple-mvc/blob/master/documentation/views.md]" doc for enable views supports.
 
 ## Urls with dashes
 
