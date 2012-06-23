@@ -33,8 +33,8 @@ to interact with the layout or other bootstrapped resources.
 $app->getEventManager()->subscribe("pre.dispatch", function($router, $app) {
     // Use a real and better auth system
     if ($_SESSION["auth"] !== true) {
-        $route["controller"] = "admin";
-        $route["action"] = "login";
+        $router->setControllerName("admin");
+        $router->setActionName("login");
         
         $app->getBootstrap("layout")->setScriptName("admin.phtml");
     }
