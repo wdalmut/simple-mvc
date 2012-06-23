@@ -81,3 +81,28 @@ class TheControllerName extends Controller
     }
 }
 ```
+
+## Bootstrap resources
+
+You can bootstrap resources:
+
+```php
+<?php
+$app = new Application();
+$app->bootstrap('my-resource', function() {
+    return new MyObject();
+});
+```
+
+The bootstrap do not executes all hooks (lazy-loading of resources) but execute 
+it ones only if your application needs it.
+
+```php
+<?php
+// Into a controller
+$resource = $this->getResource("my-resource");
+$another = $this->getResource("my-resource");
+
+// IT IS TRUE!
+var_dump($resource === $another);
+```
