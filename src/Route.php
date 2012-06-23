@@ -11,6 +11,18 @@ class Route
         $this->_delimiter = "/";
     }
     
+    public function setControllerName($name)
+    {
+        $this->_route["controller"] = ucfirst($this->_toCamelCase($name));
+        $this->_route["controller-clear"] = $name;
+    }
+    
+    public function setActionName($name)
+    {
+        $this->_route["action"] = $this->_toCamelCase($name);
+        $this->_route["action-clear"] = $name;
+    }
+    
     public function explode($uri)
     {
         if (!is_string($uri)) {
@@ -26,30 +38,21 @@ class Route
         
         switch (count($parts)) {
             case 0:
-                $this->_route["controller"] = "index";
-                $this->_route["action"] = "index";
-                $this->_route["action-clear"] = "index";
-                $this->_route["controller-clear"] = "index";
+                $this->setControllerName("index");
+                $this->setActionName("index");
                 break;
             case 1:
-                $this->_route["controller"] = "index";
-                $this->_route["action"] = $this->_toCamelCase($parts[0]);
-                $this->_route["controller-clear"] = "index";
-                $this->_route["action-clear"] = $parts[0];
+                $this->setControllerName("index");
+                $this->setActionName($parts[0]);
                 array_shift($parts);
                 break;
             default:
-                $this->_route["controller"] = $this->_toCamelCase($parts[0]);
-                $this->_route["action"] = $this->_toCamelCase($parts[1]);
-                $this->_route["controller-clear"] = $parts[0];
-                $this->_route["action-clear"] = $parts[1];
+                $this->setControllerName($parts[0]);
+                $this->setActionName($parts[1]);
                 array_shift($parts);
                 array_shift($parts);
-                
                 break;
         }
-        
-        $this->_route["controller"] = ucfirst($this->_route["controller"]);
         
         if (count($parts) % 2 !== 0) {
             array_pop($parts);

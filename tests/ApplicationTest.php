@@ -114,8 +114,8 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
         $app = '';
         $this->object->getEventManager()->subscribe("pre.dispatch", function($r, $app){
-            $r["controller"] = "admin";
-            $r["action"] = "login";
+            $r->setControllerName("admin");
+            $r->setActionName("login");
         });
         
         ob_start();
