@@ -135,4 +135,29 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("first-><-second", $thenOutput);
     }
+    
+    public function testMissingAction()
+    {
+        $this->setExpectedException("RuntimeException", "Page not found admin/missing-action", 404);
+        
+        $this->object->dispatch("/admin/missing-action");
+    }
+    
+    public function testSafeBaseView()
+    {
+        $v = new View();
+        $v->setViewPath(__DIR__ . '/views');
+        
+        $this->object->bootstrap("view", function() use ($v) {
+            return $v;
+        });
+        
+        $phpunit = $this;
+        $this->object->getEventManager()->subscribe("post.dispatch", function($controller) use ($phpunit, $v) {
+            $view = $controller->view;
+            $phpunit->assertNotSame($v, $view);
+        });
+        
+        $this->object->dispatch("/admin/login");
+    }
 }

@@ -88,14 +88,14 @@ class Application
             array_unshift($this->_views, ob_get_contents());
             ob_end_clean();
         } else {
-            throw new RuntimeException("Page not found {$route["controller"]}/{$route["action"]}", 404);
+            throw new RuntimeException("Page not found {$route["controller-clear"]}/{$route["action-clear"]}", 404);
         }
         
         $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
         
         if ($controller->getView()) {
             array_unshift($this->_views, $controller->getView()->render(
-                $route["controller"] . DIRECTORY_SEPARATOR . $route["action"] . ".phtml"
+                $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml"
             ));
         }
     }

@@ -28,15 +28,21 @@ class Route
             case 0:
                 $this->_route["controller"] = "index";
                 $this->_route["action"] = "index";
+                $this->_route["action-clear"] = "index";
+                $this->_route["controller-clear"] = "index";
                 break;
             case 1:
                 $this->_route["controller"] = "index";
                 $this->_route["action"] = $this->_toCamelCase($parts[0]);
+                $this->_route["controller-clear"] = "index";
+                $this->_route["action-clear"] = $parts[0];
                 array_shift($parts);
                 break;
             default:
                 $this->_route["controller"] = $this->_toCamelCase($parts[0]);
                 $this->_route["action"] = $this->_toCamelCase($parts[1]);
+                $this->_route["controller-clear"] = $parts[0];
+                $this->_route["action-clear"] = $parts[1];
                 array_shift($parts);
                 array_shift($parts);
                 

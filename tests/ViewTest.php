@@ -193,4 +193,12 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $v2->value = "hello";
         $this->assertEquals("<p>hello</p>", $v2->render("view-test.phtml"));
     }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testMissingHelperView()
+    {
+        $this->object->now();
+    }
 }
