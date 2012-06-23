@@ -43,10 +43,10 @@ You need to bootstrap it. The normal layout name is "layout.phtml"
 <?php
 
 $app->bootstrap('layout', function(){
-    $l = new Layout();
-    $l->setViewPath(__DIR__ . '/../layouts');
+    $layout = new Layout();
+    $layout->setViewPath(__DIR__ . '/../layouts');
     
-    return $;
+    return $layout;
 });
 
 ```
@@ -55,7 +55,7 @@ You can change the layout script name using the setter.
 
 ```php
 <?php
-$l->setScriptName("base.phtml");
+$layout->setScriptName("base.phtml");
 ```
 
 ## View Helpers

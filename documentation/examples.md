@@ -58,3 +58,5 @@ class IndexController extends Controller
     }
 }
 ```
+
+See `example` folder for a complete working example.

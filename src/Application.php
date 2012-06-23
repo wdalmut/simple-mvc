@@ -62,7 +62,7 @@ class Application
         
         $route = $routeObj->getRoute();
         
-        $this->getEventManager()->publish("pre.dispatch", array('route' => $route));
+        $this->getEventManager()->publish("pre.dispatch", array('route' => $route, 'application' => $this));
         
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
         $action = $route["action"] . "Action";

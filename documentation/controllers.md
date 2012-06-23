@@ -73,7 +73,7 @@ class IndexController extends Controller
 }
 ```
 
-# Interact with layout and views
+## Interact with layout and views
 
 You can disable the layout system at any time using the `disableLayout()`
 method.
@@ -105,7 +105,25 @@ class IndexController extends Controller
 }
 ```
 
-# Using headers
+## Change the layout on the fly
+
+If you want to change your layout during an action or a plugin interaction
+you can use the resources manager
+
+```php
+<?php
+class IndexController extends Controller
+{
+    public function fullWithAction()
+    {
+        $this->getResource("layout")->setScriptName("full-width.phtml");
+    } 
+}
+```
+
+Obviously you must use the layout manager.
+
+## Using headers
 
 You can send different headers using `addHeader()` method
 
