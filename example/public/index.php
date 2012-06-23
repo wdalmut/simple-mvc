@@ -3,7 +3,6 @@ require_once realpath(__DIR__ . '/../../src/Loader.php');
 Loader::register();
 
 $app = new Application();
-$app->setEventManager(new EventManager());
 
 // By default but more clear
 $app->setControllerPath(__DIR__ . '/../controllers');

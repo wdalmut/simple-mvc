@@ -162,4 +162,11 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->object->dispatch("/admin/login");
     }
+    
+    public function testMissingEventManager()
+    {
+        $app = new Application();
+        $eventManager = $app->getEventManager();
+        $this->assertInstanceOf("EventManager", $eventManager);
+    }
 }
