@@ -1,15 +1,10 @@
 <?php
 class Route
 {
-    private $_delimiter;
+    private $_delimiter = '/';
     
-    private $_route;
-    private $_params;
-    
-    public function __construct()
-    {
-        $this->_delimiter = "/";
-    }
+    private $_route = array();
+    private $_params = array();
     
     public function setControllerName($name)
     {
@@ -25,12 +20,9 @@ class Route
     
     public function explode($uri)
     {
-        if (!is_string($uri)) {
+        if (!is_string($uri) || empty($uri)) {
             throw new RuntimeException("URI must be a string");
         }
-        
-        $this->_route = array();
-        $this->_params = array();
         
         $parts = explode($this->_delimiter, $uri);
         
@@ -54,9 +46,7 @@ class Route
                 break;
         }
         
-        if (count($parts) % 2 !== 0) {
-            array_pop($parts);
-        }
+        (count($parts) % 2 !== 0) ? array_pop($parts) : false; 
         
         if (count($parts)) {
             for ($i=0; $i<count($parts); $i=$i+2) {
