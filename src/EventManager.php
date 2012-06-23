@@ -18,15 +18,17 @@ class EventManager
     
     public function publish($event, array $arguments = array())
     {
-        foreach ($this->_listeners($event) as $listener) {
-            call_user_func_array($listener, $arguments);
+        if ($this->_listeners($event)) {
+            foreach ($this->_listeners($event) as $listener) {
+                call_user_func_array($listener, $arguments);
+            }
         }
     }
     
     protected function _listeners($event)
     {
         if (
-            $this->_listeners[$event] &&
+            $this->_listeners && is_array($this->_listeners) && 
             array_key_exists($event, $this->_listeners)  
             ) {
             return $this->_listeners[$event];

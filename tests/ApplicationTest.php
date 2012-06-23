@@ -19,6 +19,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
         //Suppress sendHeaders        
         $this->object = $this->getMock("Application", array('sendHeaders'));
+        $this->object->setControllerPath(__DIR__ . '/controllers');
         $this->object->expects($this->any())->method("sendHeaders")->will($this->returnValue(null));
     }
 
@@ -81,8 +82,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     
     public function testErrorPages()
     {
-        $this->object->setControllerPath(__DIR__ . '/controllers');
-        
         ob_start();
         $this->object->run("/invalid/controller");
         $errorPage = ob_get_contents();
@@ -93,7 +92,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     
     public function testInitAction()
     {
-        $this->object->setControllerPath(__DIR__ . '/controllers');
         ob_start();
         $this->object->dispatch("init/index");
         $initOutput = ob_get_contents();
@@ -110,5 +108,31 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+    
+    public function testPreDispatchHook()
+    {
+        $app = '';
+        $this->object->getEventManager()->subscribe("pre.dispatch", function($r, $app){
+            $r["controller"] = "admin";
+            $r["action"] = "login";
+        });
+        
+        ob_start();
+        $this->object->run("/init/index");
+        $adminOutput = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("<-- admin login -->", $adminOutput);
+    }
+    
+    public function testThenMethod()
+    {
+        ob_start();
+        $this->object->run("/then/first");
+        $thenOutput = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("first-><-second", $thenOutput);
     }
 }
