@@ -12,6 +12,16 @@ class Route
         $this->_route["controller-clear"] = $name;
     }
     
+    public function getControllerName()
+    {
+        return $this->_route["controller"];
+    }
+    
+    public function getActionName()
+    {
+        return $this->_route["action"];
+    }
+    
     public function setActionName($name)
     {
         $this->_route["action"] = $this->_toCamelCase($name);

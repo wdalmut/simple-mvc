@@ -12,7 +12,7 @@ Just for my pleasure.
 ## Goals
 
  * PHPUnit
- * All classes must be less than 100 lines of code
+ * All classes should be less than 100 lines of code
  * Very simple implementation (only 6 classes + autoloader)
  * PHP 5.3+ implementation
  

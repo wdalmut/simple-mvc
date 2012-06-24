@@ -77,7 +77,6 @@ class Application
         }
         
         $controller = new $controllerClassName($this);
-        $controller->setApplication($this);
         $controller->setParams($routeObj->getParams());
         $controller->setRawBody(@file_get_contents('php://input'));
         
