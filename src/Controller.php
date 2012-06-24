@@ -8,9 +8,10 @@ class Controller
     
     public $view;
     
-    public function __construct(Application $bootstrap)
+    public function __construct($application = null)
     {
-        $this->setApplication($bootstrap);
+        $application = (!$application) ? new Application() : $application;
+        $this->setApplication($application);
     }
     
     public function setView($view)
@@ -25,7 +26,7 @@ class Controller
     
     public function init(){}
     
-    public function setApplication(Application $application)
+    public function setApplication($application)
     {
         $this->_application = $application;
     }

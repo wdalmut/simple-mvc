@@ -4,7 +4,6 @@ class View
     private $_path;
     private $_charset = 'utf-8';
     private $_data = array();
-    public $controllerPath;
     
     private $_helpers = array();
     
@@ -15,9 +14,8 @@ class View
             return htmlspecialchars($text, $flags, $charset ?: $cs, $doubleEncode);
         });
         
-        $view = $this;
-        
-        $this->addHelper("pull", function($uri) use ($view) {
+        $controllerPath = $this->controllerPath;
+        $this->addHelper("pull", function($uri) use ($controllerPath) {
             $router = new Route();
             $routeObj = $router->explode($uri);
             
@@ -25,9 +23,9 @@ class View
             
             $controllerClassName = ucfirst($route["controller"]) . "Controller";
             $action = $route["action"] . "Action";
-            $classPath = $view->controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
+            $classPath = $controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
             
-            $controller = new $controllerClassName(new Application());
+            $controller = new $controllerClassName();
             $controller->setParams($routeObj->getParams());
             
             if (method_exists($controller, $action)) {
