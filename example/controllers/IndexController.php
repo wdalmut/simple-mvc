@@ -3,6 +3,8 @@ class IndexController extends Controller
 {
     public function indexAction()
     {
+        $this->view->title("The index");
+        
         $this->view->hello = "hello";
         
         $this->then("/index/kindle");
@@ -10,6 +12,8 @@ class IndexController extends Controller
     
     public function kindleAction()
     {
+        $this->view->title("The kindle");
+        
         $this->view->cose = "ciao";
     }
     

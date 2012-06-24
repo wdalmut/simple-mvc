@@ -186,4 +186,36 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("<body><-- init --></body>", $content);
     }
+    
+    public function testLayoutViewHelpersPass()
+    {
+        $this->object->bootstrap('layout', function(){
+            $l = new Layout();
+            $l->setScriptName("title-helper.phtml");
+            $l->setViewPath(__DIR__ . '/layouts');
+            
+            $l->addHelper("title", function($part = false){
+                static $parts = array();
+                static $delimiter = ' :: ';
+            
+                return ($part === false) ? implode($delimiter, $parts) : $parts[] = $part;
+            });
+            
+            return $l;
+        });
+        
+        $this->object->bootstrap('view', function(){
+            $v = new View();
+            $v->setViewPath(__DIR__ . '/views');
+            
+            return $v;
+        });
+        
+        ob_start();
+        $this->object->run("/general/title-helper");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("<title>the title helper :: second</title>", $content);
+    }
 }

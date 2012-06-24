@@ -18,6 +18,13 @@ $app->bootstrap("layout", function(){
     $layout = new Layout();
     $layout->setViewPath(__DIR__ . '/../layouts');
     
+    $layout->addHelper("title", function($part = false){
+        static $parts = array();
+        static $delimiter = ' :: ';
+    
+        return ($part === false) ? implode($delimiter, $parts) : $parts[] = $part;
+    });
+    
     return $layout;
 });
 

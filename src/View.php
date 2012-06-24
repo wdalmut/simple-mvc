@@ -22,12 +22,7 @@ class View
     
     public function __get($key)
     {
-        if(isset($this->_data[$key])) {
-            return $this->_data[$key];
-        }
-        else {
-            return false;
-        }
+        return (isset($this->_data[$key])) ? $this->_data[$key] : false; 
     }
     
     public function __call($method, $args) 
@@ -60,7 +55,6 @@ class View
             }
             $this->_data = array_merge($this->_data, $data);
         }
-        
     
         if(!$this->_path) {
             $this->setViewPath(dirname(__FILE__));
@@ -89,5 +83,15 @@ class View
     public function addHelper($name, $helper) 
     {
         $this->_helpers[$name] = $helper;
+    }
+    
+    public function addHelpers(array $helpers)
+    {
+        $this->_helpers = array_merge($this->_helpers, $helpers);
+    }
+    
+    public function getHelpers()
+    {
+        return $this->_helpers;
     }
 }
