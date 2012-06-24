@@ -4,6 +4,7 @@ class View
     private $_path;
     private $_charset = 'utf-8';
     private $_data = array();
+    public $controllerPath;
     
     private $_helpers = array();
     
@@ -12,6 +13,31 @@ class View
         $cs = $this->_charset;
         $this->addHelper("escape", function($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true) use ($cs) {
             return htmlspecialchars($text, $flags, $charset ?: $cs, $doubleEncode);
+        });
+        
+        $view = $this;
+        
+        $this->addHelper("pull", function($uri) use ($view) {
+            $router = new Route();
+            $routeObj = $router->explode($uri);
+            
+            $route = $routeObj->getRoute();
+            
+            $controllerClassName = ucfirst($route["controller"]) . "Controller";
+            $action = $route["action"] . "Action";
+            $classPath = $view->controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
+            
+            $controller = new $controllerClassName(new Application());
+            $controller->setParams($routeObj->getParams());
+            
+            if (method_exists($controller, $action)) {
+                ob_start();
+                $controller->init();
+                return $controller->$action();
+                ob_end_clean();
+            } else {
+                throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
+            }
         });
     }
      

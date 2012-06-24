@@ -201,4 +201,14 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $this->object->now();
     }
+    
+    public function testPull()
+    {
+        $v = new View();
+        $v->controllerPath = __DIR__ . '/../../controllers';
+        $pulled = $v->pull("/general/pull");
+        
+        $this->assertInternalType("array", $pulled);
+        $this->assertEquals("ok", $pulled["title"]);
+    }
 }

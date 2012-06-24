@@ -82,6 +82,7 @@ class Application
         
         if (($view = $this->getBootstrap("view")) instanceof View) {
             $controller->setView($view->cloneThis());
+            $controller->view->controllerPath = $this->_controllerPath;
             (($layout = $this->getBootstrap('layout'))) ? $controller->view->addHelpers($layout->getHelpers()) : false;
         }
         

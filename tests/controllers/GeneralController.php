@@ -5,4 +5,14 @@ class GeneralController extends Controller
     {
         
     }
+    
+    public function pullAction()
+    {
+        return array('title' => 'ok');
+    }
+    
+    public function directAction()
+    {
+        
+    }
 }
