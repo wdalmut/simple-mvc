@@ -109,6 +109,35 @@ public function indexAction()
 }
 ```
 
+### Layout helpers
+
+Layout helpers are automatically shared with each views. In this way
+you can creates global helpers during the bootstrap and interact with
+those helpers at action time.
+
+Pay attention that those helpers are copied. Use `static` scope for
+share variables.
+
+```php
+<?php
+$app->bootstrap("layout", function(){
+    $layout = new Layout();
+    $layout->setViewPath(__DIR__ . '/../layouts');
+    
+    $layout->addHelper("title", function($part = false){
+        static $parts = array();
+        static $delimiter = ' :: ';
+    
+        return ($part === false) ? "<title>".implode($delimiter, $parts)."</title>" : $parts[] = $part;
+    });
+    
+    return $layout;
+});
+```
+
+From a view you can call the `title()` helper and it appends parts of you
+page title.
+
 ## Escapes
 
 Escape is a default view helper. You can escape variables using the 
