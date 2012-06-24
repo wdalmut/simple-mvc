@@ -1,10 +1,10 @@
 {
     "name": "wdalmut/simple-mvc",
     "description": "A simple and full stack MVC framework.",
-    "version":"0.0.6",
+    "version":"0.0.7",
     "type":"library",
     "keywords":["mvc","framework","microframework","micro"],
-    "time":"2012-06-23",
+    "time":"2012-06-24",
     "license":"MIT",
     "authors": [
         {
