@@ -33,7 +33,9 @@ Just for my pleasure.
  * Router
   * Only controller/action names
   * Dash URLs support (/a-dash/the-name-of-content)
-
+ * Pull Driven requests
+  * View request data to a controller-action
+  
 ## Install with Composer
 
 If you want you can use Composer for install simple-mvc.
