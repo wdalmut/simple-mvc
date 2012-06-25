@@ -15,4 +15,13 @@ class GeneralController extends Controller
     {
         
     }
+    
+    public function pullDataAction()
+    {
+        $clazz = new stdClass();
+        
+        $clazz->title = 'Controller Data';
+        
+        return $clazz;
+    }
 }

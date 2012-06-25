@@ -6,6 +6,7 @@ class Application
     private $_eventManager;
     private $_views = array();
     private $_headers = array();
+    private $_requests = array();
     
     public function setControllerPath($path)
     {
@@ -66,12 +67,15 @@ class Application
         
         $route = $routeObj->getRoute();
         
+        $protoView = ($this->getBootstrap("view")) ?  $this->getBootstrap("view") : new View();
+        
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
         $action = $route["action"] . "Action";
         $classPath = $this->_controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
         
         if (!file_exists($classPath)) {
-            throw new RuntimeException("Page not found {$route["controller"]}/{$route["action"]}", 404);
+            // Use base controller
+            $controllerClassName = 'Controller';
         } else {
             require_once $classPath;
         }
@@ -80,27 +84,27 @@ class Application
         $controller->setParams($routeObj->getParams());
         $controller->setRawBody(@file_get_contents('php://input'));
         
-        if (($view = $this->getBootstrap("view")) instanceof View) {
-            $controller->setView($view->cloneThis());
-            $controller->view->controllerPath = $this->_controllerPath;
-            (($layout = $this->getBootstrap('layout'))) ? $controller->view->addHelpers($layout->getHelpers()) : false;
-        }
+        $controller->setView($protoView->cloneThis());
+        $controller->view->controllerPath = $this->_controllerPath;
+        (($layout = $this->getBootstrap('layout'))) ? $controller->view->addHelpers($layout->getHelpers()) : false;
         
         if (method_exists($controller, $action)) {
             ob_start();
             $controller->init();
             $controller->$action();
             $content = ob_get_contents();
-            array_unshift($this->_views, $content);
+            array_push($this->_views, $content);
             ob_end_clean();
         } else {
-            throw new RuntimeException("Page not found {$route["controller-clear"]}/{$route["action-clear"]}", 404);
+            if (!file_exists($controller->view->getViewPath() . DIRECTORY_SEPARATOR . $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml")) {
+                throw new RuntimeException("Page not found {$route["controller-clear"]}/{$route["action-clear"]}", 404);
+            }
         }
         
         $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
         
-        if ($controller->getView()) {
-            array_unshift($this->_views, $controller->getView()->render(
+        if ($controller->view->getViewPath()) {
+            array_push($this->_views, $controller->getView()->render(
                 $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml"
             ));
         }
@@ -112,8 +116,10 @@ class Application
         $this->getEventManager()->publish("loop.startup", array($this));
         
         try {
-            $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri; 
-            $this->dispatch($uri);
+            $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri;
+            do {
+                $this->dispatch($uri);
+            } while(($uri = array_shift($this->_requests)));
         } catch (RuntimeException $e) {
             $this->clearHeaders();
             $this->addHeader("Content-Type", "text/html", 500);
@@ -132,6 +138,11 @@ class Application
         
         $this->sendHeaders();
         echo $outputBuffer;
+    }
+    
+    public function addRequest($uri)
+    {
+        $this->_requests[] = $uri;
     }
     
     public function sendHeaders()

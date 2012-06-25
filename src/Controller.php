@@ -63,7 +63,7 @@ class Controller
     
     public function then($uri)
     {
-        return $this->_application->dispatch($uri);
+        $this->_application->addRequest($uri);
     }
     
     public function clearHeaders()
