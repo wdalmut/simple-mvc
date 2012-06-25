@@ -138,4 +138,21 @@ class IndexController extends Controller
 }
 ```
 
+## Change View Renderer
+
+You can change the view renderer at runtime during an action execution.
+
+```php
+<?php 
+class IndexController extends Controller
+{
+    public function indexAction()
+    {
+        $this->setRenderer("/use/me");
+    } 
+}
+```
+
+The framework will use the `use/me.phtml` 
+
 The end.
