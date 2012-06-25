@@ -30,4 +30,16 @@ class IndexController extends Controller
         
         $this->addHeader("Content-Type", "text/xml");
     }
+    
+    public function userAction()
+    {
+        $this->setNoRender();
+        
+        $params = $this->getParams();
+        
+        $obj = new stdClass();
+        $obj->name = "User id: {$params["id"]}";
+        
+        return $obj;
+    }
 }

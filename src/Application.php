@@ -57,7 +57,8 @@ class Application
     
     public function dispatch($uri) 
     {
-        // run the right controller
+        $controllerPath = $this->_controllerPath;
+        
         $router = new Route();
         $routeObj = $router->explode($uri);
         $routeObj->addParams($_GET);
@@ -68,10 +69,33 @@ class Application
         $route = $routeObj->getRoute();
         
         $protoView = ($this->getBootstrap("view")) ?  $this->getBootstrap("view") : new View();
+        $protoView->addHelper("pull", function($uri) use ($controllerPath) {
+            $router = new Route();
+            $routeObj = $router->explode($uri);
+        
+            $route = $routeObj->getRoute();
+        
+            $controllerClassName = ucfirst($route["controller"]) . "Controller";
+            $action = $route["action"] . "Action";
+            $classPath = realpath($controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php");
+            require_once $classPath;
+            
+            $controller = new $controllerClassName();
+            $controller->setParams($routeObj->getParams());
+        
+            if (method_exists($controller, $action)) {
+                ob_start();
+                $controller->init();
+                return $controller->$action();
+                ob_end_clean();
+            } else {
+                throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
+            }
+        });
         
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
         $action = $route["action"] . "Action";
-        $classPath = $this->_controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
+        $classPath = $controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
         
         if (!file_exists($classPath)) {
             // Use base controller

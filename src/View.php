@@ -13,30 +13,6 @@ class View
         $this->addHelper("escape", function($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true) use ($cs) {
             return htmlspecialchars($text, $flags, $charset ?: $cs, $doubleEncode);
         });
-        
-        $controllerPath = $this->controllerPath;
-        $this->addHelper("pull", function($uri) use ($controllerPath) {
-            $router = new Route();
-            $routeObj = $router->explode($uri);
-            
-            $route = $routeObj->getRoute();
-            
-            $controllerClassName = ucfirst($route["controller"]) . "Controller";
-            $action = $route["action"] . "Action";
-            $classPath = $controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
-            
-            $controller = new $controllerClassName();
-            $controller->setParams($routeObj->getParams());
-            
-            if (method_exists($controller, $action)) {
-                ob_start();
-                $controller->init();
-                return $controller->$action();
-                ob_end_clean();
-            } else {
-                throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
-            }
-        });
     }
      
     public function __set($key, $value)
