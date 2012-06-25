@@ -46,7 +46,7 @@ The *pull* strategy is quite similar but use the return statement of a controlle
 all the information. Consider in advance that `simple-mvc` doesn't require a valid controller
 for retrive a view, that view is mapped directly. See an example
 
-```
+```php
 <!-- this view is test/miss.phtml (/test/miss GET) -->
 <div>
     <h1>Missing controller and action</h1>
