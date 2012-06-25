@@ -148,4 +148,36 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("ciao", $p["hello"]);
         $this->assertEquals("zi", $p["bella"]);
     }
+    
+    public function testClearGetParams()
+    {
+        $uri = '/?hello=world';
+        $this->object->explode($uri);
+        $this->assertEquals("Index", $this->object->getControllerName());
+        $this->assertEquals("index", $this->object->getActionName());
+    }
+    
+    public function testClearLongGetParams()
+    {
+        $uri = '/?hello=world&titti=totti';
+        $this->object->explode($uri);
+        $this->assertEquals("Index", $this->object->getControllerName());
+        $this->assertEquals("index", $this->object->getActionName());
+    }
+    
+    public function testClearGet2Params()
+    {
+        $uri = '/account?hello=world';
+        $this->object->explode($uri);
+        $this->assertEquals("Index", $this->object->getControllerName());
+        $this->assertEquals("account", $this->object->getActionName());
+    }
+    
+    public function testClearGet3Params()
+    {
+        $uri = '/admin/account-super?hello=world';
+        $this->object->explode($uri);
+        $this->assertEquals("Admin", $this->object->getControllerName());
+        $this->assertEquals("accountSuper", $this->object->getActionName());
+    }
 }

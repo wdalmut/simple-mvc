@@ -34,6 +34,7 @@ class Route
             throw new RuntimeException("URI must be a string");
         }
         
+        $uri = (strpos($uri, "?") !== false) ? substr($uri, 0, strpos($uri, "?")) : $uri;
         $parts = explode($this->_delimiter, $uri);
         
         $parts = $this->_filter($parts);
