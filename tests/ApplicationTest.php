@@ -270,4 +270,21 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     
         $this->assertEquals("<h2>Controller Data</h2>", $content);
     }
+    
+    public function testViewSwitch()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->setViewPath(__DIR__ . '/views');
+        
+            return $v;
+        });
+        
+        ob_start();
+        $this->object->run("/general/a");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("This is B", $content);
+    }
 }

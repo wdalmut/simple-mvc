@@ -24,4 +24,10 @@ class GeneralController extends Controller
         
         return $clazz;
     }
+    
+    public function aAction()
+    {
+        $this->view->b = "B";
+        $this->setRenderer("/general/b");
+    }
 }

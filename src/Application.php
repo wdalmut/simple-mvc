@@ -96,6 +96,7 @@ class Application
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
         $action = $route["action"] . "Action";
         $classPath = $controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
+        $viewPath = $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml";
         
         if (!file_exists($classPath)) {
             // Use base controller
@@ -120,7 +121,7 @@ class Application
             array_push($this->_views, $content);
             ob_end_clean();
         } else {
-            if (!file_exists($controller->view->getViewPath() . DIRECTORY_SEPARATOR . $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml")) {
+            if (!file_exists($controller->view->getViewPath() . DIRECTORY_SEPARATOR . $viewPath)) {
                 throw new RuntimeException("Page not found {$route["controller-clear"]}/{$route["action-clear"]}", 404);
             }
         }
@@ -128,9 +129,11 @@ class Application
         $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
         
         if ($controller->view->getViewPath()) {
-            array_push($this->_views, $controller->getView()->render(
-                $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml"
-            ));
+            array_push(
+                $this->_views, 
+                $controller->getView()->render(
+                    (($controller->getViewPath() !== false) ? $controller->getViewPath() : $viewPath))
+            );
         }
     }
     

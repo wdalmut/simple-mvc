@@ -153,4 +153,18 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     
         $this->assertSame(302, $redirectHeader["code"]);
     }
+    
+    public function testGetViewPath()
+    {
+        $ctr = new Controller();
+        $ctr->setRenderer("a/b");
+        $this->assertEquals("a/b.phtml", $ctr->getViewPath());
+    }
+    
+    public function testEmptyGetViewPath()
+    {
+        $ctr = new Controller();
+        $ctr->init();
+        $this->assertFalse($ctr->getViewPath());
+    }
 }

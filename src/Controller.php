@@ -5,6 +5,7 @@ class Controller
     
     private $_params;
     private $_rawBody;
+    private $_viewScript;
     
     public $view;
     
@@ -84,6 +85,16 @@ class Controller
         
         $this->_application->clearHeaders();
         $this->_application->addHeader("Location", $url, $header);
+    }
+    
+    public function setRenderer($renderer)
+    {
+        $this->_viewScript = $renderer;
+    }
+    
+    public function getViewPath()
+    {
+        return ($this->_viewScript) ? $this->_viewScript . ".phtml" : false; 
     }
     
     public function disableLayout()
