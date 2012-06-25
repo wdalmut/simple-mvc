@@ -1,6 +1,6 @@
 # A simple MVC [VC] framework [![Build Status](https://secure.travis-ci.org/wdalmut/simple-mvc.png)](http://travis-ci.org/wdalmut/simple-mvc?branch=master)
 
-A simple MVC framework heavly inspired to different PHP microframeworks and
+A simple push & pull MVC framework heavly inspired to different PHP microframeworks and
 PHP MVC framework like ZF1.
 
 ## Why?
