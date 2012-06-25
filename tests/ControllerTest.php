@@ -113,7 +113,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($v, $this->object->getView());
         $this->object->setNoRender();
-        $this->assertSame(false, $this->object->getView());
+        $this->assertNotSame($v, $this->object->getView());
     }
     
     public function testBootstrappedResources()

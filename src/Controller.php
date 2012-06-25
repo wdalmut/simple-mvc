@@ -93,6 +93,6 @@ class Controller
     
     public function setNoRender()
     {
-        $this->view = false;
+        $this->view = new View();
     }
 }
