@@ -1,7 +1,7 @@
 {
     "name": "wdalmut/simple-mvc",
-    "description": "A simple and full stack MVC framework.",
-    "version":"0.0.8",
+    "description": "A simple and full stack Push & Pull MVC framework.",
+    "version":"0.0.9",
     "type":"library",
     "keywords":["mvc","framework","microframework","micro"],
     "time":"2012-06-25",
