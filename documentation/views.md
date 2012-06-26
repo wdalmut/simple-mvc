@@ -148,4 +148,25 @@ Escape is a default view helper. You can escape variables using the
 $this->escape("Ciao -->"); // Ciao --&gt;
 ```
 
+## Partials view
+
+Partials view are useful for render section of your view separately. In
+`simple-mvc` partials are view helpers.
+
+```php
+<!-- ctr/act.phtml -->
+<div>
+     <div>
+          <?php echo $this->partial("/path/to/view.phtml", array('title' => $this->title));?>
+     </div>
+</div>
+```
+
+The partial view `/path/to/view.phtml` are located at `view` path.
+
+```php
+<!-- /path/to/view.phtml -->
+<p><?php echo $this->title; ?></p>
+```
+
 The end.
