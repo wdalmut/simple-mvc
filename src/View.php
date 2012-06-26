@@ -9,9 +9,16 @@ class View
     
     public function __construct()
     {
+        $view = $this;
         $cs = $this->_charset;
+        
         $this->addHelper("escape", function($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true) use ($cs) {
             return htmlspecialchars($text, $flags, $charset ?: $cs, $doubleEncode);
+        });
+        
+        $this->addHelper("partial", function($path, $data) use ($view) {
+            $view = $view->cloneThis();
+            return $view->render($path, $data);
         });
     }
      

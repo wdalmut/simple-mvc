@@ -201,4 +201,13 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $this->object->now();
     }
+    
+    public function testPartialViewHelper()
+    {
+        $v = new View();
+        $v->setViewPath(__DIR__ . '/views');
+        
+        $html = $v->render("base.phtml");
+        $this->assertEquals("<div><p>mondo</p></div>", $html);
+    }
 }
