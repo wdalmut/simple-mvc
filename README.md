@@ -27,6 +27,7 @@ Just for my pleasure.
   * Loop Shutdown
  * View Renderer Switch
  * View Helpers
+ * Partial views
  * Two step view (Layout support)
  * Controllers stack
  * Headers handler
