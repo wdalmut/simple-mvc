@@ -9,7 +9,7 @@ you have to add `view` at bootstrap.
 $app = new Application();
 $app->bootstrap('view', function(){
     $view = new View();
-    $view->setViewPath(__DIR__ . '/../views');
+    $view->addViewPath(__DIR__ . '/../views');
     
     return $view;
 });
@@ -44,7 +44,7 @@ You need to bootstrap it. The normal layout name is "layout.phtml"
 
 $app->bootstrap('layout', function(){
     $layout = new Layout();
-    $layout->setViewPath(__DIR__ . '/../layouts');
+    $layout->addViewPath(__DIR__ . '/../layouts');
     
     return $layout;
 });
@@ -67,7 +67,7 @@ add an helper closure.
 <?php
 $app->bootstrap('view', function(){
     $view = new View();
-    $view->setViewPath(__DIR__ . '/../views');
+    $view->addViewPath(__DIR__ . '/../views');
     
     $view->addHelper("now", function(){
         return date("d-m-Y");
@@ -122,7 +122,7 @@ share variables.
 <?php
 $app->bootstrap("layout", function(){
     $layout = new Layout();
-    $layout->setViewPath(__DIR__ . '/../layouts');
+    $layout->addViewPath(__DIR__ . '/../layouts');
     
     $layout->addHelper("title", function($part = false){
         static $parts = array();
@@ -168,5 +168,29 @@ The partial view `/path/to/view.phtml` are located at `view` path.
 <!-- /path/to/view.phtml -->
 <p><?php echo $this->title; ?></p>
 ```
+
+## Mount view points
+
+`simple-mvc` support multiple views scripts paths. In other words you can specify
+a single mount point `/path/to/views` after that you can add anther views script path,
+this mean that the `simple-mvc` search for a view previously into the second views path
+and if it is missing looks for that into the first paths. View paths are threated as 
+a stack, the latest pushed is the first used.
+
+During your bootstrap add more view paths
+
+```
+$app->bootstrap('view', function(){
+    $view = new View();
+    $view->addViewPath(__DIR__ . '/../views');
+    $view->addViewPath(__DIR__ . '/../views-rewrited');
+    
+    return $view;
+});
+```
+
+If you have a view named `name.phtml` into `views` folder and now you create the view
+named `name.phtml` into `views-rewrited` this one is used instead the original file in 
+`views` folder.
 
 The end.
