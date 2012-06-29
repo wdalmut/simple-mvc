@@ -36,6 +36,8 @@ Just for my pleasure.
   * Dash URLs support (/a-dash/the-name-of-content)
  * Pull Driven requests
   * View request data to a controller-action
+ * Rewritable views
+  * Different views mount points for rewrite views
   
 ## Install with Composer
 
