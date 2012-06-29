@@ -1,8 +1,8 @@
 <?php 
 class View
 {
-    private $_path;
     private $_charset = 'utf-8';
+    private $_path = array();
     private $_data = array();
     
     private $_helpers = array();
@@ -41,17 +41,36 @@ class View
         }
     }
     
+    public function addViewPath($path)
+    {
+        if (!is_dir($path)) {
+            throw new RuntimeException("View path {$path} must be a directory");
+        }
+        $this->_path[] = $path;
+    }
+    
+    public function getViewPaths()
+    {
+        return $this->_path;
+    }
+    
+    /**
+     * @deprecated This method is deprecated use <code>addViewPath()</code>
+     */
     public function setViewPath($path)
     {
         if (!is_dir($path)) {
             throw new RuntimeException("View path {$path} must be a directory");
         }
-        $this->_path = $path;
+        $this->_path = array($path);
     }
     
+    /**
+     * @deprecated This method is deprecated in favor of <code>getViewPaths()</code>
+     */
     public function getViewPath()
     {
-        return $this->_path;
+        return (count($this->_path) > 0) ? $this->_path[0] : false;
     }
     
     public function render($filename, $data = false)
@@ -63,14 +82,11 @@ class View
             $this->_data = array_merge($this->_data, $data);
         }
     
-        if(!$this->_path) {
-            $this->setViewPath(dirname(__FILE__));
+        if(!count($this->getViewPaths())) {
+            $this->addViewPath(dirname(__FILE__));
         }
-    
-        $filename = $this->_path . "/" . $filename ;
-        if (!file_exists($filename)) {
-            throw new RuntimeException("Unable to get view at path: {$filename}");
-        }
+
+        $filename = $this->_selectView($this->getViewPaths(), $filename);
     
         $rendered = "";
     
@@ -80,6 +96,19 @@ class View
         ob_end_clean();
     
         return $rendered;
+    }
+    
+    protected function _selectView($paths, $filename)
+    {
+        do {
+            $path = array_pop($paths);
+            $filename = $path . "/" . $filename ;
+            if (file_exists($filename)) {
+                return $filename;
+            }
+        } while($paths);
+        
+        throw new RuntimeException("Unable to get view at path: {$filename}");
     }
     
     public function cloneThis()

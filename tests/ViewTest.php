@@ -210,4 +210,14 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $html = $v->render("base.phtml");
         $this->assertEquals("<div><p>mondo</p></div>", $html);
     }
+    
+    public function testRewritePoint()
+    {
+        $v = new View();
+        $v->addViewPath(__DIR__ . '/views');
+        $v->addViewPath(__DIR__ . '/view-rewrite');
+        
+        $html = $v->render("base.phtml");
+        $this->assertEquals("<div>REWRITED!</div>", $html);
+    }
 }
