@@ -169,7 +169,7 @@ The partial view `/path/to/view.phtml` are located at `view` path.
 <p><?php echo $this->title; ?></p>
 ```
 
-## Mount view points
+## Multiple view scripts paths
 
 `simple-mvc` support multiple views scripts paths. In other words you can specify
 a single mount point `/path/to/views` after that you can add anther views script path,
