@@ -1,4 +1,5 @@
 .project
 .buildpath
 .settings
+.DS_Store
 res
