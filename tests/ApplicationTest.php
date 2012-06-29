@@ -323,4 +323,22 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("This is D but rewrited", $content);
     }
+    
+    public function testPartialViewRewrite()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->addViewPath(__DIR__ . '/views');
+            $v->addViewPath(__DIR__ . '/views-rewrite');
+        
+            return $v;
+        });
+        
+        ob_start();
+        $this->object->run("/general/partial-eg");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals('<h1>ciao</h1>', $content);
+    }
 }
