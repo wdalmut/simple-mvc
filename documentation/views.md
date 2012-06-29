@@ -183,14 +183,14 @@ During your bootstrap add more view paths
 $app->bootstrap('view', function(){
     $view = new View();
     $view->addViewPath(__DIR__ . '/../views');
-    $view->addViewPath(__DIR__ . '/../views-rewrited');
+    $view->addViewPath(__DIR__ . '/../views-rewrite');
     
     return $view;
 });
 ```
 
 If you have a view named `name.phtml` into `views` folder and now you create the view
-named `name.phtml` into `views-rewrited` this one is used instead the original file in 
+named `name.phtml` into `views-rewrite` this one is used instead the original file in 
 `views` folder.
 
 The end.
