@@ -30,4 +30,9 @@ class GeneralController extends Controller
         $this->view->b = "B";
         $this->setRenderer("/general/b");
     }
+    
+    public function cAction()
+    {
+        $this->view->c = "C";
+    }
 }

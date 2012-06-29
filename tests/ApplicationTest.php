@@ -287,4 +287,40 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals("This is B", $content);
     }
+    
+    public function testViewRewrited()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->addViewPath(__DIR__ . '/views');
+            $v->addViewPath(__DIR__ . '/views-rewrite');
+    
+            return $v;
+        });
+    
+        ob_start();
+        $this->object->run("/general/c");
+        $content = ob_get_contents();
+        ob_end_clean();
+    
+        $this->assertEquals("This is C but rewrited", $content);
+    }
+    
+    public function testViewPullRewrited()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->addViewPath(__DIR__ . '/views');
+            $v->addViewPath(__DIR__ . '/views-rewrite');
+        
+            return $v;
+        });
+        
+        ob_start();
+        $this->object->run("/general/d");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("This is D but rewrited", $content);
+    }
 }

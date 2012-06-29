@@ -215,7 +215,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $v = new View();
         $v->addViewPath(__DIR__ . '/views');
-        $v->addViewPath(__DIR__ . '/view-rewrite');
+        $v->addViewPath(__DIR__ . '/views-rewrite');
         
         $html = $v->render("base.phtml");
         $this->assertEquals("<div>REWRITED!</div>", $html);
