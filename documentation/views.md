@@ -199,4 +199,11 @@ named `name.phtml` into `views-rewrite` this one is used instead the original fi
 view into a rewrite view folder, this view script is choosen instead
 the original partial script.
 
+```php
+<?php echo $this->partial("my-helper.phtml", array('ciao' => 'hello'))?>
+```
+
+If `my-helper.phtml` is found in a rewrite point this view is used instead
+the original view script.
+
 The end.
