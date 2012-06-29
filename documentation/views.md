@@ -193,4 +193,10 @@ If you have a view named `name.phtml` into `views` folder and now you create th
 named `name.phtml` into `views-rewrite` this one is used instead the original file in 
 `views` folder.
 
+### Partials and multiple view scripts paths
+
+***Partial views follow the rewrite path strategy***. If you add the partial
+view into a rewrite view folder, this view script is choosen instead
+the original partial script.
+
 The end.
