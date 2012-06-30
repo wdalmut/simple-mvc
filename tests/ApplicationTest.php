@@ -382,4 +382,31 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals('<h1>ciao</h1>', $content);
     }
+    
+    public function testSetGetHeaders()
+    {
+        $this->object->addHeader("content-type", "text/html");
+        
+        $headers = $this->object->getHeaders();
+        $this->assertCount(1, $headers);
+        
+        $this->object->addHeader("content-disposition", "inline;");
+        $headers = $this->object->getHeaders();
+        $this->assertCount(2, $headers);
+
+        $this->assertStringStartsWith("content-type", $headers[0]["string"]);
+        $this->assertStringEndsWith("text/html", $headers[0]["string"]);
+
+        $this->assertStringStartsWith("content-disposition", $headers[1]["string"]);
+        $this->assertStringEndsWith("inline;", $headers[1]["string"]);
+    }
+    
+    public function testHeaderCodes()
+    {
+        $this->object->addHeader("content-type", "text/html", "202");
+        
+        $headers = $this->object->getHeaders();
+        $this->assertCount(1, $headers);
+        $this->assertSame(202, $headers[0]["code"]);
+    }
 }

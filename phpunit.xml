@@ -17,7 +17,7 @@
         strict="false"
         verbose="false">
     <testsuites>
-        <testsuite name="UpCloo SDK Suite">
+        <testsuite name="simple-mvc SDK Suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
@@ -28,7 +28,7 @@
     </logging>
     <filter>
         <blacklist>
-            <directory suffix="*">tests</directory>
+            <directory>./tests</directory>
         </blacklist>
     </filter>
 </phpunit>

@@ -191,7 +191,7 @@ class Application
     
     public function addHeader($key, $value, $httpCode = 200, $replace  = true)
     {
-        $this->_headers[] = array('string' => "{$key}:{$value}", "replace" => $replace, "code" => $httpCode);
+        $this->_headers[] = array('string' => "{$key}:{$value}", "replace" => $replace, "code" => (int)$httpCode);
     }
     
     public function getHeaders()
