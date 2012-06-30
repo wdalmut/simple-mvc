@@ -78,16 +78,20 @@ class Application
             $controllerClassName = ucfirst($route["controller"]) . "Controller";
             $action = $route["action"] . "Action";
             $classPath = realpath($controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php");
-            require_once $classPath;
+            if (file_exists($classPath)) {
+                require_once $classPath;
+                
+                $controller = new $controllerClassName();
+                $controller->setParams($routeObj->getParams());
             
-            $controller = new $controllerClassName();
-            $controller->setParams($routeObj->getParams());
-        
-            if (method_exists($controller, $action)) {
-                ob_start();
-                $controller->init();
-                return $controller->$action();
-                ob_end_clean();
+                if (method_exists($controller, $action)) {
+                    ob_start();
+                    $controller->init();
+                    return $controller->$action();
+                    ob_end_clean();
+                } else {
+                    throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
+                }
             } else {
                 throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
             }

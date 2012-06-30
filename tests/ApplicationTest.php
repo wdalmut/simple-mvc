@@ -59,6 +59,13 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertSame($boot, $boot2);
     }
     
+    public function testSetGetControllerPath()
+    {
+        $this->object->setControllerPath(__DIR__);
+        
+        $this->assertEquals(__DIR__, $this->object->getControllerPath());
+    }
+    
     public function testSetGetEventManager()
     {
         $mng = new EventManager();
@@ -269,6 +276,40 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         ob_end_clean();
     
         $this->assertEquals("<h2>Controller Data</h2>", $content);
+    }
+    
+    public function testMissingControllerPull()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->setViewPath(__DIR__ . '/views');
+        
+            return $v;
+        });
+        
+        ob_start();
+        $this->object->run("/pull/missing-pull");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals("--> error action <--", $content);
+    }
+    
+    public function testMissingActionPull()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->setViewPath(__DIR__ . '/views');
+    
+            return $v;
+        });
+    
+        ob_start();
+        $this->object->run("/pull/missing-pull-action");
+        $content = ob_get_contents();
+        ob_end_clean();
+    
+        $this->assertEquals("--> error action <--", $content);
     }
     
     public function testViewSwitch()

@@ -220,4 +220,12 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $html = $v->render("base.phtml");
         $this->assertEquals("<div>REWRITED!</div>", $html);
     }
+    
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testWrongViewPath()
+    {
+        $this->object->addViewPath(__DIR__ . '/missing-point');
+    }
 }

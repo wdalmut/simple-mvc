@@ -167,4 +167,12 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $ctr->init();
         $this->assertFalse($ctr->getViewPath());
     }
+    
+    public function testSetGetRawBody()
+    {
+        $this->object->setRawBody("<data>Hello</data>");
+        $body = $this->object->getRawBody();
+        
+        $this->assertEquals("<data>Hello</data>", $body);
+    }
 }
