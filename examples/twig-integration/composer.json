@@ -1,0 +1,8 @@
+{
+    "require": {
+        "twig/twig": "1.*",
+        "wdalmut/simple-mvc": "*"
+    }
+}
+
+

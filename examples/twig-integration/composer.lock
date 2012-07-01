@@ -1,0 +1,31 @@
+{
+    "hash": "fbc7277626d60808f3f5559132b956dc",
+    "packages": [
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "73da773aaad0f97f2e967ec8241b8adf7b1e03d2",
+            "commit-date": "1340890758"
+        },
+        {
+            "package": "wdalmut/simple-mvc",
+            "version": "dev-master",
+            "source-reference": "61e27927a3afc19ca4e9cf1627358656ba88cf26",
+            "commit-date": "1341047155"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ]
+}
