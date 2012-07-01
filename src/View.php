@@ -6,6 +6,7 @@ class View
     private $_data = array();
     
     private $_helpers = array();
+    private $_ext = ".phtml";
     
     public function __construct()
     {
@@ -129,5 +130,20 @@ class View
     public function getHelpers()
     {
         return $this->_helpers;
+    }
+    
+    protected function _getData()
+    {
+        return $this->_data;
+    }
+    
+    public function setViewExt($ext)
+    {
+        $this->_ext = $ext;
+    }
+    
+    public function getViewExt()
+    {
+        return $this->_ext;
     }
 }

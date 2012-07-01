@@ -100,7 +100,7 @@ class Application
         $controllerClassName = ucfirst($route["controller"]) . "Controller";
         $action = $route["action"] . "Action";
         $classPath = $controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
-        $viewPath = $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . ".phtml";
+        $viewPath = $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . $protoView->getViewExt();
         
         if (!file_exists($classPath)) {
             // Use base controller
