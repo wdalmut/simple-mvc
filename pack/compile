@@ -19,7 +19,7 @@ $phar->startBuffering();
 $phar->setStub(getStub());
 foreach ($iterator as $file) {
     $phar->addFile($file->getRealpath(), $file->getBasename());
-    print $file->getRealpath(). " -> " . $file->getBasename() . "\n";
+    echo "\033[34m{$file->getRealpath()}\033[37m -> \033[32m{$file->getBasename()}\033[37m\n";
 }
 
 $phar->stopBuffering();
