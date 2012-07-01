@@ -16,8 +16,8 @@
         {
             "package": "wdalmut/simple-mvc",
             "version": "dev-master",
-            "source-reference": "61e27927a3afc19ca4e9cf1627358656ba88cf26",
-            "commit-date": "1341047155"
+            "source-reference": "f6ca65648aef9551cc1617e9372775463d5d9c26",
+            "commit-date": "1341126817"
         }
     ],
     "packages-dev": null,
