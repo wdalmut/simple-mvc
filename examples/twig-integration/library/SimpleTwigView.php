@@ -2,7 +2,6 @@
 class SimpleTwigView extends View
 {
     private $_twig;
-    public $ext = "twig";
     
     public function initTwig()
     {
