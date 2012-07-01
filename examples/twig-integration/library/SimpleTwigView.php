@@ -12,12 +12,7 @@ class SimpleTwigView extends View
     public function render($filename, $data = false)
     {
         $template = $this->_twig->loadTemplate($filename);
-        
-        if (is_array($data)) {
-            $data = array_merge($this->_getData(), $data);
-        } else {
-            $data = $this->_getData();
-        }
+        $data = (is_array($data)) ? array_merge($this->_getData(), $data) : $this->_getData();  
         
         return $template->render($data);
     }
