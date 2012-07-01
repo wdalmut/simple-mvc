@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'vendor/autoload.php';
+
+use Symfony\Component\Finder\Finder;
+
+$finder = new Finder();
+
+$iterator = $finder
+  ->files()
+  ->name('*.php')
+  ->in(__DIR__ . "/../src");
+  
+$phar = new \Phar("simple-mvc.phar");
+$phar->setSignatureAlgorithm(\Phar::SHA1);
+
+$phar->startBuffering();
+$phar->setStub(getStub());
+foreach ($iterator as $file) {
+    $phar->addFile($file->getRealpath(), $file->getBasename());
+    print $file->getRealpath(). " -> " . $file->getBasename() . "\n";
+}
+
+$phar->stopBuffering();
+$phar->compressFiles(\Phar::GZ);
+unset($phar);
+
+function getStub()
+{
+    return <<<EOF
+<?php
+/*
+ * This file is part of the simple-mvc
+ *
+ * (c) Walter Dal Mut <walter.dalmut@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+    
+Phar::mapPhar('simple-mvc.phar');
+ 
+require_once 'phar://simple-mvc.phar/Loader.php';
+Loader::classmap();
+__HALT_COMPILER();
+EOF;
+}
