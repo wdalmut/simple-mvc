@@ -228,4 +228,14 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $this->object->addViewPath(__DIR__ . '/missing-point');
     }
+    
+    public function testMissingRewrite()
+    {
+        $v = new View();
+        $v->addViewPath(__DIR__ . '/views');
+        $v->addViewPath(__DIR__ . '/views-rewrite');
+        
+        $html = $v->render("only-base.phtml");
+        $this->assertEquals("<h6>Only base</h6>", $html);
+    }
 }

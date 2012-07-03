@@ -83,10 +83,6 @@ class View
             $this->_data = array_merge($this->_data, $data);
         }
     
-        if(!count($this->getViewPaths())) {
-            $this->addViewPath(dirname(__FILE__));
-        }
-
         $filename = $this->_selectView($this->getViewPaths(), $filename);
     
         $rendered = "";
@@ -101,15 +97,17 @@ class View
     
     protected function _selectView($paths, $filename)
     {
-        do {
-            $path = array_pop($paths);
-            $filename = $path . "/" . $filename ;
-            if (file_exists($filename)) {
-                return $filename;
-            }
-        } while($paths);
+        $p = implode(PATH_SEPARATOR, $paths);
         
-        throw new RuntimeException("Unable to get view at path: {$filename}");
+        for ($i=count($paths)-1; $i>=0; $i--) {
+            $f = $paths[$i] . "/" . $filename ;
+            
+            if (file_exists($f)) {
+                return $f;
+            }
+        }
+        
+        throw new RuntimeException("Unable to get view {$filename} in paths: {$p}");
     }
     
     public function cloneThis()
