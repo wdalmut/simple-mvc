@@ -87,8 +87,9 @@ class Application
                 if (method_exists($controller, $action)) {
                     ob_start();
                     $controller->init();
-                    return $controller->$action();
+                    $data = $controller->$action();
                     ob_end_clean();
+                    return $data;
                 } else {
                     throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
                 }

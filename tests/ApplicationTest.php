@@ -409,4 +409,21 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $headers);
         $this->assertSame(202, $headers[0]["code"]);
     }
+    
+    public function testBufferOutPullRequest()
+    {
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->addViewPath(__DIR__ . '/views');
+        
+            return $v;
+        });
+        
+        ob_start();
+        $this->object->run("/pull/buffer-out");
+        $content = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals('<p><em>ret from out</em></p>', $content);
+    }
 }

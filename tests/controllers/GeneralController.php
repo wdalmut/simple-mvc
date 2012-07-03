@@ -35,4 +35,10 @@ class GeneralController extends Controller
     {
         $this->view->c = "C";
     }
+    
+    public function outAction()
+    {
+        echo "opssssss!";
+        return "ret from out";
+    }
 }
