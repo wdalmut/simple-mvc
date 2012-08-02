@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>simple-mvc by wdalmut</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>simple-mvc</h1>
+        <h2>Simple MVC [VC] framework to realize a test-driven experience. </h2>
+        <a href="https://github.com/wdalmut/simple-mvc" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>Welcome to simple-mvc.</h3>
+
+<p><code>simple-mvc</code> is a simple and full stack push &amp; pull MVC framework for PHP 5.3+. The project is heavly inspired to different PHP microframeworks and ZF1 framework.
+The main goal of this framework is create a test-driven experience. The second aspect is to introducing people to PHP MVC frameworks. Getting started with this framework is very simple. First of all get the code using <code>github</code> or if you prefer use <code>composer</code>. The recommended way is through composer. Create a file named <code>composer.json</code> and add these lines</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">"require"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"wdalmut/simple-mvc"</span><span class="p">:</span> <span class="s2">"*"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Now you can install the framework.</p>
+
+<div class="highlight"><pre>curl -s http://getcomposer.org/installer | php
+php composer.phar install
+</pre></div>
+
+<p>Composer creates a vendor folder with simple-mvc framework.</p>
+
+<h3>Create the project using Composer</h3>
+
+<p>You can skip the base project creation (explained below [Getting started]) and create the base project with Composer.</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>curl -s http://getcomposer.org/installer | php
+<span class="nv">$ </span>php composer.phar create-project wdalmut/simple-mvc-app my-project-name
+</pre></div>
+
+<p>Composer download and install into <code>my-project-name</code>  folder <code>simple-mvc</code> and creates the base requirements:</p>
+
+<ul>
+<li>public folders (web)</li>
+<li>private folders (app)</li>
+</ul><p>In addition, it creates also a controller with associated view: the index page. You have only to add a virtual host that's point into <code>web</code> folder (See <code>Create your Virtual Host section</code>).</p>
+
+<p>You can skip the Getting Started section.</p>
+
+<h3>Getting started (FULL STACK)</h3>
+
+<p>You have to create four folders. These folders separate all parts of your project.</p>
+
+<ul>
+<li>controllers</li>
+<li>views</li>
+<li>layouts</li>
+<li>public</li>
+</ul><p>The <code>controllers</code> folder contains your controllers, <code>views</code> your views (HTML files), <code>layout</code> the container of your views and the <code>public</code> that contains only the entry point of <code>simple-mvc</code> application, the <code>.htaccess</code> to force Apache webserver on this entry point and all of your static entries.</p>
+
+<h3>Create the entry point (<code>index.php</code>)</h3>
+
+<p>Into your <code>public</code> folder create a file named <code>index.php</code>. This file is the only requested by your webserver. The minimum configuration is the follow</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../vendor/autoload.php'</span><span class="p">;</span>
+
+<span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Application</span><span class="p">();</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">setControllerPath</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../controllers'</span><span class="p">);</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s2">"view"</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="nv">$view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">View</span><span class="p">();</span>
+    <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">setViewPath</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../views'</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$view</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s2">"layout"</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="nv">$layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Layout</span><span class="p">();</span>
+    <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">setViewPath</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../layouts'</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$layout</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</pre></div>
+
+<p>Always into your <code>public</code> folder create another file named <code>.htaccess</code> and add this content:</p>
+
+<pre><code>RewriteEngine  On
+RewriteCond  %{REQUEST_FILENAME}  -s  [OR]
+RewriteCond  %{REQUEST_FILENAME}  -l  [OR]
+RewriteCond  %{REQUEST_FILENAME}  -d
+RewriteRule  ^.*$  -  [NC,L]
+RewriteRule  ^.*$  index.php  [NC,L]
+</code></pre>
+
+<p>The <code>.htaccess</code> use the Rewrite module of your Apache webserver (<code>a2enmod rewrite</code> to turn it on) and force the <code>index.php</code> file execution if a resource is missing.</p>
+
+<h3>Controllers</h3>
+
+<p>Now you have to create a new file <code>IndexController.php</code> into <code>controllers</code> folder</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">IndexController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">view</span><span class="o">-&gt;</span><span class="na">helloText</span> <span class="o">=</span> <span class="s2">"Hello World"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>The View</h3>
+
+<p>Now we have to create a view for the <code>indexAction</code>. View system search for a view using the controller name, in this case <code>index</code>, as a folder and the action name, in this case <code>index</code> too, as a filename. For that reason you have to create a folder named <code>index</code> into your <code>views</code> and inside this folder create a file named <code>index.phtml</code>. The content of <code>index.phtml</code> should be like</p>
+
+<div class="highlight"><pre><span class="x">&lt;p&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">helloText</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/p&gt;</span>
+</pre></div>
+
+<p>As you can see the view doesn't contains the HTML page because is a role of the layout system to encapsulating views. </p>
+
+<h3>The Layout</h3>
+
+<p>For that reason create a file named <code>layout.phtml</code> into your <code>layouts</code> folder. The content should be like this:</p>
+
+<div class="highlight"><pre><span class="x">&lt;html&gt;</span>
+<span class="x">    &lt;head&gt;</span>
+<span class="x">        &lt;title&gt;simple-mvc :: hello world&lt;/title&gt;</span>
+<span class="x">    &lt;/head&gt;</span>
+<span class="x">    &lt;body&gt;</span>
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">    &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+
+<h3>Create your Virtual Host</h3>
+
+<p>Ok, now we are ready to see simple-mvc. You have only to configure your Apache webserver that use the <code>public</code> folder as entry-point. Create a new virtual host</p>
+
+<pre><code>&lt;VirtualHost *:80&gt;
+    ServerAdmin dev@localhost
+    DocumentRoot /path/to/your/project/public
+    ServerName simple-mvc.local
+
+    &lt;Directory "/path/to/your/project/public"&gt;
+        Options -Indexes FollowSymLinks
+        AllowOverride all
+        allow from all
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>Remember that you have to modify your <code>hosts</code> file adding the rule</p>
+
+<pre><code>127.0.0.1    simple-mvc.local
+</code></pre>
+
+<p>Restart your Apache webserver and go with your browser to <code>http://simple-mvc.local/</code>.</p>
+
+<h3>Route map to Controller-View</h3>
+
+<p>The router map your HTTP request to an action. <code>simple-mvc</code> router is pretty simple you can use only <code>controller/action</code> routes. For that reason if you get the page <code>http://simple-mvc.local/tip/tap</code> you are asking for <code>TipController</code> class that contains <code>tapAction</code> method. On the view side you have a folder named <code>tip</code> that contains <code>tap.phtml</code> file.</p>
+
+<h3>Controllers and views stack</h3>
+
+<p>You can push onto a stack another action during one action execution. This can be useful for stacking views. For doing this task simple call the <code>then</code> action helper.</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// Controller</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Action flow</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="s2">"/ctr/another"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The <code>simple-mvc</code> append the view of <code>anotherAction()</code> of <code>CtrController</code> class at bottom of <code>index</code> view. You can push actions continuously.</p>
+
+<h3>Header control</h3>
+
+<p>Headers are important. <code>simple-mvc</code> has a simple header manager. You can add <code>headers</code> that are emitted at the right time using the <code>addHeader()</code> method or you could remove all using <code>clearHeaders()</code> method.</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">public</span> <span class="k">function</span> <span class="nf">textAction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//...</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addHeader</span><span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span> <span class="s2">"text/plain"</span><span class="p">);</span>
+    <span class="c1">//...</span>
+
+    <span class="c1">// Clear all headers.</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">clearHeaders</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>Redirect action helper</h3>
+
+<p>If you want to redirect you action to another using the <code>redirect()</code> method. The redirection use the <code>3xx</code> series to redirect the client to another action. The method is really simple, you pass the destination path  and the code for redirection (302 Temporary Redirect).</p>
+
+<div class="highlight"><pre><span class="x">public function oneAction()</span>
+<span class="x">{</span>
+<span class="x">    $this-&gt;redirect("/act/b", 302);</span>
+<span class="x">}</span>
+</pre></div>
+
+<p>You can skip the redirect code, the framework will send <code>301</code> automatically.</p>
+
+<h3>View and Layout management</h3>
+
+<p>Sometimes could be useful remove the attached view from a controller or disable the layout. Suppose that you want to produce a WS (webservice). The view is useless and the layout is completely useless. <code>simple-mvc</code> support layout and view suppression. See the XML example</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">WsController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * &lt;ping&gt;pong&lt;/ping&gt;</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">pingAction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Remove the attached view</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setNoRender</span><span class="p">();</span>
+        <span class="c1">// Remove the layout</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">disableLayout</span><span class="p">();</span>
+
+        <span class="c1">// Create the XML</span>
+        <span class="nv">$dom</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DOMDocument</span><span class="p">(</span><span class="s2">"1.0"</span><span class="p">,</span> <span class="s2">"UTF-8"</span><span class="p">);</span>
+        <span class="nv">$element</span> <span class="o">=</span> <span class="nv">$dom</span><span class="o">-&gt;</span><span class="na">createElement</span><span class="p">(</span><span class="s2">"ping"</span><span class="p">,</span> <span class="s2">"pong"</span><span class="p">);</span>
+        <span class="nv">$dom</span><span class="o">-&gt;</span><span class="na">appendChild</span><span class="p">(</span><span class="nv">$element</span><span class="p">);</span>
+
+        <span class="c1">// Show the XML</span>
+        <span class="k">echo</span> <span class="nv">$dom</span><span class="o">-&gt;</span><span class="na">saveXML</span><span class="p">();</span>
+
+        <span class="c1">// Emit the right headers</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">addHeader</span><span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span> <span class="s2">"text/xml"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>View helpers</h3>
+
+<p><code>simple-mvc</code> support view helpers. In practice support two types of view helpers: view and layout helpers. The only difference is that layout helpers are shared with views and not vice-versa. For that reason if you want to create a global helper append it into the <code>layout</code> bootstrap operation otherwise append during view bootstrap. A typical layout view helper is the <code>title</code> view helper, in few word a mechanism that allow an user to construct the page title during the application loop: starts with a title, an action add a title portion and so on. This kind of helper must be shared from layout and view because the title typically is in the layout view but modification are admitted in the single action view. A simple implementation of layout helper is:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">'layout'</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="nv">$layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Layout</span><span class="p">();</span>
+    <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">setViewPath</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../layouts'</span><span class="p">);</span>
+
+    <span class="c1">// Append the view helper!</span>
+    <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">addHelper</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$part</span> <span class="o">=</span> <span class="k">false</span><span class="p">){</span>
+        <span class="k">static</span> <span class="nv">$parts</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="k">static</span> <span class="nv">$delimiter</span> <span class="o">=</span> <span class="s1">' :: '</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="nv">$part</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="o">?</span> <span class="nb">implode</span><span class="p">(</span><span class="nv">$delimiter</span><span class="p">,</span> <span class="nv">$parts</span><span class="p">)</span> <span class="o">:</span> <span class="nv">$parts</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$part</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="c1">// Add my app name</span>
+    <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">(</span><span class="s2">"My App"</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$layout</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Inside your view you can append a title part.</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// Action view (eg. index.phtml)</span>
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">(</span><span class="s2">"Index Page"</span><span class="p">);</span>
+</pre></div>
+
+<p>Into your <code>layout.phtml</code></p>
+
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;&lt;title&gt;</span><span class="cp">&lt;?php echo $this-&gt;title() ?&gt;</span><span class="nt">&lt;/title&gt;&lt;/head&gt;</span>
+</pre></div>
+
+<p>The title will be: <code>My App :: Index Page</code></p>
+
+<h3>Partial Views</h3>
+
+<p><code>simple-mvc</code> support partials. You can append partial views at runtime using <code>partial()</code> view helper.</p>
+
+<div class="highlight"><pre><span class="x">&lt;!-- index/index.phtml --&gt;</span>
+<span class="x">&lt;div class="complex"&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?php</span> 
+      <span class="c1">// view path, data</span>
+       <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">partial</span><span class="p">(</span>
+            <span class="s2">"/path/to/complex.phtml"</span><span class="p">,</span> 
+            <span class="k">array</span><span class="p">(</span><span class="s1">'title'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/div&gt;</span>
+</pre></div>
+
+<p>In the partial view:</p>
+
+<div class="highlight"><pre><span class="x">&lt;!-- path/to/complex.phtml --&gt;</span>
+<span class="x">&lt;div&gt;</span>
+<span class="x">    &lt;h3&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/h3&gt;</span>
+<span class="x">    &lt;!-- continue --&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+</pre></div>
+
+<h3>Pre defined hooks (events)</h3>
+
+<p><code>simple-mvc</code> has a list of pre defined hooks:</p>
+
+<ol>
+<li>
+<code>loop.startup</code> - called once, when the system start up</li>
+<li>
+<code>pre.dispatch</code> - called before any <code>action</code>
+</li>
+<li>
+<code>post.dispatch</code> - called after any <code>action</code>
+</li>
+<li>
+<code>loop.shutdown</code> - called once, when the system close the loop</li>
+</ol><p>Adding events is a simple operation, see an example with <code>pre.dispatch</code> hook.</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getEventManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">subscribe</span><span class="p">(</span><span class="s2">"pre.dispatch"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Use a real and better auth system</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"auth"</span><span class="p">]</span> <span class="o">!==</span> <span class="k">true</span> 
+         <span class="o">&amp;&amp;</span> <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">getControllerName</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">'admin'</span> 
+         <span class="o">&amp;&amp;</span> <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">getActionName</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">'login'</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// Rewrite the endpoint</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">setControllerName</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">);</span>
+        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">setActionName</span><span class="p">(</span><span class="s2">"login"</span><span class="p">);</span>
+
+        <span class="c1">// Change the layout</span>
+        <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getBootstrap</span><span class="p">(</span><span class="s2">"layout"</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setScriptName</span><span class="p">(</span><span class="s2">"admin.phtml"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>Add new events</h3>
+
+<p>Create new hook definition:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getEventManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">subscribe</span><span class="p">(</span><span class="s2">"my.hook"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span><span class="cm">/*The body*/</span><span class="p">});</span>
+</pre></div>
+
+<p>Raise the event:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// Call the hook named "my.hook" and pass the app as first arg.</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getEventManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">publish</span><span class="p">(</span><span class="s2">"my.hook"</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$app</span><span class="p">));</span>
+</pre></div>
+
+<h3>Pull driven requests</h3>
+
+<p>Typically MVC frameworks are "push" based. In otherwords use mechanisms to "push" data to 
+a view and not vice-versa. A "pull" framework instead request ("pull") data from a view.</p>
+
+<p>Pull strategy is useful for example during a <code>for</code> statement (not only for that [obviously]...). Look 
+for an example:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span>
+    <span class="c1">// Pull data from a controller. </span>
+    <span class="nv">$userDetail</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pull</span><span class="p">(</span><span class="s2">"/detail/user/id/</span><span class="si">{</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;div class="element"&gt;</span>
+<span class="x">    &lt;div class="name"&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$userDetail</span><span class="o">-&gt;</span><span class="na">username</span><span class="p">;</span><span class="cp">?&gt;</span><span class="x">&lt;/div&gt;</span>
+<span class="x">    &lt;!-- other --&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>The view require a <code>pull</code> operation from a controller named <code>detail</code> and action <code>user</code>. See it:</p>
+
+<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">DetailController</span> <span class="k">extends</span> <span class="nx">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">userAction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$params</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getParams</span><span class="p">();</span>
+
+        <span class="nv">$model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModel</span><span class="p">();</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$model</span><span class="o">-&gt;</span><span class="na">getById</span><span class="p">(</span><span class="nv">$params</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]);</span>
+
+        <span class="k">return</span> <span class="nv">$data</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>You can use a "pull" controller as a normal controller with the attached view, but remember
+that when you request for a "pull" operation the view is never considered and the framework
+remove it without consider the output, only the <code>return</code> statement will be used.</p>
+
+<h3>Multiple view scripts paths</h3>
+
+<p><code>simple-mvc</code> support multiple views scripts paths. In other words you can specify
+a single mount point <code>/path/to/views</code> after that you can add anther views script path,
+this mean that the <code>simple-mvc</code> search for a view previously into the second views path
+and if it is missing looks for that into the first paths. View paths are threated as 
+a stack, the latest pushed is the first used.</p>
+
+<p>During your bootstrap add more view paths</p>
+
+<pre><code>$app-&gt;bootstrap('view', function(){
+    $view = new View();
+    $view-&gt;addViewPath(__DIR__ . '/../views');
+    $view-&gt;addViewPath(__DIR__ . '/../views-rewrite');
+
+    return $view;
+});
+</code></pre>
+
+<p>If you have a view named <code>name.phtml</code> into <code>views</code> folder and now you create the view
+named <code>name.phtml</code> into <code>views-rewrite</code> this one is used instead the original file in 
+<code>views</code> folder.</p>
+
+<h3>Authors and Contributors</h3>
+
+<p>This project is maintained by <a href="https://github.com/wdalmut" class="user-mention">@wdalmut</a>. </p>
+
+<h3>Support or Contact</h3>
+
+<p>Having trouble with simple-mvc? You can contact me <a href="mailto:walter.dalmut@gmail.com">walter.dalmut@gmail.com</a>.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/wdalmut/simple-mvc/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/wdalmut/simple-mvc/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/wdalmut/simple-mvc"></a> is maintained by <a href="https://github.com/wdalmut">wdalmut</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
