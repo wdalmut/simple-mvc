@@ -1,4 +1,4 @@
-<?php 
+<?php
 class Loader
 {
     public static function register()
@@ -14,11 +14,11 @@ class Loader
                 $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
             }
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-        
+
             require $fileName;
         });
     }
-    
+
     public static function classmap()
     {
         require_once __DIR__ . '/Application.php';

@@ -5,3 +5,5 @@
 res
 *.phar
 pack/vendor
+*.swp
+*.swo
