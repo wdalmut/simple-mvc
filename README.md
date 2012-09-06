@@ -1,4 +1,4 @@
-# A simple MVC [VC] framework [![Build Status](https://secure.travis-ci.org/wdalmut/simple-mvc.png)](http://travis-ci.org/wdalmut/simple-mvc?branch=master)
+# A simple MVC [VC] framework [![Build Status](https://secure.travis-ci.org/wdalmut/simple-mvc.png?brach=master,development)](http://travis-ci.org/wdalmut/simple-mvc?branch=master,development)
 
 A simple ***push & pull MVC framework*** heavly inspired to different PHP microframeworks and
 PHP MVC framework like ZF1.
@@ -14,7 +14,7 @@ Just for my pleasure.
  * PHPUnit
  * Very simple implementation (***only 6 classes*** + autoloader)
  * PHP 5.3+ implementation
- 
+
 ## Features
 
  * 100% MVC implementation [66% no model support] ;)
@@ -38,7 +38,7 @@ Just for my pleasure.
   * View request data to a controller-action
  * Rewritable views
   * Different views mount points for rewrite views
-  
+
 ## Install with Composer
 
 If you want you can use Composer for install simple-mvc.
@@ -73,5 +73,5 @@ $app = new Application();
 
  * [Documentation](simple-mvc/tree/master/documentation)
  * [Real Example](simple-mvc/tree/master/example)
- 
+
 The end.
