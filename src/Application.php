@@ -67,78 +67,21 @@ class Application
         $this->getEventManager()->publish("pre.dispatch", array('route' => $routeObj, 'application' => $this));
 
         $route = $routeObj->getRoute();
-
         $protoView = ($this->getBootstrap("view")) ?  $this->getBootstrap("view") : new View();
-        $protoView->addHelper("pull", function($uri) use ($controllerPath) {
-            $router = new Route();
-            $routeObj = $router->explode($uri);
 
-            $route = $routeObj->getRoute();
-
-            $controllerClassName = ucfirst($route["controller"]) . "Controller";
-            $action = $route["action"] . "Action";
-            $classPath = realpath($controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php");
-            if (file_exists($classPath)) {
-                require_once $classPath;
-
-                $controller = new $controllerClassName();
-                $controller->setParams($routeObj->getParams());
-
-                if (method_exists($controller, $action)) {
-                    ob_start();
-                    $controller->init();
-                    $data = $controller->$action();
-                    ob_end_clean();
-                    return $data;
-                } else {
-                    throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
-                }
-            } else {
-                throw new RuntimeException("Pull operation {$route["controller-clear"]}/{$route["action-clear"]} failed.", 404);
-            }
-        });
-
-        $controllerClassName = ucfirst($route["controller"]) . "Controller";
-        $action = $route["action"] . "Action";
-        $classPath = $controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php";
-        $viewPath = $route["controller-clear"] . DIRECTORY_SEPARATOR . $route["action-clear"] . $protoView->getViewExt();
-
-        if (!file_exists($classPath)) {
-            // Use base controller
-            $controllerClassName = 'Controller';
-        } else {
-            require_once $classPath;
-        }
-
-        $controller = new $controllerClassName($this);
-        $controller->setParams($routeObj->getParams());
-        $controller->setRawBody(@file_get_contents('php://input'));
-
-        $controller->setView($protoView->cloneThis());
-        $controller->view->controllerPath = $this->_controllerPath;
-        (($layout = $this->getBootstrap('layout'))) ? $controller->view->addHelpers($layout->getHelpers()) : false;
-
-        if (method_exists($controller, $action)) {
-            ob_start();
-            $controller->init();
-            $controller->$action();
-            $content = ob_get_contents();
-            array_push($this->_views, $content);
-            ob_end_clean();
-        } else {
-            if (!file_exists($controller->view->getViewPath() . DIRECTORY_SEPARATOR . $viewPath)) {
-                throw new RuntimeException("Page not found {$route["controller-clear"]}/{$route["action-clear"]}", 404);
-            }
-        }
-
-        $this->getEventManager()->publish("post.dispatch", array('controller' => $controller));
-
-        if ($controller->view->getViewPath()) {
-            array_push(
-                $this->_views,
-                $controller->getView()->render(
-                    (($controller->getViewPath() !== false) ? $controller->getViewPath() : $viewPath))
+        $dispatcher = new Dispatcher($protoView);
+        try {
+            $dispatcher->dispatch($routeObj);
+        } catch (RuntimeException $e) {
+            $errorRoute = new Route();
+            $errorRoute->addParams(
+                array(
+                    'exception' => $e
+                )
             );
+            $errorRoute = $errorRoute->explode("error/error");
+
+            $dispatcher->dispatch($errorRoute);
         }
     }
 
