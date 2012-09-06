@@ -90,6 +90,15 @@ class Dispatcher
                     throw new RuntimeException("Page not found {$route->getControllerName()} -> {$route->getActionName()}", 404);
                 }
             }
+
+            if ($controller->view->getViewPath()) {
+                array_push(
+                    $this->_viewsQueue,
+                    $controller->getView()->render(
+                        (($controller->getViewPath() !== false) ? $controller->getViewPath() : $viewPath))
+                );
+            }
+
         } while(($route = array_shift($this->_actions)));
 
         return implode("", $this->_viewsQueue);
