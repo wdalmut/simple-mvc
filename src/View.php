@@ -5,7 +5,8 @@ class View
     private $_path = array();
     private $_data = array();
 
-    private static $_helpers = array();
+    protected static $_helpers = array();
+
     private $_ext = ".phtml";
 
     public function __construct()
@@ -35,8 +36,8 @@ class View
 
     public function __call($method, $args)
     {
-        if (array_key_exists($method, self::$_helpers)) {
-            return call_user_func_array(self::$_helpers[$method], $args);
+        if (array_key_exists($method, static::$_helpers)) {
+            return call_user_func_array(static::$_helpers[$method], $args);
         } else {
             throw new RuntimeException("Helper view {$method} doesn't exists. Add it using addHelper method.");
         }
@@ -117,17 +118,17 @@ class View
 
     public function addHelper($name, $helper)
     {
-        self::$_helpers[$name] = $helper;
+        static::$_helpers[$name] = $helper;
     }
 
     public function addHelpers(array $helpers)
     {
-        self::$_helpers = array_merge(self::$_helpers, $helpers);
+        static::$_helpers = array_merge(self::$_helpers, $helpers);
     }
 
     public function getHelpers()
     {
-        return self::$_helpers;
+        return static::$_helpers;
     }
 
     protected function _getData()

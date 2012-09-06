@@ -2,11 +2,19 @@
 class Application
 {
     private $_controllerPath = '../controllers';
-    private $_bootstrap = array();
+    private $_bootstrap;
     private $_eventManager;
-    private $_views = array();
+    private $_page = '';
     private $_headers = array();
-    private $_requests = array();
+
+    public function __construct(Bootstrap $bootstrap = null)
+    {
+        if (!$bootstrap) {
+            $this->_bootstrap = ($this->_bootstrap) ? $this->_bootstrap : new Bootstrap();
+        } else {
+            $this->_bootstrap = $bootstrap;
+        }
+    }
 
     public function setControllerPath($path)
     {
@@ -33,32 +41,16 @@ class Application
 
     public function bootstrap($name, $hook)
     {
-        if (!is_callable($hook)) {
-            throw new RuntimeException("Hook must be callable");
-        }
-
-        $this->_bootstrap[$name] = $hook;
+        $this->_bootstrap->addResource($name, $hook);
     }
 
-    public function getBootstrap($name)
+    public function getBootstrap()
     {
-        if (array_key_exists($name, $this->_bootstrap)) {
-            $b = $this->_bootstrap[$name];
-
-            if (is_callable($b)) {
-                $this->_bootstrap[$name] = call_user_func($b);
-            }
-
-            return $this->_bootstrap[$name];
-        } else {
-            return false;
-        }
+        return $this->_bootstrap;
     }
 
     public function dispatch($uri)
     {
-        $controllerPath = $this->_controllerPath;
-
         $router = new Route();
         $routeObj = $router->explode($uri);
         $routeObj->addParams($_GET);
@@ -67,11 +59,14 @@ class Application
         $this->getEventManager()->publish("pre.dispatch", array('route' => $routeObj, 'application' => $this));
 
         $route = $routeObj->getRoute();
-        $protoView = ($this->getBootstrap("view")) ?  $this->getBootstrap("view") : new View();
+        $protoView = ($this->getBootstrap()->getResource("view")) ?  $this->getBootstrap()->getResource("view") : new View();
 
         $dispatcher = new Dispatcher($protoView);
+        $dispatcher->setBootstrap($this->_bootstrap);
+        $dispatcher->setControllerPath($this->getControllerPath());
+
         try {
-            $dispatcher->dispatch($routeObj);
+            $this->_page = $dispatcher->dispatch($routeObj);
         } catch (RuntimeException $e) {
             $errorRoute = new Route();
             $errorRoute->addParams(
@@ -79,9 +74,9 @@ class Application
                     'exception' => $e
                 )
             );
-            $errorRoute = $errorRoute->explode("error/error");
+            //TODO add error headers
 
-            $dispatcher->dispatch($errorRoute);
+            $this->_page = $dispatcher->dispatch($errorRoute->explode("error/error"));
         }
     }
 
@@ -90,23 +85,15 @@ class Application
         $outputBuffer = '';
         $this->getEventManager()->publish("loop.startup", array($this));
 
-        try {
-            $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri;
-            do {
-                $this->dispatch($uri);
-            } while(($uri = array_shift($this->_requests)));
-        } catch (RuntimeException $e) {
-            $this->clearHeaders();
-            $this->addHeader("Content-Type", "text/html", 500);
-            $this->dispatch("/error/error");
-        }
+        $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri;
+        $this->dispatch($uri);
 
-        if (($layout = $this->getBootstrap("layout")) instanceof Layout) {
-            $layout->content = implode("", $this->_views);
+        if (($layout = $this->getBootstrap()->getResource("layout")) instanceof Layout) {
+            $layout->content = $this->_page;
 
             $outputBuffer = $layout->render($layout->getScriptName());
         } else {
-            $outputBuffer = implode("", $this->_views);
+            $outputBuffer = $this->_page;
         }
 
         $this->getEventManager()->publish("loop.shutdown", array($this));

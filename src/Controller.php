@@ -1,19 +1,11 @@
 <?php
 class Controller
 {
-    private $_application;
-
     private $_params;
     private $_rawBody;
     private $_viewScript;
 
     public $view;
-
-    public function __construct($application = null)
-    {
-        $application = (!$application) ? new Application() : $application;
-        $this->setApplication($application);
-    }
 
     public function setView($view)
     {
@@ -26,21 +18,6 @@ class Controller
     }
 
     public function init(){}
-
-    public function setApplication($application)
-    {
-        $this->_application = $application;
-    }
-
-    public function getApplication()
-    {
-        return $this->_application;
-    }
-
-    public function getResource($name)
-    {
-        return $this->_application->getBootstrap($name);
-    }
 
     public function setParams($params)
     {
@@ -64,25 +41,30 @@ class Controller
 
     public function then($uri)
     {
-        $this->_application->addRequest($uri);
+        $route = new Route();
+        $this->_params["dispatcher"]->add($route->explode($uri));
     }
 
     public function clearHeaders()
     {
-        $this->_application->clearHeaders();
+        throw new Exception("Missing strategy");
     }
 
     public function addHeader($key, $value, $httpCode = 200, $replace  = true)
     {
-        $this->_application->addHeader($key, $value, $httpCode, $replace);
+        throw new Exception("Missing strategy");
         return $this;
     }
 
+    /**
+     * Using the dispatcher
+     */
     public function redirect($url, $header=301)
     {
         $this->disableLayout();
         $this->setNoRender();
 
+        throw new Exception("Missing strategy");
         $this->_application->clearHeaders();
         $this->_application->addHeader("Location", $url, $header);
     }
@@ -99,7 +81,7 @@ class Controller
 
     public function disableLayout()
     {
-        $this->_application->bootstrap("layout", function(){return false;});
+        throw new Exception("Missing strategy");
     }
 
     public function setNoRender()
