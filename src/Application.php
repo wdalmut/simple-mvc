@@ -61,6 +61,34 @@ class Application
         $route = $routeObj->getRoute();
         $protoView = ($this->getBootstrap()->getResource("view")) ?  $this->getBootstrap()->getResource("view") : new View();
 
+        $controllerPath = $this->getControllerPath();
+        $protoView->addHelper("pull", function($uri) use ($controllerPath) {
+            $router = new Route();
+            $routeObj = $router->explode($uri);
+
+            $controllerClassName = $routeObj->getControllerName() . "Controller";
+            $action = $routeObj->getActionName() . "Action";
+            $classPath = realpath($controllerPath . DIRECTORY_SEPARATOR . $controllerClassName . ".php");
+            if (file_exists($classPath)) {
+                require_once $classPath;
+
+                $controller = new $controllerClassName();
+                $controller->setParams($routeObj->getParams());
+
+                if (method_exists($controller, $action)) {
+                    ob_start();
+                    $controller->init();
+                    $data = $controller->$action();
+                    ob_end_clean();
+                    return $data;
+                } else {
+                    throw new RuntimeException("Pull operation {$routeObj->getControllerName()} - {$routeObj->getActionName()} failed.", 404);
+                }
+            } else {
+                throw new RuntimeException("Pull operation {$routeObj->getControllerName()} - {$routeObj->getActionName()} failed.", 404);
+            }
+        });
+
         $dispatcher = new Dispatcher($protoView);
         $dispatcher->setBootstrap($this->_bootstrap);
         $dispatcher->setControllerPath($this->getControllerPath());
