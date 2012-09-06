@@ -17,6 +17,11 @@ class Route
         return $this->_route["controller"];
     }
 
+    public function getControllerPath()
+    {
+        return $this->_route["controller-clear"];
+    }
+
     public function getActionName()
     {
         return $this->_route["action"];
@@ -26,6 +31,11 @@ class Route
     {
         $this->_route["action"] = $this->_toCamelCase($name);
         $this->_route["action-clear"] = $name;
+    }
+
+    public function getActionPath()
+    {
+        return $this->_route["action-clear"];
     }
 
     public function explode($uri)
