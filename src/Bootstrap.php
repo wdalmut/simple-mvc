@@ -26,4 +26,9 @@ class Bootstrap
             return false;
         }
     }
+
+    public function testMissingBootstrapResource()
+    {
+        $this->assertSame(false, $this->object->getResource("missing"));
+    }
 }

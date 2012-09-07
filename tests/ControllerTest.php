@@ -20,10 +20,12 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new Controller();
+        $dispatcher = new Dispatcher(new View());
+        $dispatcher->setBootstrap(new Bootstrap());
+
         $this->object->setParams(
             array(
-                'dispatcher' => new Dispatcher(new View()),
-                'bootstrap' => new Bootstrap()
+                'dispatcher' => $dispatcher
             )
         );
     }
@@ -121,22 +123,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($v, $this->object->getView());
         $this->object->setNoRender();
         $this->assertNotSame($v, $this->object->getView());
-    }
-
-    public function testBootstrappedResources()
-    {
-        $this->markTestSkipped("Useful?");
-        $this->object->getApplication()->bootstrap("test", function(){
-            return "hello";
-        });
-
-        $this->assertEquals("hello", $this->object->getResource("test"));
-    }
-
-    public function testMissingBootstrapResource()
-    {
-        $this->markTestSkipped("Useful?");
-        $this->assertSame(false, $this->object->getResource("missing"));
     }
 
     public function testRedirectBase()
