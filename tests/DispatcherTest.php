@@ -25,5 +25,16 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals("an-action", $content);
     }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testDispatchAnError()
+    {
+        $route = new Route();
+        $route->explode("/not/exists-this-action");
+
+        $this->_object->dispatch($route);
+    }
 }
 
