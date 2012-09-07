@@ -207,19 +207,13 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testLayoutViewHelpersPass()
     {
-        $this->markTestSkipped("Restore view helpers");
+        //$this->markTestSkipped("Restore view helpers");
 
         $this->object->bootstrap('layout', function(){
             $l = new Layout();
             $l->setScriptName("title-helper.phtml");
             $l->setViewPath(__DIR__ . '/layouts');
 
-            $l->addHelper("title", function($part = false){
-                static $parts = array();
-                static $delimiter = ' :: ';
-
-                return ($part === false) ? implode($delimiter, $parts) : $parts[] = $part;
-            });
 
             return $l;
         });
@@ -227,6 +221,13 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->object->bootstrap('view', function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
+
+            $v->addHelper("title", function($part = false){
+                static $parts = array();
+                static $delimiter = ' :: ';
+
+                return ($part === false) ? implode($delimiter, $parts) : $parts[] = $part;
+            });
 
             return $v;
         });

@@ -3,7 +3,7 @@ class IndexController extends Controller
 {
     public function indexAction()
     {
-        //$this->view->title("The index");
+        $this->view->title("The index");
 
         $this->view->hello = "hello";
 
@@ -12,7 +12,7 @@ class IndexController extends Controller
 
     public function kindleAction()
     {
-        //$this->view->title("The kindle");
+        $this->view->title("The kindle");
 
         $this->view->cose = "ciao";
     }
