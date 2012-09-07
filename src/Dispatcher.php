@@ -10,6 +10,8 @@ class Dispatcher
     private $_bootstrap;
     private $_controllerPath;
 
+    private $_eventManager;
+
     private $_viewsQueue;
 
     private $_headers = array();
@@ -29,6 +31,16 @@ class Dispatcher
     public function getControllerPath()
     {
         return $this->_controllerPath;
+    }
+
+    public function setEventManager(EventManager $em)
+    {
+        $this->_eventManager = $em;
+    }
+
+    public function getEventManager()
+    {
+        return $this->_eventManager;
     }
 
     public function setBootstrap($bootstrap)
@@ -52,6 +64,8 @@ class Dispatcher
     public function dispatch(Route $route)
     {
         do {
+            $this->getEventManager()->publish("pre.dispatch", array($route, $this));
+
             $protoView = $this->_view->cloneThis();
             $controllerClassName = $route->getControllerName() . "Controller";
             $action = $route->getActionName() . "Action";
@@ -101,6 +115,7 @@ class Dispatcher
                 );
             }
 
+            $this->getEventManager()->publish("post.dispatch", array($this));
         } while(($route = array_shift($this->_actions)));
 
         return implode("", $this->_viewsQueue);

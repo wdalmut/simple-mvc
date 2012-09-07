@@ -6,13 +6,10 @@ class Application
     private $_eventManager;
     private $_page = '';
 
-    public function __construct(Bootstrap $bootstrap = null)
+    public function __construct(Bootstrap $bootstrap = null, EventManager $eventManager = null)
     {
-        if (!$bootstrap) {
-            $this->_bootstrap = ($this->_bootstrap) ? $this->_bootstrap : new Bootstrap();
-        } else {
-            $this->_bootstrap = $bootstrap;
-        }
+        $this->_bootstrap = ($bootstrap) ? $bootstrap : new Bootstrap();
+        $this->_eventManager = ($eventManager) ? $eventManager : new EventManager();
     }
 
     public function setControllerPath($path)
@@ -32,9 +29,6 @@ class Application
 
     public function getEventManager()
     {
-        if (!$this->_eventManager) {
-            $this->_eventManager = new EventManager();
-        }
         return $this->_eventManager;
     }
 
@@ -54,8 +48,6 @@ class Application
         $routeObj = $router->explode($uri);
         $routeObj->addParams($_GET);
         $routeObj->addParams($_POST);
-
-        $this->getEventManager()->publish("pre.dispatch", array('route' => $routeObj, 'application' => $this));
 
         $route = $routeObj->getRoute();
         $protoView = ($this->getBootstrap()->getResource("view")) ?  $this->getBootstrap()->getResource("view") : new View();
@@ -89,6 +81,7 @@ class Application
         });
 
         $dispatcher = new Dispatcher($protoView);
+        $dispatcher->setEventManager($this->getEventManager());
         $dispatcher->setBootstrap($this->_bootstrap);
         $dispatcher->setControllerPath($this->getControllerPath());
 

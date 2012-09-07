@@ -13,6 +13,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
 
         $this->_object = new Dispatcher(new View());
         $this->_object->setBootstrap(new Bootstrap());
+        $this->_object->setEventManager(new EventManager());
         $this->_object->setControllerPath(__DIR__ . '/controllers');
     }
 
