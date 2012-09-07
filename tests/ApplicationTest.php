@@ -525,4 +525,9 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertSame(2, $preDispatch);
         $this->assertSame(2, $postDispatch);
     }
+
+    public function testDisableLayout()
+    {
+        $this->markTestIncomplete("Try to disable a layout...");
+    }
 }
