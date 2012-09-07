@@ -12,6 +12,8 @@ class Dispatcher
 
     private $_viewsQueue;
 
+    private $_headers = array();
+
     public function __construct(View $view)
     {
         $this->_view = $view;
@@ -70,7 +72,7 @@ class Dispatcher
             $controller->setParams(
                 array_merge(
                     array(
-                        "dispatcher" => &$this,
+                        "dispatcher" => $this,
                         "bootstrap" => $this->getBootstrap()
                     ),
                     $route->getParams()));
@@ -102,5 +104,28 @@ class Dispatcher
         } while(($route = array_shift($this->_actions)));
 
         return implode("", $this->_viewsQueue);
+    }
+
+    public function sendHeaders()
+    {
+        $headers = $this->getHeaders();
+        foreach ($headers as $header) {
+            header($header["string"], $header["replace"], $header["code"]);
+        }
+    }
+
+    public function clearHeaders()
+    {
+        $this->_headers = array();
+    }
+
+    public function addHeader($key, $value, $httpCode = 200, $replace  = true)
+    {
+        $this->_headers[] = array('string' => "{$key}:{$value}", "replace" => $replace, "code" => (int)$httpCode);
+    }
+
+    public function getHeaders()
+    {
+        return $this->_headers;
     }
 }

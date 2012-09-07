@@ -47,13 +47,18 @@ class Controller
 
     public function clearHeaders()
     {
-        throw new Exception("Missing strategy");
+        $this->_params["dispatcher"]->clearHeaders();
     }
 
     public function addHeader($key, $value, $httpCode = 200, $replace  = true)
     {
-        throw new Exception("Missing strategy");
+        $this->_params["dispatcher"]->addHeader($key, $value, $httpCode, $replace);
         return $this;
+    }
+
+    public function getHeaders()
+    {
+        return $this->_params["dispatcher"]->getHeaders();
     }
 
     /**
@@ -64,9 +69,8 @@ class Controller
         $this->disableLayout();
         $this->setNoRender();
 
-        throw new Exception("Missing strategy");
-        $this->_application->clearHeaders();
-        $this->_application->addHeader("Location", $url, $header);
+        $this->_params["dispatcher"]->clearHeaders();
+        $this->_params["dispatcher"]->addHeader("Location", $url, $header);
     }
 
     public function setRenderer($renderer)

@@ -5,7 +5,6 @@ class Application
     private $_bootstrap;
     private $_eventManager;
     private $_page = '';
-    private $_headers = array();
 
     public function __construct(Bootstrap $bootstrap = null)
     {
@@ -103,6 +102,8 @@ class Application
                 )
             );
             //TODO add error headers
+            $dispatcher->clearHeaders();
+            $dispatcher->addHeader("","",404);
 
             $this->_page = $dispatcher->dispatch($errorRoute->explode("error/error"));
         }
@@ -135,26 +136,4 @@ class Application
         $this->_requests[] = $uri;
     }
 
-    public function sendHeaders()
-    {
-        $headers = $this->getHeaders();
-        foreach ($headers as $header) {
-            header($header["string"], $header["replace"], $header["code"]);
-        }
-    }
-
-    public function clearHeaders()
-    {
-        $this->_headers = array();
-    }
-
-    public function addHeader($key, $value, $httpCode = 200, $replace  = true)
-    {
-        $this->_headers[] = array('string' => "{$key}:{$value}", "replace" => $replace, "code" => (int)$httpCode);
-    }
-
-    public function getHeaders()
-    {
-        return $this->_headers;
-    }
 }

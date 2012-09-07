@@ -19,7 +19,13 @@ class ControllerTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Controller(new Application());
+        $this->object = new Controller();
+        $this->object->setParams(
+            array(
+                'dispatcher' => new Dispatcher(new View()),
+                'bootstrap' => new Bootstrap()
+            )
+        );
     }
 
     /**
@@ -73,13 +79,12 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
     public function testAddHeaders()
     {
-        $this->markTestSkipped("Useful?");
         $this->object->addHeader("a", "b");
         $this->object->addHeader("c", "d");
 
-        $this->assertSame(2, count($this->object->getApplication()->getHeaders()));
+        $this->assertSame(2, count($this->object->getHeaders()));
 
-        $headers = $this->object->getApplication()->getHeaders();
+        $headers = $this->object->getHeaders();
 
         $first = $headers[0];
         $second = $headers[1];
@@ -89,22 +94,20 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
     public function testAddHeaderCode()
     {
-        $this->markTestSkipped("Useful?");
         $this->object->addHeader("a", "b", 500);
-        $headers = $this->object->getApplication()->getHeaders();
+        $headers = $this->object->getHeaders();
 
         $this->assertEquals(500, $headers[0]["code"]);
     }
 
     public function testClearHeaders()
     {
-        $this->markTestSkipped("Useful?");
         $this->object->addHeader("a", "b");
         $this->object->addHeader("c", "d");
 
         $this->object->clearHeaders();
 
-        $this->assertSame(0, count($this->object->getApplication()->getHeaders()));
+        $this->assertSame(0, count($this->object->getHeaders()));
     }
 
     public function testSetNoRender()
@@ -141,7 +144,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->markTestSkipped("Useful?");
         $this->object->addHeader("content-type", "text/html");
         $this->object->redirect("/admin/login");
-        $headers = $this->object->getApplication()->getHeaders();
+        $headers = $this->object->getHeaders();
 
         $this->assertSame(1, count($headers));
         $redirectHeader = $headers[0];
@@ -154,7 +157,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->markTestSkipped("Useful?");
         $this->object->addHeader("content-type", "text/html");
         $this->object->redirect("/admin/login", 302);
-        $headers = $this->object->getApplication()->getHeaders();
+        $headers = $this->object->getHeaders();
 
         $this->assertSame(1, count($headers));
         $redirectHeader = $headers[0];
