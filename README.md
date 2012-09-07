@@ -72,6 +72,6 @@ $app = new Application();
 ## Examples and docs
 
  * [Documentation](simple-mvc/tree/master/documentation)
- * [Real Example](simple-mvc/tree/master/example)
+ * [Real Example](simple-mvc/tree/master/examples)
 
 The end.
