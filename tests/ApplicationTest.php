@@ -31,6 +31,11 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
     }
 
+    public function testDefaultBootstrapInstance()
+    {
+        $this->assertInstanceOf("Bootstrap", $this->object->getBootstrap());
+    }
+
     /**
      * @covers Application::bootstrap
      * @covers Application::getBootstrap
@@ -53,8 +58,8 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->object->bootstrap("hello", function(){
             return new View();
         });
-        $boot = $this->object->getBootstrap("hello");
-        $boot2 = $this->object->getBootstrap("hello");
+        $boot = $this->object->getBootstrap()->getResource("hello");
+        $boot2 = $this->object->getBootstrap()->getResource("hello");
 
         $this->assertSame($boot, $boot2);
     }
