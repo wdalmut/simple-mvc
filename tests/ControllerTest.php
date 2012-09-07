@@ -54,20 +54,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Controller::setApplication
-     * @covers Controller::getResource
-     */
-    public function testSetGetApplication()
-    {
-        $this->markTestSkipped("Useless?");
-        $app = new Application();
-        $this->object->setApplication($app);
-        $a = $this->object->getApplication();
-
-        $this->assertSame($app, $a);
-    }
-
-    /**
      * @covers Controller::setParams
      * @covers Controller::getParams
      */
@@ -77,6 +63,16 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->object->setParams($p);
 
         $this->assertSame($p, $this->object->getParams());
+    }
+
+    public function testGetParam()
+    {
+        $p = array('hello' => "ciao");
+        $this->object->setParams($p);
+
+        $this->assertEquals("ciao", $this->object->getParam('hello'));
+
+        $this->assertFalse($this->object->getParam("missing-key"));
     }
 
     public function testAddHeaders()

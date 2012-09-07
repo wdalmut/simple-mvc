@@ -29,6 +29,11 @@ class Controller
         return $this->_params;
     }
 
+    public function getParam($key)
+    {
+        return (array_key_exists($key, $this->_params)) ? $this->_params[$key] : false;
+    }
+
     public function setRawBody($body)
     {
         $this->_rawBody = $body;
