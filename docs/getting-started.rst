@@ -24,7 +24,10 @@ In practice you are ready. See the `.htaccess`::
     RewriteRule  ^.*$  -  [NC,L]
     RewriteRule  ^.*$  index.php  [NC,L]
 
-The `index.php` is the main app entry point::
+The `index.php` is the main app entry point
+
+.. code-block:: php
+    :linenos:
 
     <?php 
     set_include_path(realpath('/path/to/src'));
@@ -36,7 +39,10 @@ The `index.php` is the main app entry point::
     $app->setControllerPath(__DIR__ . '/../controllers');
     $app->run();
 
-The controller `IndexController.php` file should be like this::
+The controller `IndexController.php` file should be like this
+
+.. code-block:: php
+    :linenos:
 
     <?php 
     class IndexController extends Controller
@@ -58,7 +64,10 @@ controller.::
 
     /the-controller-name/the-action-name
 
-Will be::
+Will be
+
+.. code-block:: php
+    :linenos:
 
     // the-controller-name => TheControllerName
     class TheControllerName extends Controller
@@ -72,7 +81,10 @@ Will be::
 Bootstrap resources
 -------------------
 
-You can bootstrap resources: ::
+You can bootstrap resources: 
+
+.. code-block:: php
+    :linenos:
 
     <?php
     $app = new Application();
@@ -81,7 +93,10 @@ You can bootstrap resources: ::
     });
 
 The bootstrap do not executes all hooks (lazy-loading of resources) but execute 
-it ones only if your application needs it. ::
+it ones only if your application needs it. 
+
+.. code-block:: php
+    :linenos:
 
     <?php
     // Into a controller

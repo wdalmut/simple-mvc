@@ -13,6 +13,7 @@ Contents:
 
    getting-started   
    autoloader
+   controllers
 
 
 Indices and tables

@@ -9,7 +9,10 @@ Classmap
 
 The classmap loads only `simple-mvc` classes. If you have a self-designed
 autoloader you have to use this strategy for reduce conflicts during
-the autoloading process. ::
+the autoloading process. 
+
+.. code-block:: php
+    :linenos:
 
     <?php
     require_once '/path/to/simple/Loader.php';
@@ -21,7 +24,10 @@ PSR-0 Autoloader
 ----------------
 
 If you want to use the PSR-0 autoloader you have to register the
-autoloader. ::
+autoloader.
+
+.. code-block:: php
+    :linenos:
 
     <?php
     require_once '/path/to/simple/Loader.php';
@@ -41,19 +47,26 @@ autoloader. ::
 
 The autoloader loads automatically namespaced classes and prefixed.
 
-Prefix example: ::
+Prefix example: 
+
+.. code-block:: php
+    :linenos:
 
     <php
+
     // Prefix -> ClassName.php
     class Prefix_ClassName
     {
 
     }
 
-Namespace example: ::
+Namespace example:
+
+.. code-block:: php
+    :linenos:
 
     <?php
-    namespace Ns
+    namespace Ns;
 
     // Ns -> ClassName.php
     class ClassName
