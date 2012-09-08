@@ -71,8 +71,8 @@ $app = new Application();
 
 ## Examples and docs
 
- * [Documentation](documentation)
- * [Real Example](examples)
+ * [Documentation](master/documentation)
+ * [Real Example](master/examples)
 
 ## Build Status
 
