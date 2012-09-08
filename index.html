@@ -80,7 +80,7 @@ php composer.phar install
 
 <p>Into your <code>public</code> folder create a file named <code>index.php</code>. This file is the only requested by your webserver. The minimum configuration is the follow</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../vendor/autoload.php'</span><span class="p">;</span>
 
 <span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Application</span><span class="p">();</span>
@@ -119,7 +119,7 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>Now you have to create a new file <code>IndexController.php</code> into <code>controllers</code> folder</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">class</span> <span class="nc">IndexController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span>
@@ -133,8 +133,8 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>Now we have to create a view for the <code>indexAction</code>. View system search for a view using the controller name, in this case <code>index</code>, as a folder and the action name, in this case <code>index</code> too, as a filename. For that reason you have to create a folder named <code>index</code> into your <code>views</code> and inside this folder create a file named <code>index.phtml</code>. The content of <code>index.phtml</code> should be like</p>
 
-<div class="highlight"><pre><span class="x">&lt;p&gt;</span>
-<span class="x">    </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">helloText</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+    <span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">helloText</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
 <span class="x">&lt;/p&gt;</span>
 </pre></div>
 
@@ -144,12 +144,12 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>For that reason create a file named <code>layout.phtml</code> into your <code>layouts</code> folder. The content should be like this:</p>
 
-<div class="highlight"><pre><span class="x">&lt;html&gt;</span>
-<span class="x">    &lt;head&gt;</span>
-<span class="x">        &lt;title&gt;simple-mvc :: hello world&lt;/title&gt;</span>
-<span class="x">    &lt;/head&gt;</span>
-<span class="x">    &lt;body&gt;</span>
-<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">simple</span><span class="o">-</span><span class="nx">mvc</span> <span class="o">::</span> <span class="na">hello</span> <span class="nx">world</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+        <span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
 <span class="x">    &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
 </pre></div>
@@ -186,7 +186,7 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>You can push onto a stack another action during one action execution. This can be useful for stacking views. For doing this task simple call the <code>then</code> action helper.</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="c1">// Controller</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span>
 <span class="p">{</span>
@@ -201,7 +201,7 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>Headers are important. <code>simple-mvc</code> has a simple header manager. You can add <code>headers</code> that are emitted at the right time using the <code>addHeader()</code> method or you could remove all using <code>clearHeaders()</code> method.</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">public</span> <span class="k">function</span> <span class="nf">textAction</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="c1">//...</span>
@@ -217,10 +217,10 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>If you want to redirect you action to another using the <code>redirect()</code> method. The redirection use the <code>3xx</code> series to redirect the client to another action. The method is really simple, you pass the destination path  and the code for redirection (302 Temporary Redirect).</p>
 
-<div class="highlight"><pre><span class="x">public function oneAction()</span>
-<span class="x">{</span>
-<span class="x">    $this-&gt;redirect("/act/b", 302);</span>
-<span class="x">}</span>
+<div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">oneAction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s2">"/act/b"</span><span class="p">,</span> <span class="mi">302</span><span class="p">);</span>
+<span class="p">}</span>
 </pre></div>
 
 <p>You can skip the redirect code, the framework will send <code>301</code> automatically.</p>
@@ -229,7 +229,7 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>Sometimes could be useful remove the attached view from a controller or disable the layout. Suppose that you want to produce a WS (webservice). The view is useless and the layout is completely useless. <code>simple-mvc</code> support layout and view suppression. See the XML example</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">class</span> <span class="nc">WsController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
     <span class="sd">/**</span>
@@ -258,31 +258,38 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <h3>View helpers</h3>
 
-<p><code>simple-mvc</code> support view helpers. In practice support two types of view helpers: view and layout helpers. The only difference is that layout helpers are shared with views and not vice-versa. For that reason if you want to create a global helper append it into the <code>layout</code> bootstrap operation otherwise append during view bootstrap. A typical layout view helper is the <code>title</code> view helper, in few word a mechanism that allow an user to construct the page title during the application loop: starts with a title, an action add a title portion and so on. This kind of helper must be shared from layout and view because the title typically is in the layout view but modification are admitted in the single action view. A simple implementation of layout helper is:</p>
+<p><code>simple-mvc</code> support view helpers. In practice support two types of view helpers: view and layout helpers. The only difference is that view helpers are shared with layouts and not vice-versa. For that reason if you want to create a global helper append it into the <code>view</code> bootstrap operation otherwise append during layout bootstrap. A typical layout view helper is the <code>title</code> view helper, in few word a mechanism that allow an user to construct the page title during the application loop: starts with a title, an action add a title portion and so on. This kind of helper must be shared on layout and view because the title typically is in the layout view but modification is admitted in action views. A simple implementation of layout helper is:</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">'layout'</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
     <span class="nv">$layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Layout</span><span class="p">();</span>
     <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">setViewPath</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../layouts'</span><span class="p">);</span>
-
-    <span class="c1">// Append the view helper!</span>
-    <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">addHelper</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$part</span> <span class="o">=</span> <span class="k">false</span><span class="p">){</span>
-        <span class="k">static</span> <span class="nv">$parts</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-        <span class="k">static</span> <span class="nv">$delimiter</span> <span class="o">=</span> <span class="s1">' :: '</span><span class="p">;</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="nv">$part</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="o">?</span> <span class="nb">implode</span><span class="p">(</span><span class="nv">$delimiter</span><span class="p">,</span> <span class="nv">$parts</span><span class="p">)</span> <span class="o">:</span> <span class="nv">$parts</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$part</span><span class="p">;</span>
-    <span class="p">});</span>
 
     <span class="c1">// Add my app name</span>
     <span class="nv">$layout</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">(</span><span class="s2">"My App"</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="nv">$layout</span><span class="p">;</span>
 <span class="p">});</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">bootstrap</span><span class="p">(</span><span class="s1">'view'</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="nv">$view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">View</span><span class="p">();</span>
+    <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">addViewPath</span><span class="p">(</span><span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">'/../views'</span><span class="p">);</span>
+
+    <span class="c1">// Append the view helper!</span>
+    <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">addHelper</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$part</span> <span class="o">=</span> <span class="k">false</span><span class="p">){</span>
+        <span class="k">static</span> <span class="nv">$parts</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="k">static</span> <span class="nv">$delimiter</span> <span class="o">=</span> <span class="s1">' :: '</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="nv">$part</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="o">?</span> <span class="nb">implode</span><span class="p">(</span><span class="nv">$delimiter</span><span class="p">,</span> <span class="nv">$parts</span><span class="p">)</span> <span class="o">:</span> <span class="nv">$parts</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$part</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nv">$view</span><span class="p">;</span>
+<span class="p">});</span>
 </pre></div>
 
 <p>Inside your view you can append a title part.</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="c1">// Action view (eg. index.phtml)</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">(</span><span class="s2">"Index Page"</span><span class="p">);</span>
 </pre></div>
@@ -299,9 +306,9 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p><code>simple-mvc</code> support partials. You can append partial views at runtime using <code>partial()</code> view helper.</p>
 
-<div class="highlight"><pre><span class="x">&lt;!-- index/index.phtml --&gt;</span>
-<span class="x">&lt;div class="complex"&gt;</span>
-<span class="x">    </span><span class="cp">&lt;?php</span> 
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="nx">index</span><span class="o">/</span><span class="nx">index</span><span class="o">.</span><span class="nx">phtml</span> <span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">class</span><span class="o">=</span><span class="s2">"complex"</span><span class="o">&gt;</span>
+    <span class="o">&lt;?</span><span class="nx">php</span> 
       <span class="c1">// view path, data</span>
        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">partial</span><span class="p">(</span>
             <span class="s2">"/path/to/complex.phtml"</span><span class="p">,</span> 
@@ -313,9 +320,9 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>In the partial view:</p>
 
-<div class="highlight"><pre><span class="x">&lt;!-- path/to/complex.phtml --&gt;</span>
-<span class="x">&lt;div&gt;</span>
-<span class="x">    &lt;h3&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/h3&gt;</span>
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="nx">path</span><span class="o">/</span><span class="nx">to</span><span class="o">/</span><span class="nx">complex</span><span class="o">.</span><span class="nx">phtml</span> <span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x">&lt;/h3&gt;</span>
 <span class="x">    &lt;!-- continue --&gt;</span>
 <span class="x">&lt;/div&gt;</span>
 </pre></div>
@@ -337,7 +344,7 @@ RewriteRule  ^.*$  index.php  [NC,L]
 <code>loop.shutdown</code> - called once, when the system close the loop</li>
 </ol><p>Adding events is a simple operation, see an example with <code>pre.dispatch</code> hook.</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getEventManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">subscribe</span><span class="p">(</span><span class="s2">"pre.dispatch"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$router</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Use a real and better auth system</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"auth"</span><span class="p">]</span> <span class="o">!==</span> <span class="k">true</span> 
@@ -358,13 +365,13 @@ RewriteRule  ^.*$  index.php  [NC,L]
 
 <p>Create new hook definition:</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getEventManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">subscribe</span><span class="p">(</span><span class="s2">"my.hook"</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span><span class="cm">/*The body*/</span><span class="p">});</span>
 </pre></div>
 
 <p>Raise the event:</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="c1">// Call the hook named "my.hook" and pass the app as first arg.</span>
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getEventManager</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">publish</span><span class="p">(</span><span class="s2">"my.hook"</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$app</span><span class="p">));</span>
 </pre></div>
@@ -377,7 +384,7 @@ a view and not vice-versa. A "pull" framework instead request ("pull") data from
 <p>Pull strategy is useful for example during a <code>for</code> statement (not only for that [obviously]...). Look 
 for an example:</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
 <span class="cp">&lt;?php</span>
     <span class="c1">// Pull data from a controller. </span>
     <span class="nv">$userDetail</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pull</span><span class="p">(</span><span class="s2">"/detail/user/id/</span><span class="si">{</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
@@ -391,7 +398,7 @@ for an example:</p>
 
 <p>The view require a <code>pull</code> operation from a controller named <code>detail</code> and action <code>user</code>. See it:</p>
 
-<div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">class</span> <span class="nc">DetailController</span> <span class="k">extends</span> <span class="nx">Controller</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">userAction</span><span class="p">()</span>
