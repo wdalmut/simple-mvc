@@ -12,7 +12,7 @@ Just for my pleasure.
 ## Goals
 
  * PHPUnit
- * Very simple implementation (***only 6 classes*** + autoloader)
+ * Very simple implementation (***only 8 classes*** + autoloader)
  * PHP 5.3+ implementation
 
 ## Features
@@ -72,6 +72,6 @@ $app = new Application();
 ## Examples and docs
 
  * [Documentation](simple-mvc/tree/master/documentation)
- * [Real Example](simple-mvc/tree/master/example)
+ * [Real Example](simple-mvc/tree/master/examples)
 
 The end.

@@ -17,7 +17,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        //Suppress sendHeaders        
+        //Suppress sendHeaders
         $this->object = $this->getMock("Application", array('sendHeaders'));
         $this->object->setControllerPath(__DIR__ . '/controllers');
         $this->object->expects($this->any())->method("sendHeaders")->will($this->returnValue(null));
@@ -31,6 +31,11 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
     }
 
+    public function testDefaultBootstrapInstance()
+    {
+        $this->assertInstanceOf("Bootstrap", $this->object->getBootstrap());
+    }
+
     /**
      * @covers Application::bootstrap
      * @covers Application::getBootstrap
@@ -38,39 +43,39 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     public function testBootstrap()
     {
         $this->object->bootstrap("hello", function(){return "ciao";});
-        $boot = $this->object->getBootstrap("hello");
-        
+        $boot = $this->object->getBootstrap()->getResource("hello");
+
         $this->assertEquals($boot, "ciao");
     }
-    
+
     /**
      * Resources must bootstrap onetime
-     * 
-     * @covers Application::getBootstrap 
+     *
+     * @covers Application::getBootstrap
      */
     public function testGetMultipleTimes()
     {
         $this->object->bootstrap("hello", function(){
             return new View();
         });
-        $boot = $this->object->getBootstrap("hello");
-        $boot2 = $this->object->getBootstrap("hello");
-        
+        $boot = $this->object->getBootstrap()->getResource("hello");
+        $boot2 = $this->object->getBootstrap()->getResource("hello");
+
         $this->assertSame($boot, $boot2);
     }
-    
+
     public function testSetGetControllerPath()
     {
         $this->object->setControllerPath(__DIR__);
-        
+
         $this->assertEquals(__DIR__, $this->object->getControllerPath());
     }
-    
+
     public function testSetGetEventManager()
     {
         $mng = new EventManager();
         $this->object->setEventManager($mng);
-        
+
         $this->assertSame($mng, $this->object->getEventManager());
     }
 
@@ -81,41 +86,43 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
         $this->object->bootstrap("up", "not-callable");
     }
-    
+
     public function testMissingLayout()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
+
+            return $v;
         });
         $this->object->setControllerPath(__DIR__ . '/controllers');
-        
+
         ob_start();
         $this->object->run("/error/error");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("--> error action <--", $content);
-        
+
     }
-    
+
     public function testErrorPages()
     {
         ob_start();
         $this->object->run("/invalid/controller");
         $errorPage = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("--> error action <--", $errorPage);
     }
-    
+
     public function testInitAction()
     {
         ob_start();
         $this->object->run("init/index");
         $initOutput = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("<-- init -->", $initOutput);
     }
 
@@ -126,57 +133,43 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
             $r->setControllerName("admin");
             $r->setActionName("login");
         });
-        
+
         ob_start();
         $this->object->run("/init/index");
         $adminOutput = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("<-- admin login -->", $adminOutput);
     }
-    
+
     public function testThenMethod()
     {
         ob_start();
         $this->object->run("/then/first");
         $thenOutput = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("first-><-second", $thenOutput);
     }
-    
+
+    /**
+     * @expectedException RuntimeException
+     */
     public function testMissingAction()
     {
-        $this->setExpectedException("RuntimeException", "Page not found admin/missing-action", 404);
-        
+       // $this->setExpectedException("RuntimeException", "Page not found admin/missing-action", 404);
+
+        $this->object->setControllerPath(__DIR__);
         $this->object->dispatch("/admin/missing-action");
     }
-    
-    public function testSafeBaseView()
-    {
-        $v = new View();
-        $v->setViewPath(__DIR__ . '/views');
-        
-        $this->object->bootstrap("view", function() use ($v) {
-            return $v;
-        });
-        
-        $phpunit = $this;
-        $this->object->getEventManager()->subscribe("post.dispatch", function($controller) use ($phpunit, $v) {
-            $view = $controller->view;
-            $phpunit->assertNotSame($v, $view);
-        });
-        
-        $this->object->dispatch("/admin/login");
-    }
-    
+
     public function testMissingEventManager()
     {
         $app = new Application();
         $eventManager = $app->getEventManager();
         $this->assertInstanceOf("EventManager", $eventManager);
     }
-    
+
     public function testLayout()
     {
         $this->object->bootstrap("layout", function(){
@@ -185,245 +178,331 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
             $l->setViewPath(__DIR__ . '/layouts');
             return $l;
         });
-        
+
         ob_start();
         $this->object->run("/init/index");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("<body><-- init --></body>", $content);
     }
-    
+
     public function testLayoutViewHelpersPass()
     {
+
         $this->object->bootstrap('layout', function(){
             $l = new Layout();
             $l->setScriptName("title-helper.phtml");
             $l->setViewPath(__DIR__ . '/layouts');
-            
-            $l->addHelper("title", function($part = false){
-                static $parts = array();
-                static $delimiter = ' :: ';
-            
-                return ($part === false) ? implode($delimiter, $parts) : $parts[] = $part;
-            });
-            
+
+
             return $l;
         });
-        
+
         $this->object->bootstrap('view', function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-            
+
+            $v->addHelper("title", function($part = false){
+                static $parts = array();
+                static $delimiter = ' :: ';
+
+                return ($part === false) ? implode($delimiter, $parts) : $parts[] = $part;
+            });
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/general/title-helper");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("<title>the title helper :: second</title>", $content);
     }
-    
+
     public function testEmptyPullDrivenRequest()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-            
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/general/pull-driven");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("<p>Pull-driven experience</p>", $content);
     }
-    
+
     public function testCompletelyMissingPullDrivenRequest()
     {
         $this->object->setControllerPath(null);
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-        
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/pull/driven");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("<h1>Complete pull driven</h1>", $content);
     }
-    
+
     public function testCompletelyMissingPullWithDataDrivenRequest()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-    
+
             return $v;
         });
-    
+
         ob_start();
         $this->object->run("/pull/driven-data");
         $content = ob_get_contents();
         ob_end_clean();
-    
+
         $this->assertEquals("<h2>Controller Data</h2>", $content);
     }
-    
+
     public function testMissingControllerPull()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-        
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/pull/missing-pull");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("--> error action <--", $content);
     }
-    
+
     public function testMissingActionPull()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-    
+
             return $v;
         });
-    
+
         ob_start();
         $this->object->run("/pull/missing-pull-action");
         $content = ob_get_contents();
         ob_end_clean();
-    
+
         $this->assertEquals("--> error action <--", $content);
     }
-    
+
     public function testViewSwitch()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
-        
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/general/a");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("This is B", $content);
     }
-    
+
     public function testViewRewrited()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');
             $v->addViewPath(__DIR__ . '/views-rewrite');
-    
+
             return $v;
         });
-    
+
         ob_start();
         $this->object->run("/general/c");
         $content = ob_get_contents();
         ob_end_clean();
-    
+
         $this->assertEquals("This is C but rewrited", $content);
     }
-    
+
     public function testViewPullRewrited()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');
             $v->addViewPath(__DIR__ . '/views-rewrite');
-        
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/general/d");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals("This is D but rewrited", $content);
     }
-    
+
     public function testPartialViewRewrite()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');
             $v->addViewPath(__DIR__ . '/views-rewrite');
-        
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/general/partial-eg");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals('<h1>ciao</h1>', $content);
     }
-    
-    public function testSetGetHeaders()
-    {
-        $this->object->addHeader("content-type", "text/html");
-        
-        $headers = $this->object->getHeaders();
-        $this->assertCount(1, $headers);
-        
-        $this->object->addHeader("content-disposition", "inline;");
-        $headers = $this->object->getHeaders();
-        $this->assertCount(2, $headers);
 
-        $this->assertStringStartsWith("content-type", $headers[0]["string"]);
-        $this->assertStringEndsWith("text/html", $headers[0]["string"]);
 
-        $this->assertStringStartsWith("content-disposition", $headers[1]["string"]);
-        $this->assertStringEndsWith("inline;", $headers[1]["string"]);
-    }
-    
-    public function testHeaderCodes()
-    {
-        $this->object->addHeader("content-type", "text/html", "202");
-        
-        $headers = $this->object->getHeaders();
-        $this->assertCount(1, $headers);
-        $this->assertSame(202, $headers[0]["code"]);
-    }
-    
+
     public function testBufferOutPullRequest()
     {
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');
-        
+
             return $v;
         });
-        
+
         ob_start();
         $this->object->run("/pull/buffer-out");
         $content = ob_get_contents();
         ob_end_clean();
-        
+
         $this->assertEquals('<p><em>ret from out</em></p>', $content);
+    }
+
+    public function testLoopStartupHook()
+    {
+        $loopStartup = 0;
+        $this->object->getEventManager()->subscribe(
+            "loop.startup", function ($app) use (&$loopStartup){
+
+            $loopStartup += 1;
+        });
+
+        ob_start();
+        $this->object->run("/");
+        ob_end_clean();
+
+        $this->assertSame(1, $loopStartup);
+    }
+
+    public function testLoopShutdownHook()
+    {
+        $shutdown = 0;
+        $this->object->getEventManager()->subscribe(
+            "loop.shutdown", function ($app) use (&$shutdown) {
+                $shutdown += 1;
+            }
+        );
+
+        ob_start();
+        $this->object->run("/");
+        ob_end_clean();
+        $this->assertSame(1, $shutdown);
+    }
+
+    public function testPrePostDispatch()
+    {
+        $preDispatch = 0;
+        $postDispatch = 0;
+
+        $this->object->getEventManager()->subscribe(
+            "pre.dispatch", function ($router, $app) use (&$preDispatch) {
+                ++$preDispatch;
+                var_dump(1);
+            }
+        );
+
+        $this->object->getEventManager()->subscribe(
+            "post.dispatch", function ($app) use (&$postDispatch) {
+                ++$postDispatch;
+            }
+        );
+
+        ob_start();
+        $this->object->run("/admin/login");
+        ob_end_clean();
+
+        $this->assertSame(1, $preDispatch);
+        $this->assertSame(1, $postDispatch);
+    }
+
+    public function testMultiplePrePostDispatch()
+    {
+        $preDispatch = 0;
+        $postDispatch = 0;
+
+        $this->object->getEventManager()->subscribe(
+            "pre.dispatch", function ($router, $app) use (&$preDispatch) {
+                $preDispatch += 1;
+            }
+        );
+
+        $this->object->getEventManager()->subscribe(
+            "post.dispatch", function ($app) use (&$postDispatch) {
+                ++$postDispatch;
+            }
+        );
+
+        ob_start();
+        $this->object->run("/then/first");
+        ob_end_clean();
+
+        $this->assertSame(2, $preDispatch);
+        $this->assertSame(2, $postDispatch);
+    }
+
+    public function testDisableLayout()
+    {
+
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->addViewPath(__DIR__ . '/views');
+
+            return $v;
+        });
+
+
+        $this->object->bootstrap("layout", function(){
+            $v = new Layout();
+            $v->addViewPath(__DIR__ . '/layouts');
+            $v->setScriptName("layout");
+
+            return $v;
+        });
+
+        ob_start();
+        $this->object->run("/general/disable-layout");
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals("Only this view...", trim($content));
     }
 }

@@ -1,19 +1,11 @@
 <?php
 class Controller
 {
-    private $_application;
-
     private $_params;
     private $_rawBody;
     private $_viewScript;
 
     public $view;
-
-    public function __construct($application = null)
-    {
-        $application = (!$application) ? new Application() : $application;
-        $this->setApplication($application);
-    }
 
     public function setView($view)
     {
@@ -27,21 +19,6 @@ class Controller
 
     public function init(){}
 
-    public function setApplication($application)
-    {
-        $this->_application = $application;
-    }
-
-    public function getApplication()
-    {
-        return $this->_application;
-    }
-
-    public function getResource($name)
-    {
-        return $this->_application->getBootstrap($name);
-    }
-
     public function setParams($params)
     {
         $this->_params = $params;
@@ -50,6 +27,11 @@ class Controller
     public function getParams()
     {
         return $this->_params;
+    }
+
+    public function getParam($key)
+    {
+        return (array_key_exists($key, $this->_params)) ? $this->_params[$key] : false;
     }
 
     public function setRawBody($body)
@@ -64,27 +46,48 @@ class Controller
 
     public function then($uri)
     {
-        $this->_application->addRequest($uri);
+        $route = new Route();
+        $this->_params["dispatcher"]->add($route->explode($uri));
     }
 
     public function clearHeaders()
     {
-        $this->_application->clearHeaders();
+        $this->_params["dispatcher"]->clearHeaders();
     }
 
     public function addHeader($key, $value, $httpCode = 200, $replace  = true)
     {
-        $this->_application->addHeader($key, $value, $httpCode, $replace);
+        $this->_params["dispatcher"]->addHeader($key, $value, $httpCode, $replace);
         return $this;
     }
 
+    public function getHeaders()
+    {
+        return $this->_params["dispatcher"]->getHeaders();
+    }
+
+    /**
+     * Get a resource from bootstrap
+     *
+     * @param The name of resource
+     * @return mixed The resource
+     */
+    public function getResource($name)
+    {
+        return $this->_params["dispatcher"]
+            ->getBootstrap()->getResource($name);
+    }
+
+    /**
+     * Using the dispatcher
+     */
     public function redirect($url, $header=301)
     {
         $this->disableLayout();
         $this->setNoRender();
 
-        $this->_application->clearHeaders();
-        $this->_application->addHeader("Location", $url, $header);
+        $this->_params["dispatcher"]->clearHeaders();
+        $this->_params["dispatcher"]->addHeader("Location", $url, $header);
     }
 
     public function setRenderer($renderer)
@@ -99,7 +102,10 @@ class Controller
 
     public function disableLayout()
     {
-        $this->_application->bootstrap("layout", function(){return false;});
+        $this->_params["dispatcher"]->getBootstrap()
+            ->addResource("layout", function(){
+            return null;
+        });
     }
 
     public function setNoRender()

@@ -10,7 +10,7 @@ $app = new Application();
 $app->bootstrap('view', function(){
     $view = new View();
     $view->addViewPath(__DIR__ . '/../views');
-    
+
     return $view;
 });
 
@@ -18,7 +18,7 @@ $app->run();
 ```
 
 The framework append automatically to a controller the right
-view using controller and action name. Tipically you have to 
+view using controller and action name. Tipically you have to
 create a folder tree like this:
 
 ```
@@ -45,7 +45,7 @@ You need to bootstrap it. The normal layout name is "layout.phtml"
 $app->bootstrap('layout', function(){
     $layout = new Layout();
     $layout->addViewPath(__DIR__ . '/../layouts');
-    
+
     return $layout;
 });
 
@@ -68,11 +68,11 @@ add an helper closure.
 $app->bootstrap('view', function(){
     $view = new View();
     $view->addViewPath(__DIR__ . '/../views');
-    
+
     $view->addHelper("now", function(){
         return date("d-m-Y");
     });
-    
+
     return $view;
 });
 ```
@@ -92,11 +92,11 @@ $view->addHelper("sayHello", function($name){
 });
 ```
 
-View system is based using the prototype pattern all of your 
+View system is based using the prototype pattern all of your
 helpers attached at bootstrap time existing into all of your
 real views.
 
-You can add view helpers into your controller but you can 
+You can add view helpers into your controller but you can
 interact only with your dedicated and prototyped instance. The
 helper doesn't exists into other views
 
@@ -109,9 +109,9 @@ public function indexAction()
 }
 ```
 
-### Layout helpers
+### Share view helpers
 
-Layout helpers are automatically shared with each views. In this way
+View helpers are automatically shared with layout. In this way
 you can creates global helpers during the bootstrap and interact with
 those helpers at action time.
 
@@ -123,15 +123,23 @@ share variables.
 $app->bootstrap("layout", function(){
     $layout = new Layout();
     $layout->addViewPath(__DIR__ . '/../layouts');
-    
-    $layout->addHelper("title", function($part = false){
+
+
+    return $layout;
+});
+
+$app->bootstrap("view", function(){
+    $view = new View();
+    $view->addViewPath(__DIR__ . '/../views');
+
+    $view->addHelper("title", function($part = false){
         static $parts = array();
         static $delimiter = ' :: ';
-    
+
         return ($part === false) ? "<title>".implode($delimiter, $parts)."</title>" : $parts[] = $part;
     });
-    
-    return $layout;
+
+    return $view;
 });
 ```
 
@@ -140,7 +148,7 @@ page title.
 
 ## Escapes
 
-Escape is a default view helper. You can escape variables using the 
+Escape is a default view helper. You can escape variables using the
 `escape()` view helper.
 
 ```php
@@ -174,7 +182,7 @@ The partial view `/path/to/view.phtml` are located at `view` path.
 `simple-mvc` support multiple views scripts paths. In other words you can specify
 a single mount point `/path/to/views` after that you can add anther views script path,
 this mean that the `simple-mvc` search for a view previously into the second views path
-and if it is missing looks for that into the first paths. View paths are threated as 
+and if it is missing looks for that into the first paths. View paths are threated as
 a stack, the latest pushed is the first used.
 
 During your bootstrap add more view paths
@@ -184,13 +192,13 @@ $app->bootstrap('view', function(){
     $view = new View();
     $view->addViewPath(__DIR__ . '/../views');
     $view->addViewPath(__DIR__ . '/../views-rewrite');
-    
+
     return $view;
 });
 ```
 
 If you have a view named `name.phtml` into `views` folder and now you create the view
-named `name.phtml` into `views-rewrite` this one is used instead the original file in 
+named `name.phtml` into `views-rewrite` this one is used instead the original file in
 `views` folder.
 
 ### Partials and multiple view scripts paths

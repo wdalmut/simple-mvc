@@ -1,4 +1,4 @@
-<?php 
+<?php
 class ThenController extends Controller
 {
     public function firstAction()
@@ -6,7 +6,7 @@ class ThenController extends Controller
         echo "first->";
         $this->then("/then/second");
     }
-    
+
     public function secondAction()
     {
         echo "<-second";
