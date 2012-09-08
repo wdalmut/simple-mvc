@@ -102,20 +102,6 @@ View system is based using the prototype pattern all of your
 helpers attached at bootstrap time existing into all of your
 real views.
 
-You can add view helpers into your controller but you can
-interact only with your dedicated and prototyped instance. The
-helper doesn't exists into other views
-
-.. code-block:: php
-    :linenos:
-
-    <?php
-    public function indexAction()
-    {
-        // Only into this controller view!
-        $this->view->addHelper("tmp", function(){return "tmp";});
-    }
-
 Share view helpers
 ~~~~~~~~~~~~~~~~~~
 
