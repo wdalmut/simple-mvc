@@ -1,4 +1,4 @@
-# A simple MVC [VC] framework [![Build Status](https://secure.travis-ci.org/wdalmut/simple-mvc.png?branch=master)](http://travis-ci.org/wdalmut/simple-mvc?branch=master)
+# A simple MVC [VC] framework
 
 A simple ***push & pull MVC framework*** heavly inspired to different PHP microframeworks and
 PHP MVC framework like ZF1.
@@ -73,5 +73,12 @@ $app = new Application();
 
  * [Documentation](simple-mvc/tree/master/documentation)
  * [Real Example](simple-mvc/tree/master/examples)
+
+## Build Status
+
+ * Master branch
+   * [![Build Status](https://secure.travis-ci.org/wdalmut/simple-mvc.png?branch=master)](http://travis-ci.org/wdalmut/simple-mvc?branch=master)
+ * Development branch
+   * [![Build Status](https://secure.travis-ci.org/wdalmut/simple-mvc.png?branch=development)](http://travis-ci.org/wdalmut/simple-mvc?branch=development)
 
 The end.
