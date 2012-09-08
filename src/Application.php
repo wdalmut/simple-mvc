@@ -100,6 +100,8 @@ class Application
 
             $this->_page = $dispatcher->dispatch($errorRoute->explode("error/error"));
         }
+
+        return array('headers' => $dispatcher->getHeaders());
     }
 
     public function run($uri = false)
@@ -108,7 +110,7 @@ class Application
         $this->getEventManager()->publish("loop.startup", array($this));
 
         $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri;
-        $this->dispatch($uri);
+        $status = $this->dispatch($uri);
 
         if (($layout = $this->getBootstrap()->getResource("layout")) instanceof Layout) {
             $layout->content = $this->_page;
@@ -120,7 +122,7 @@ class Application
 
         $this->getEventManager()->publish("loop.shutdown", array($this));
 
-        $this->sendHeaders();
+        $this->sendHeaders($status["headers"]);
         echo $outputBuffer;
     }
 
@@ -129,4 +131,10 @@ class Application
         $this->_requests[] = $uri;
     }
 
+    public function sendHeaders($headers)
+    {
+        foreach ($headers as $header) {
+            header($header["string"], $header["replace"], $header["code"]);
+        }
+    }
 }
