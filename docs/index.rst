@@ -14,6 +14,7 @@ Contents:
    getting-started   
    autoloader
    controllers
+   views
 
 
 Indices and tables
