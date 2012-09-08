@@ -94,7 +94,7 @@ class Application
                     'exception' => $e
                 )
             );
-            //TODO add error headers
+
             $dispatcher->clearHeaders();
             $dispatcher->addHeader("","",404);
 

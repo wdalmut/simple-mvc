@@ -5,6 +5,10 @@ class GeneralController extends Controller
     {
 
     }
+    public function disableLayoutAction()
+    {
+        $this->disableLayout();
+    }
 
     public function pullAction()
     {

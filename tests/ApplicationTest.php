@@ -163,25 +163,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->object->dispatch("/admin/missing-action");
     }
 
-    public function testSafeBaseView()
-    {
-        $this->markTestSkipped("What this means?");
-        $v = new View();
-        $v->setViewPath(__DIR__ . '/views');
-
-        $this->object->bootstrap("view", function() use ($v) {
-            return $v;
-        });
-
-        $phpunit = $this;
-        $this->object->getEventManager()->subscribe("post.dispatch", function($controller) use ($phpunit, $v) {
-            $view = $controller->view;
-            $phpunit->assertNotSame($v, $view);
-        });
-
-        $this->object->dispatch("/admin/login");
-    }
-
     public function testMissingEventManager()
     {
         $app = new Application();
@@ -208,7 +189,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testLayoutViewHelpersPass()
     {
-        //$this->markTestSkipped("Restore view helpers");
 
         $this->object->bootstrap('layout', function(){
             $l = new Layout();
@@ -398,34 +378,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<h1>ciao</h1>', $content);
     }
 
-    public function testSetGetHeaders()
-    {
-        $this->markTestSkipped("?");
-        $this->object->addHeader("content-type", "text/html");
 
-        $headers = $this->object->getHeaders();
-        $this->assertCount(1, $headers);
-
-        $this->object->addHeader("content-disposition", "inline;");
-        $headers = $this->object->getHeaders();
-        $this->assertCount(2, $headers);
-
-        $this->assertStringStartsWith("content-type", $headers[0]["string"]);
-        $this->assertStringEndsWith("text/html", $headers[0]["string"]);
-
-        $this->assertStringStartsWith("content-disposition", $headers[1]["string"]);
-        $this->assertStringEndsWith("inline;", $headers[1]["string"]);
-    }
-
-    public function testHeaderCodes()
-    {
-        $this->markTestSkipped("?");
-        $this->object->addHeader("content-type", "text/html", "202");
-
-        $headers = $this->object->getHeaders();
-        $this->assertCount(1, $headers);
-        $this->assertSame(202, $headers[0]["code"]);
-    }
 
     public function testBufferOutPullRequest()
     {
@@ -528,6 +481,28 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testDisableLayout()
     {
-        $this->markTestIncomplete("Try to disable a layout...");
+
+        $this->object->bootstrap("view", function(){
+            $v = new View();
+            $v->addViewPath(__DIR__ . '/views');
+
+            return $v;
+        });
+
+
+        $this->object->bootstrap("layout", function(){
+            $v = new Layout();
+            $v->addViewPath(__DIR__ . '/layouts');
+            $v->setScriptName("layout");
+
+            return $v;
+        });
+
+        ob_start();
+        $this->object->run("/general/disable-layout");
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertEquals("Only this view...", trim($content));
     }
 }

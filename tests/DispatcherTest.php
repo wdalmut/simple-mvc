@@ -5,16 +5,16 @@
  */
 class DispatcherTest extends PHPUnit_Framework_TestCase
 {
-    private $_object;
+    private $object;
 
     function setUp()
     {
         parent::setUp();
 
-        $this->_object = new Dispatcher(new View());
-        $this->_object->setBootstrap(new Bootstrap());
-        $this->_object->setEventManager(new EventManager());
-        $this->_object->setControllerPath(__DIR__ . '/controllers');
+        $this->object = new Dispatcher(new View());
+        $this->object->setBootstrap(new Bootstrap());
+        $this->object->setEventManager(new EventManager());
+        $this->object->setControllerPath(__DIR__ . '/controllers');
     }
 
     public function testDispatchARoute()
@@ -22,7 +22,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $route = new Route();
         $route->explode("alone/an");
 
-        $content = $this->_object->dispatch($route);
+        $content = $this->object->dispatch($route);
 
         $this->assertEquals("an-action", $content);
     }
@@ -35,7 +35,34 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $route = new Route();
         $route->explode("/not/exists-this-action");
 
-        $this->_object->dispatch($route);
+        $this->object->dispatch($route);
+    }
+
+    public function testHeaderCodes()
+    {
+        $this->object->addHeader("content-type", "text/html", "202");
+
+        $headers = $this->object->getHeaders();
+        $this->assertCount(1, $headers);
+        $this->assertSame(202, $headers[0]["code"]);
+    }
+
+    public function testSetGetHeaders()
+    {
+        $this->object->addHeader("content-type", "text/html");
+
+        $headers = $this->object->getHeaders();
+        $this->assertCount(1, $headers);
+
+        $this->object->addHeader("content-disposition", "inline;");
+        $headers = $this->object->getHeaders();
+        $this->assertCount(2, $headers);
+
+        $this->assertStringStartsWith("content-type", $headers[0]["string"]);
+        $this->assertStringEndsWith("text/html", $headers[0]["string"]);
+
+        $this->assertStringStartsWith("content-disposition", $headers[1]["string"]);
+        $this->assertStringEndsWith("inline;", $headers[1]["string"]);
     }
 }
 

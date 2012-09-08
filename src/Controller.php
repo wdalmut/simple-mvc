@@ -67,6 +67,18 @@ class Controller
     }
 
     /**
+     * Get a resource from bootstrap
+     *
+     * @param The name of resource
+     * @return mixed The resource
+     */
+    public function getResource($name)
+    {
+        return $this->_params["dispatcher"]
+            ->getBootstrap()->getResource($name);
+    }
+
+    /**
      * Using the dispatcher
      */
     public function redirect($url, $header=301)
@@ -90,7 +102,10 @@ class Controller
 
     public function disableLayout()
     {
-        throw new Exception("Missing strategy");
+        $this->_params["dispatcher"]->getBootstrap()
+            ->addResource("layout", function(){
+            return null;
+        });
     }
 
     public function setNoRender()

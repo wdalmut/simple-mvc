@@ -123,7 +123,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
     public function testRedirectBase()
     {
-        $this->markTestSkipped("Useful?");
         $this->object->addHeader("content-type", "text/html");
         $this->object->redirect("/admin/login");
         $headers = $this->object->getHeaders();
@@ -136,7 +135,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
     public function testRedirectBase302()
     {
-        $this->markTestSkipped("Useful?");
         $this->object->addHeader("content-type", "text/html");
         $this->object->redirect("/admin/login", 302);
         $headers = $this->object->getHeaders();
