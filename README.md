@@ -71,8 +71,8 @@ $app = new Application();
 
 ## Examples and docs
 
- * [Documentation](simple-mvc/tree/master/documentation)
- * [Real Example](simple-mvc/tree/master/examples)
+ * [Documentation](documentation)
+ * [Real Example](examples)
 
 ## Build Status
 
