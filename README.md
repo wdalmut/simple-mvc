@@ -71,7 +71,7 @@ $app = new Application();
 
 ## Examples and docs
 
- * [Documentation](master/documentation)
+ * [Documentation](http://simple-mvc.readthedocs.org/en/latest/index.html)
  * [Real Example](master/examples)
 
 ## Build Status
