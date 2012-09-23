@@ -1,0 +1,13 @@
+<request>
+    <uri>/</uri>
+    <hostname>t.test.local</hostname>
+    <post>
+        <key>value</key>
+    </post>
+    <get>
+        <key>value</key>
+    </get>
+    <params>
+        <key>value</key>
+    </params>
+</request>
