@@ -157,7 +157,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testThenMethod()
     {
-        $this->markTestSkipped("Skip then operation");
         ob_start();
         $this->object->run(new Request("/then/first"));
         $thenOutput = ob_get_contents();
@@ -171,13 +170,8 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
      */
     public function testMissingAction()
     {
-       // $this->setExpectedException("RuntimeException", "Page not found admin/missing-action", 404);
-        $route = new Route();
-        $route->setControllerName("admin");
-        $route->setActionName("missing-action");
-
         $this->object->setControllerPath(__DIR__);
-        $this->object->dispatch($route);
+        $this->object->run(new Request("/admin/missing-action"));
     }
 
     public function testMissingEventManager()
@@ -240,7 +234,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyPullDrivenRequest()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
@@ -258,7 +251,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testCompletelyMissingPullDrivenRequest()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->setControllerPath(null);
         $this->object->bootstrap("view", function(){
             $v = new View();
@@ -277,7 +269,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testCompletelyMissingPullWithDataDrivenRequest()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
@@ -295,7 +286,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testMissingControllerPull()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
@@ -313,7 +303,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testMissingActionPull()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->setViewPath(__DIR__ . '/views');
@@ -366,7 +355,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testViewPullRewrited()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');
@@ -405,7 +393,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testBufferOutPullRequest()
     {
-        $this->markTestSkipped("Skip pull");
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');
@@ -480,7 +467,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testMultiplePrePostDispatch()
     {
-        $this->markTestSkipped("Skip then operation");
         $preDispatch = 0;
         $postDispatch = 0;
 
@@ -506,7 +492,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function testDisableLayout()
     {
-
         $this->object->bootstrap("view", function(){
             $v = new View();
             $v->addViewPath(__DIR__ . '/views');

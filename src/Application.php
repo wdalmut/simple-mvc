@@ -6,6 +6,9 @@ class Application
     private $_eventManager;
     private $_page = '';
 
+    private $_router;
+    private $_request;
+
     public function __construct(Bootstrap $bootstrap = null, EventManager $eventManager = null)
     {
         $this->_bootstrap = ($bootstrap) ? $bootstrap : new Bootstrap();
@@ -47,8 +50,9 @@ class Application
         $protoView = ($this->getBootstrap()->getResource("view")) ?  $this->getBootstrap()->getResource("view") : new View();
 
         $controllerPath = $this->getControllerPath();
-        $protoView->addHelper("pull", function($uri) use ($controllerPath) {
-            return;
+        $router = $this->_router;
+        $request = $this->_request;
+        $protoView->addHelper("pull", function($uri) use ($controllerPath, $router, $request) {
             $request = clone $request;
             $request->setUri($uri);
             $routeObj = $router->match($request);
@@ -77,6 +81,8 @@ class Application
         });
 
         $dispatcher = new Dispatcher($protoView);
+        $dispatcher->setRouter($this->_router);
+        $dispatcher->setRequest($this->_request);
         $dispatcher->setEventManager($this->getEventManager());
         $dispatcher->setBootstrap($this->_bootstrap);
         $dispatcher->setControllerPath($this->getControllerPath());
@@ -105,13 +111,13 @@ class Application
 
     public function run(Request $request = null)
     {
-        $router = ($this->getBootstrap()->getResource("router")) ? $this->getResource("router") : new Router();
-        $request = (!$request) ? Request::newHttp() : $request;
+        $this->_router = ($this->getBootstrap()->getResource("router")) ? $this->getResource("router") : new Router();
+        $this->_request = (!$request) ? Request::newHttp() : $request;
 
         $outputBuffer = '';
         $this->getEventManager()->publish("loop.startup", array($this));
 
-        $status = $this->dispatch($router->match($request));
+        $status = $this->dispatch($this->_router->match($this->_request));
 
         if (($layout = $this->getBootstrap()->getResource("layout")) instanceof Layout) {
             $layout->content = $this->_page;

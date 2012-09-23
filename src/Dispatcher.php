@@ -16,11 +16,34 @@ class Dispatcher
 
     private $_headers = array();
 
+    private $_router;
+    private $_request;
+
     public function __construct(View $view)
     {
         $this->_view = $view;
         $this->_actions = array();
         $this->_viewsQueue = array();
+    }
+
+    public function setRouter(Router $router)
+    {
+        $this->_router = $router;
+    }
+
+    public function getRouter()
+    {
+        return $this->_router;
+    }
+
+    public function setRequest(Request $request)
+    {
+        $this->_request = $request;
+    }
+
+    public function getRequest()
+    {
+        return $this->_request;
     }
 
     public function setControllerPath($path)
@@ -83,6 +106,8 @@ class Dispatcher
             }
 
             $controller = new $controllerClassName($this);
+            $controller->setRouter($this->getRouter());
+            $controller->setRequest($this->getRequest());
             $controller->setParams(
                 array_merge(
                     array(
