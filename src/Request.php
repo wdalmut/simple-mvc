@@ -45,7 +45,7 @@ class Request
 
     public function setPostParams($params)
     {
-        $this->_postParams($params);
+        $this->_postParams = $params;
     }
 
     public function getPostParams()
@@ -82,7 +82,7 @@ class Request
     {
         $request = new Request();
         $request->setHostname($_SERVER["SERVER_NAME"]);
-        $request->setUri("REQUEST_URI");
+        $request->setUri($_SERVER["REQUEST_URI"]);
         $request->setGetParams($_GET);
         $request->setPostParams($_POST);
         $request->setRawBody(@file_get_contents('php://input'));
