@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../src/Router.php';
 require_once __DIR__ . '/../src/Request.php';
 
-require_once __DIR__ . '/utils/HttpRouter.php';
-require_once __DIR__ . '/utils/StaticRouter.php';
+require_once __DIR__ . '/../exts/HostnameRouter.php';
+require_once __DIR__ . '/../exts/StaticRouter.php';
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
@@ -42,7 +42,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request->setUri("/");
 
         $router = new Router();
-        $hostnameRouter = new HttpRouter("t.test.local");
+        $hostnameRouter = new HostnameRouter("t.test.local");
         $hostnameRouter->addChild("hello", new StaticRouter("/", "Hello", "world"));
 
         $router->addChild("hostname", $hostnameRouter);

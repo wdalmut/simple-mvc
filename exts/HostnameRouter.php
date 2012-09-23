@@ -1,5 +1,5 @@
 <?php
-class HttpRouter extends Router
+class HostnameRouter extends Router
 {
     private $_hostname;
 
