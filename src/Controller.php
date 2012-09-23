@@ -46,6 +46,7 @@ class Controller
 
     public function then($uri)
     {
+        throw new Exception("Refactor then!");
         $route = new Route();
         $this->_params["dispatcher"]->add($route->explode($uri));
     }

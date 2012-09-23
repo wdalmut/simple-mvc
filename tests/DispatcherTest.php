@@ -19,6 +19,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
 
     public function testDispatchARoute()
     {
+        $this->markTestSkipped("Check this operation");
         $route = new Route();
         $route->explode("alone/an");
 
@@ -32,6 +33,8 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
      */
     public function testDispatchAnError()
     {
+        $this->markTestSkipped("Check this test");
+
         $route = new Route();
         $route->explode("/not/exists-this-action");
 

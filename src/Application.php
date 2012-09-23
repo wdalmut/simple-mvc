@@ -42,20 +42,16 @@ class Application
         return $this->_bootstrap;
     }
 
-    public function dispatch($uri)
+    public function dispatch(Route $route)
     {
-        $router = new Route();
-        $routeObj = $router->explode($uri);
-        $routeObj->addParams($_GET);
-        $routeObj->addParams($_POST);
-
-        $route = $routeObj->getRoute();
         $protoView = ($this->getBootstrap()->getResource("view")) ?  $this->getBootstrap()->getResource("view") : new View();
 
         $controllerPath = $this->getControllerPath();
         $protoView->addHelper("pull", function($uri) use ($controllerPath) {
-            $router = new Route();
-            $routeObj = $router->explode($uri);
+            return;
+            $request = clone $request;
+            $request->setUri($uri);
+            $routeObj = $router->match($request);
 
             $controllerClassName = $routeObj->getControllerName() . "Controller";
             $action = $routeObj->getActionName() . "Action";
@@ -86,7 +82,7 @@ class Application
         $dispatcher->setControllerPath($this->getControllerPath());
 
         try {
-            $this->_page = $dispatcher->dispatch($routeObj);
+            $this->_page = $dispatcher->dispatch($route);
         } catch (RuntimeException $e) {
             $errorRoute = new Route();
             $errorRoute->addParams(
@@ -98,19 +94,24 @@ class Application
             $dispatcher->clearHeaders();
             $dispatcher->addHeader("","",404);
 
-            $this->_page = $dispatcher->dispatch($errorRoute->explode("error/error"));
+            $errorRoute->setControllerName("error");
+            $errorRoute->setActionName("error");
+
+            $this->_page = $dispatcher->dispatch($errorRoute);
         }
 
         return array('headers' => $dispatcher->getHeaders());
     }
 
-    public function run($uri = false)
+    public function run(Request $request = null)
     {
+        $router = ($this->getBootstrap()->getResource("router")) ? $this->getResource("router") : new Router();
+        $request = (!$request) ? Request::newHttp() : $request;
+
         $outputBuffer = '';
         $this->getEventManager()->publish("loop.startup", array($this));
 
-        $uri = (!$uri) ? $_SERVER["REQUEST_URI"] : $uri;
-        $status = $this->dispatch($uri);
+        $status = $this->dispatch($router->match($request));
 
         if (($layout = $this->getBootstrap()->getResource("layout")) instanceof Layout) {
             $layout->content = $this->_page;

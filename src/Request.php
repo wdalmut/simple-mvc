@@ -8,6 +8,11 @@ class Request
     private $_params;
     private $_rawBody;
 
+    public function __construct($uri = '')
+    {
+        $this->setUri($uri);
+    }
+
     public function setHostname($hostname)
     {
         $this->_hostname = $hostname;
@@ -83,5 +88,14 @@ class Request
         $request->setRawBody(@file_get_contents('php://input'));
 
         return $request;
+    }
+
+    public static function fromXml($path)
+    {
+        $xml = simplexml_load_string($path);
+        $this->setHostname((string)$xml->hostname);
+        $this->setUri((string)$xml->uri);
+
+        //TODO: end this section
     }
 }

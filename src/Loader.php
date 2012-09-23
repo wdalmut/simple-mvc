@@ -22,12 +22,14 @@ class Loader
     public static function classmap()
     {
         require_once __DIR__ . '/Bootstrap.php';
-        require_once __DIR__ . '/Application.php';
+        require_once __DIR__ . '/Request.php';
+        require_once __DIR__ . '/Router.php';
         require_once __DIR__ . '/Controller.php';
         require_once __DIR__ . '/EventManager.php';
         require_once __DIR__ . '/Layout.php';
         require_once __DIR__ . '/Route.php';
         require_once __DIR__ . '/View.php';
         require_once __DIR__ . '/Dispatcher.php';
+        require_once __DIR__ . '/Application.php';
     }
 }
