@@ -1,7 +1,7 @@
 {
     "require": {
         "twig/twig": "1.*",
-        "wdalmut/simple-mvc": "*"
+        "wdalmut/simple-mvc": "0.1.*"
     }
 }
 

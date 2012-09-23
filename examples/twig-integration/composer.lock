@@ -1,30 +1,106 @@
 {
-    "hash": "fbc7277626d60808f3f5559132b956dc",
+    "hash": "bbc67bb2fca4287c2501e8ad26c05614",
     "packages": [
         {
-            "package": "twig/twig",
+            "name": "twig/twig",
             "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
+            "source": {
+                "type": "git",
+                "url": "git://github.com/fabpot/Twig.git",
+                "reference": "b4d1d62b82e83c6fd3d5a6cd46a186de64275bb4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/fabpot/Twig/zipball/b4d1d62b82e83c6fd3d5a6cd46a186de64275bb4",
+                "reference": "b4d1d62b82e83c6fd3d5a6cd46a186de64275bb4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "time": "1347961095",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                }
+            },
+            "license": [
+                "BSD-3"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "http://twig.sensiolabs.org",
+            "keywords": [
+                "templating"
+            ]
         },
         {
-            "package": "twig/twig",
-            "version": "dev-master",
-            "source-reference": "73da773aaad0f97f2e967ec8241b8adf7b1e03d2",
-            "commit-date": "1340890758"
-        },
-        {
-            "package": "wdalmut/simple-mvc",
-            "version": "dev-master",
-            "source-reference": "2facba1b1d53d691e031c44129d7f6d7d887172e",
-            "commit-date": "1341335941"
+            "name": "wdalmut/simple-mvc",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wdalmut/simple-mvc",
+                "reference": "0.1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/wdalmut/simple-mvc/zipball/0.1.2",
+                "reference": "0.1.2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "2012-09-23 00:00:00",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "classmap": [
+                    "src/",
+                    "exts/"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Walter Dal Mut",
+                    "email": "walter.dalmut@gmail.com",
+                    "homepage": "http://walterdalmut.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple and full stack Push & Pull MVC framework.",
+            "keywords": [
+                "framework",
+                "microframework",
+                "mvc",
+                "micro"
+            ]
         }
     ],
     "packages-dev": null,
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [
 
     ]
