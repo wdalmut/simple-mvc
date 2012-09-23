@@ -1,6 +1,5 @@
 <?php
 require_once realpath(__DIR__ . '/../vendor/autoload.php');
-require_once realpath(__DIR__ . '/../../../exts/TwigView.php');
 
 $app = new Application();
 
