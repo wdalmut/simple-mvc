@@ -1,6 +1,6 @@
 # simple-mvc Extensions
 
-Just extensions useful
+Just useful extensions
 
  * HostnameRouter
    * A simple hostname router
