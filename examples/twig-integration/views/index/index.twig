@@ -1,2 +1,15 @@
-<h1>{{ hello }}</h1>
-<p>{{ texts.para }}</p>
+{% extends "base.twig" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>Index</h1>
+    <p class="important">
+        Welcome to Twig example.
+    </p>
+{% endblock %}

@@ -1,6 +1,6 @@
-<?php 
+<?php
 require_once realpath(__DIR__ . '/../vendor/autoload.php');
-require_once realpath(__DIR__ . '/../library/SimpleTwigView.php');
+require_once realpath(__DIR__ . '/../../../exts/TwigView.php');
 
 $app = new Application();
 
@@ -8,11 +8,12 @@ $app = new Application();
 $app->setControllerPath(__DIR__ . '/../controllers');
 
 $app->bootstrap("view", function(){
-    $view = new SimpleTwigView();
+    $view = new TwigView();
+    $view->addViewPath(realpath(__DIR__ . '/../layouts'));
     $view->addViewPath(realpath(__DIR__ . '/../views'));
     $view->setViewExt(".twig");
     $view->initTwig();
-    
+
     return $view;
 });
 
