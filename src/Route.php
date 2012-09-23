@@ -38,6 +38,32 @@ class Route
         return $this->_route["action-clear"];
     }
 
+    /**
+     * Merge parent route with this
+     *
+     * @param Route $route The parent route
+     *
+     * @return Route mixed route
+     */
+    public function merge($parent)
+    {
+        $merged = clone $this;
+        if ($parent) {
+            //Merge with parent route
+            ($this->getActionName()) ?
+                $merged->setActionName($this->getActionName()) :
+                $merged->setActionName($parent->getActioName());
+
+            ($this->getControllerName()) ?
+                $merged->setControllerName($this->getControllerName()) :
+                $merged->setControllerName($parent->getControllerName());
+
+            $this->addParams(array_merge($parent->getParams(), $this->getParams()));
+        }
+
+        return $merged;
+    }
+
     public function explode($uri)
     {
         if (!is_string($uri) || empty($uri)) {

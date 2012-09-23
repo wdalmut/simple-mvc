@@ -1,0 +1,19 @@
+<?php
+class HttpRouter extends Router
+{
+    private $_hostname;
+
+    public function __construct($hostname)
+    {
+        $this->_hostname = $hostname;
+    }
+
+    public function match(Request $request)
+    {
+        if ($request->getHostname() == $this->_hostname) {
+            return parent::match($request, new Route());
+        }
+
+        return false;
+    }
+}
