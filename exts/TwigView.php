@@ -3,10 +3,17 @@ class TwigView extends View
 {
     private $_twig;
 
-    public function initTwig()
+    public function initTwig($cache = false)
     {
         $loader = new Twig_Loader_Filesystem($this->getViewPaths());
-        $this->_twig = new Twig_Environment($loader);
+
+        if ($cache) {
+            $this->_twig = new Twig_Environment($loader, array(
+                'cache' => $cache
+            ));
+        } else {
+            $this->_twig = new Twig_Environment($loader);
+        }
     }
 
     public function render($filename, $data = false)

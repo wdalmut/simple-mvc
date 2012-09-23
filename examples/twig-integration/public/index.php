@@ -12,7 +12,7 @@ $app->bootstrap("view", function(){
     $view->addViewPath(realpath(__DIR__ . '/../layouts'));
     $view->addViewPath(realpath(__DIR__ . '/../views'));
     $view->setViewExt(".twig");
-    $view->initTwig();
+    $view->initTwig(__DIR__ . '/../views/cache');
 
     return $view;
 });
