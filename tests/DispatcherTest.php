@@ -15,13 +15,15 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
         $this->object->setBootstrap(new Bootstrap());
         $this->object->setEventManager(new EventManager());
         $this->object->setControllerPath(__DIR__ . '/controllers');
+        $router = new Router();
+        $this->object->setRouter($router);
     }
 
     public function testDispatchARoute()
     {
-        $route = new Route();
-        $route->explode("alone/an");
-
+        $request = new Request("alone/an");
+        $this->object->setRequest($request);
+        $route = $this->object->getRouter()->match($request);
         $content = $this->object->dispatch($route);
 
         $this->assertEquals("an-action", $content);
@@ -32,9 +34,9 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
      */
     public function testDispatchAnError()
     {
-        $route = new Route();
-        $route->explode("/not/exists-this-action");
-
+        $request = new Request("/not/exists-this-action");
+        $this->object->setRequest($request);
+        $route = $this->object->getRouter()->match($request);
         $this->object->dispatch($route);
     }
 

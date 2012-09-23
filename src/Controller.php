@@ -5,7 +5,30 @@ class Controller
     private $_rawBody;
     private $_viewScript;
 
+    private $_router;
+    private $_request;
+
     public $view;
+
+    public function setRequest(Request $request)
+    {
+        $this->_request = $request;
+    }
+
+    public function getRequest()
+    {
+        return $this->_request;
+    }
+
+    public function setRouter(Router $router)
+    {
+        $this->_router = $router;
+    }
+
+    public function getRouter()
+    {
+        return $this->_router;
+    }
 
     public function setView($view)
     {
@@ -46,8 +69,11 @@ class Controller
 
     public function then($uri)
     {
-        $route = new Route();
-        $this->_params["dispatcher"]->add($route->explode($uri));
+        $request = clone $this->_request;
+        $request->setUri($uri);
+
+        $route = $this->_router->match($request);
+        $this->_params["dispatcher"]->add($route);
     }
 
     public function clearHeaders()

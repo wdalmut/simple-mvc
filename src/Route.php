@@ -38,44 +38,30 @@ class Route
         return $this->_route["action-clear"];
     }
 
-    public function explode($uri)
+    /**
+     * Merge parent route with this
+     *
+     * @param Route $route The parent route
+     *
+     * @return Route mixed route
+     */
+    public function merge($parent)
     {
-        if (!is_string($uri) || empty($uri)) {
-            throw new RuntimeException("URI must be a string");
+        $merged = clone $this;
+        if ($parent) {
+            //Merge with parent route
+            ($this->getActionName()) ?
+                $merged->setActionName($this->getActionName()) :
+                $merged->setActionName($parent->getActioName());
+
+            ($this->getControllerName()) ?
+                $merged->setControllerName($this->getControllerName()) :
+                $merged->setControllerName($parent->getControllerName());
+
+            $this->addParams(array_merge($parent->getParams(), $this->getParams()));
         }
 
-        $uri = (strpos($uri, "?") !== false) ? substr($uri, 0, strpos($uri, "?")) : $uri;
-        $parts = explode($this->_delimiter, $uri);
-
-        $parts = $this->_filter($parts);
-
-        switch (count($parts)) {
-            case 0:
-                $this->setControllerName("index");
-                $this->setActionName("index");
-                break;
-            case 1:
-                $this->setControllerName("index");
-                $this->setActionName($parts[0]);
-                array_shift($parts);
-                break;
-            default:
-                $this->setControllerName($parts[0]);
-                $this->setActionName($parts[1]);
-                array_shift($parts);
-                array_shift($parts);
-                break;
-        }
-
-        (count($parts) % 2 !== 0) ? array_pop($parts) : false;
-
-        if (count($parts)) {
-            for ($i=0; $i<count($parts); $i=$i+2) {
-                $this->_params[$parts[$i]] = $parts[$i+1];
-            }
-        }
-
-        return $this;
+        return $merged;
     }
 
     private function _toCamelCase($part)
@@ -88,19 +74,6 @@ class Route
             ++$pos;
         }
         return str_replace("-", "", $part);
-    }
-
-    private function _filter($parts)
-    {
-        $clean = array();
-        foreach ($parts as $part) {
-            $part = trim($part);
-            if (!empty($part)) {
-                $clean[] = $part;
-            }
-        }
-
-        return $clean;
     }
 
     public function getRoute()

@@ -30,154 +30,33 @@ class RouteTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Route::explode
-     * @todo   Implement testExplode().
-     */
-    public function testSlashExplode()
-    {
-        $routeObj = $this->object->explode("/");
-        
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-        
-        $this->assertEquals("Index", $route["controller"]);
-        $this->assertEquals("index", $route["action"]);
-        
-        $this->assertInternalType("array", $params);
-        $this->assertSame(0, count($params));
-    }
-    
-    public function testOnlyActionExplode()
-    {
-        $routeObj = $this->object->explode("/home");
-        
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-        
-        $this->assertEquals("Index", $route["controller"]);
-        $this->assertEquals("home", $route["action"]);
-        
-        $this->assertInternalType("array", $params);
-        $this->assertSame(0, count($params));
-    }
-    
-    public function testControllerActionExplode()
-    {
-        $routeObj = $this->object->explode("/admin/home");
-        
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-        
-        $this->assertEquals("Admin", $route["controller"]);
-        $this->assertEquals("home", $route["action"]);
-        
-        $this->assertInternalType("array", $params);
-        $this->assertSame(0, count($params));
-    }
-    
-    public function testParamsControllerActionExplode()
-    {
-        $routeObj = $this->object->explode("/walk/on/area/bar/status/inlove");
-        
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-        
-        $this->assertEquals("Walk", $route["controller"]);
-        $this->assertEquals("on", $route["action"]);
-        
-        $this->assertInternalType("array", $params);
-        $this->assertSame(2, count($params));
-        
-        $keys = array_keys($params);
-        $this->assertEquals("area", $keys[0]);
-        $this->assertEquals("status", $keys[1]);
-        
-        $this->assertEquals("bar", $params["area"]);
-        $this->assertEquals("inlove", $params["status"]);
-    }
-    
-    public function testUnbalancedParamsExplode()
-    {
-        $routeObj = $this->object->explode("/walk/on/area/bar/status");
-        
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-        
-        $this->assertEquals("Walk", $route["controller"]);
-        $this->assertEquals("on", $route["action"]);
-        
-        $this->assertInternalType("array", $params);
-        $this->assertSame(1, count($params));
-        
-        $keys = array_keys($params);
-        $this->assertEquals("area", $keys[0]);
-        
-        $this->assertEquals("bar", $params["area"]);
-    }
-    
-    public function testComplexControllerName()
-    {
-        $routeObj = $this->object->explode("/walk-on-files/hello-sunny-day/param/ok-this");
-        
-        $route = $routeObj->getRoute();
-        $params = $routeObj->getParams();
-        
-        $this->assertEquals("WalkOnFiles", $route["controller"]);
-        $this->assertEquals("helloSunnyDay", $route["action"]);
-        
-        $params  = $routeObj->getParams();
-        $this->assertEquals("ok-this", $params["param"]);
-    }
-    
-    /**
      * @expectedException RuntimeException
      */
     public function testStrangeExplode()
     {
+        $this->markTestSkipped("Check if is router test");
         $this->object->explode(array('controller' => 'ciao', 'action' => 'hello'));
     }
-    
+
     public function testAddParam()
     {
+        $this->markTestSkipped("Check if is request test");
         $this->object->explode("/index/index");
         $this->object->addParams(array("hello" => "ciao"));
         $this->object->addParams(array("bella" => 'zi'));
-        
+
         $p = $this->object->getParams();
         $this->assertEquals(2, count($p));
         $this->assertEquals("ciao", $p["hello"]);
         $this->assertEquals("zi", $p["bella"]);
     }
-    
+
     public function testClearGetParams()
     {
+        $this->markTestSkipped("Check if is router test");
         $uri = '/?hello=world';
         $this->object->explode($uri);
         $this->assertEquals("Index", $this->object->getControllerName());
         $this->assertEquals("index", $this->object->getActionName());
-    }
-    
-    public function testClearLongGetParams()
-    {
-        $uri = '/?hello=world&titti=totti';
-        $this->object->explode($uri);
-        $this->assertEquals("Index", $this->object->getControllerName());
-        $this->assertEquals("index", $this->object->getActionName());
-    }
-    
-    public function testClearGet2Params()
-    {
-        $uri = '/account?hello=world';
-        $this->object->explode($uri);
-        $this->assertEquals("Index", $this->object->getControllerName());
-        $this->assertEquals("account", $this->object->getActionName());
-    }
-    
-    public function testClearGet3Params()
-    {
-        $uri = '/admin/account-super?hello=world';
-        $this->object->explode($uri);
-        $this->assertEquals("Admin", $this->object->getControllerName());
-        $this->assertEquals("accountSuper", $this->object->getActionName());
     }
 }
