@@ -94,7 +94,7 @@ class Application
 
         try {
             $this->_page = $dispatcher->dispatch($route);
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             $errorRoute = new Route();
             $errorRoute->addParams(
                 array(
