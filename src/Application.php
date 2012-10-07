@@ -45,6 +45,11 @@ class Application
         return $this->_bootstrap;
     }
 
+    public function getRequest()
+    {
+        return $this->_request;
+    }
+
     public function dispatch(Route $route)
     {
         $protoView = ($this->getBootstrap()->getResource("view")) ?  $this->getBootstrap()->getResource("view") : new View();

@@ -4,7 +4,6 @@
     "version":"0.1.2",
     "type":"library",
     "keywords":["mvc","framework","microframework","micro"],
-    "time":"2012-09-23",
     "license":"MIT",
     "authors": [
         {
