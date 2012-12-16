@@ -116,7 +116,7 @@ class Application
 
     public function run(Request $request = null)
     {
-        $this->_router = ($this->getBootstrap()->getResource("router")) ? $this->getResource("router") : new Router();
+        $this->_router = ($this->getBootstrap()->getResource("router")) ? $this->getBootstrap()->getResource("router") : new Router();
         $this->_request = (!$request) ? Request::newHttp() : $request;
 
         $outputBuffer = '';
