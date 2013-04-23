@@ -74,8 +74,8 @@ class Router
                 $route->setActionName("index");
                 break;
             case 1:
-                $route->setControllerName("index");
-                $route->setActionName($parts[0]);
+                $route->setControllerName($parts[0]);
+                $route->setActionName("index");
                 array_shift($parts);
                 break;
             default:
