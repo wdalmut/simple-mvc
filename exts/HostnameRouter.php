@@ -8,7 +8,7 @@ class HostnameRouter extends Router
         $this->_hostname = $hostname;
     }
 
-    public function match(Request $request)
+    public function match(Request $request, $route = false)
     {
         if ($request->getHostname() == $this->_hostname) {
             return parent::match($request, new Route());
