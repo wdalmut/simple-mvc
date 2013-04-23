@@ -66,15 +66,15 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertSame(0, count($params));
     }
 
-    public function testOnlyActionExplode()
+    public function testOnlyControllerExplode()
     {
         $routeObj = $this->_object->match(new Request("/home"));
 
         $route = $routeObj->getRoute();
         $params = $routeObj->getParams();
 
-        $this->assertEquals("Index", $route["controller"]);
-        $this->assertEquals("home", $route["action"]);
+        $this->assertEquals("Home", $route["controller"]);
+        $this->assertEquals("index", $route["action"]);
 
         $this->assertInternalType("array", $params);
         $this->assertSame(0, count($params));
@@ -163,8 +163,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         $uri = '/account?hello=world';
         $route = $this->_object->match(new Request($uri));
-        $this->assertEquals("Index", $route->getControllerName());
-        $this->assertEquals("account", $route->getActionName());
+        $this->assertEquals("Account", $route->getControllerName());
+        $this->assertEquals("index", $route->getActionName());
     }
 
     public function testClearGet3Params()

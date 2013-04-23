@@ -15,6 +15,10 @@ class Loader
             }
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
+            if (!file_exists($fileName)) {
+                throw new \RuntimeException("Unable to load class {$className} in file {$fileName}");
+            }
+
             require $fileName;
         });
     }
